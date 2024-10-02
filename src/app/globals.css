@@ -3,8 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #F9FAFB;
   --foreground: #171717;
+  --primary: #155EEF;
+  --primary-50: #EFF4FF;
+  --success:#067647;
+  --succes-50:#ECFDF3;
+  --yellow:#B54708;
+  --yellow-50:#FFFAEB;
+  --orage:#B93815;
+  --orage-50:#FEF6EE;
+  --error:#B42318;
+  --error-50:#FEF3F2;
+
+  --font-noto: 'Noto Sans Thai', sans-serif;
+
+  
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,7 +27,9 @@
     --foreground: #ededed;
   }
 }
-
+*{
+  font-family: var(--font-noto);
+}
 body {
   color: var(--foreground);
   background: var(--background);
