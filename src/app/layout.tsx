@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Head from 'next/head';
 import Navbar from "./components/Navbar";
-import { Inter,Noto_Sans_Thai } from 'next/font/google'
+import { Inter, Noto_Sans_Thai, Prompt } from 'next/font/google'
 import Footer from "./components/Footer";
 
 
@@ -18,12 +18,22 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'],
+  variable: '--font-inter',
+ })
 
-const noto = Noto_Sans_Thai({ subsets: ['latin'], 
-   display: 'swap',
-   variable: '--font-noto',
-   })
+const noto = Noto_Sans_Thai({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-noto',
+})
+const prompt = Prompt({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-prompt',
+  weight: ["100","200","300","400","500","600"]
+})
+
 
 
 
@@ -43,11 +53,11 @@ export default function RootLayout({
     <html lang="en">
 
       <body
-        className={` ${noto.variable} antialiased`}
+        className={` ${noto.variable} ${prompt.variable} ${inter.variable} antialiased`}
       >
         <Navbar />
         {children}
-    
+
       </body>
     </html>
   );

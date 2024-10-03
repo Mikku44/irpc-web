@@ -16,7 +16,9 @@
   --error:#B42318;
   --error-50:#FEF3F2;
 
-  --font-noto: 'Noto Sans Thai', sans-serif;
+  --tertiary:#475467;
+
+  --font-noto:'Inter', 'Noto Sans Thai', sans-serif;
 
   
 }
@@ -28,7 +30,8 @@
   }
 }
 *{
-  font-family: var(--font-noto);
+  font-family: var(--font-inter),var(--font-prompt),var(--font-noto);
+  /* color:#101828 */
 }
 
 .noto-sans{
@@ -40,8 +43,55 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.container {
+  padding: 20px 100px;
+}
+.text-mute{
+  color:var(--tertiary);
+}
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+  /* Styles for extra small devices */
+  .container {
+    padding: 20px 15px;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  /* Styles for small devices */
+  .container {
+    padding: 20px 25px;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  /* Styles for medium devices */
+  .container {
+    padding: 20px 35px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  /* Styles for large devices */
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  /* Styles for extra large devices */
+}
+
+/* XXL devices (very large desktops, 1400px and up) */
+@media (min-width: 1400px) {
+  /* Styles for XXL devices */
 }
