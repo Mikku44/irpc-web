@@ -11,8 +11,8 @@
   --succes-50:#ECFDF3;
   --yellow:#B54708;
   --yellow-50:#FFFAEB;
-  --orage:#B93815;
-  --orage-50:#FEF6EE;
+  --orange:#B93815;
+  --orange-50:#FEF6EE;
   --error:#B42318;
   --error-50:#FEF3F2;
 
@@ -29,6 +29,10 @@
 }
 *{
   font-family: var(--font-noto);
+}
+
+.noto-sans{
+  font-family: var(--font-noto) !important;
 }
 body {
   color: var(--foreground);
