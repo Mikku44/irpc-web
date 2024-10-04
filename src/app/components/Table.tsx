@@ -77,6 +77,6 @@ const onChange: TableProps['onChange'] = (pagination, filters, sorter, extra) =>
   console.log('params', pagination, filters, sorter, extra);
 };
 
-export default function Table({columns,data}:any){
-    return   <AntTable className='border border-1 rounded-xl overflow-hidden shadow-md' columns={columns} dataSource={data} onChange={onChange} />
+export default function Table({columns,data,className}:any){
+    return   <AntTable className={` border border-1 rounded-xl overflow-hidden shadow-md ${className}`} columns={columns} dataSource={data} onChange={onChange} />
 }

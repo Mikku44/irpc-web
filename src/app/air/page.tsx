@@ -2,43 +2,40 @@
 
 import { Input, Radio, Segmented } from 'antd';
 import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from '../components/Card';
 import Badge from '../components/Badge';
 import Table from '../components/Table';
 import MapPick from '../components/MapPick';
 import DateFormator from '../ultilities/DateFormater';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import { SegmentList } from '../globals';
+import SegmentMenu from '../components/SegmentMenu';
+import Image from 'next/image';
 
 export default function Air() {
 
   const [segmentValue, setSegmentValue] = useState<string | number>('air');
-  const SegmentList = [
-    {
-      label:
-        <div className='flex gap-2 items-center justify-center text-black'>คุณภาพอากาศ
-
-        </div>, value: 'air'
-    },
-    { label: 'ระดับเสียง', value: "sound" },
-    { label: 'คุณภาพน้ำ', value: "water" },
-    { label: 'สภาพแวดล้อม', value: "environment" }]
-
-
-
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
 
 
+  const router = useRouter();
+ 
 
+
+  useEffect(() => {
+
+    router.push(`/${segmentValue}`)
+  }, [segmentValue])
 
   return (
     <>
 
       <section id="header" className="px-10 py-4 bg-white">
 
-        <div className="w-full py-5 ">
-          <Segmented options={SegmentList} size='large' className='w-full py-2 px-2' value={segmentValue} onChange={setSegmentValue} block />
-        </div>
+       <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำวันจันทร์ ที่ 19 มิถุนายน เวลา 09:05 น.</div>
         <div className="text-[36px] font-bold">ดัชนีคุณภาพอากาศ</div>
 
@@ -55,7 +52,7 @@ export default function Air() {
             <div className="tabs">
               <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
                 <Radio.Button value="List"><div className='flex gap-2 items-center'><Grid2X2 />รายการ </div></Radio.Button>
-                <Radio.Button value="Map"><div className='flex gap-2 items-center'><Map />แผนที่ </div></Radio.Button>
+                <Radio.Button value="Map"><div className='flex gap-2 items-center'><Image src="/icons/map.svg" width={24} height={24} alt="wind icon"></Image>แผนที่ </div></Radio.Button>
               </Radio.Group>
             </div>
           </div>
@@ -72,7 +69,7 @@ export default function Air() {
 
         {display == "Map" && <div className="flex  gap-5 ">
           <div className="basis-2/5">
-            <Link  href="air/detail/someid">
+            <Link href="air/detail/someid">
               <Card ></Card>
             </Link>
           </div>

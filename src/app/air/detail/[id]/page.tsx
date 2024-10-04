@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 export default function Detail() {
 
-    const [display, setDisplay] = useState<'PM2' | 'PM10'>('PM2');
+    const [display, setDisplay] = useState<'PM2' | 'PM10'>('PM10');
     const [display2, setDisplay2] = useState<'Tempurature' | 'Pressure' | 'RH'>('Tempurature');
 
     return <>
@@ -95,20 +95,38 @@ export default function Detail() {
                         </div>
                     </div>
 
-                    <div className="flex justify-between py-8 flex-wrap">
-                        <div className="font-bold">ข้อมูลตรวจวัดปริมาณฝุ่นละออง PM2.5 ย้อนหลัง 24 ชั่วโมง</div>
-                        <div className="">
-                            <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
-                                <Radio.Button value="PM10"><div className='flex gap-2 items-center'>PM10 </div></Radio.Button>
-                                <Radio.Button value="PM2"><div className='flex gap-2 items-center'>PM2.5 </div></Radio.Button>
-                            </Radio.Group>
-
+                    <section>
+                        <div className="flex justify-between py-8 flex-wrap">
+                            <div className="font-bold">ข้อมูลตรวจวัดปริมาณฝุ่นละออง PM2.5 ย้อนหลัง 24 ชั่วโมง</div>
+                            <div className="">
+                                <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
+                                    <Radio.Button value="PM10"><div className='flex gap-2 items-center'>PM10 </div></Radio.Button>
+                                    <Radio.Button value="PM2"><div className='flex gap-2 items-center'>PM2.5 </div></Radio.Button>
+                                </Radio.Group>
+                            </div>
                         </div>
-                    </div>
+                        <div className=" overflow-hidden flex justify-center">
+                            <AreaGraph />
+                        </div>
+                    </section>
 
-                    <div className=" overflow-hidden flex justify-center">
-                        <AreaGraph />
-                    </div>
+                    <section className='py-10'>
+                        <div className="flex justify-between py-8 flex-wrap">
+                            <div className="font-bold">ค่าตรวจวัดข้อมูลทางอุตุนิยมวิทยาย้อนหลัง 24 ชั่วโมง</div>
+                            <div className="">
+                                <Radio.Group value={display2} onChange={(e) => setDisplay2(e.target.value)}>
+                                    <Radio.Button value="Tempurature"><div className='flex gap-2 items-center'>Temperature </div></Radio.Button>
+                                    <Radio.Button value="Pressure"><div className='flex gap-2 items-center'>Pressure </div></Radio.Button>
+                                    <Radio.Button value="RH"><div className='flex gap-2 items-center'>RH </div></Radio.Button>
+                                </Radio.Group>
+
+                            </div>
+                        </div>
+
+                        <div className=" overflow-hidden flex justify-center">
+                            <AreaGraph />
+                        </div>
+                    </section>
                 </div>
             </section>
         </div>

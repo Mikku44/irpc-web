@@ -21,6 +21,9 @@ export default function Sound() {
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
 
 
+
+
+
   return (
     <>
 
@@ -28,7 +31,7 @@ export default function Sound() {
 
        <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำวันจันทร์ ที่ 19 มิถุนายน เวลา 09:05 น.</div>
-        <div className="text-[36px] font-bold">ดัชนีคุณภาพเสียง</div>
+        <div className="text-[36px] font-bold">ดัชนีคุณภาพแวดล้อม</div>
 
         <div className="flex justify-between pt-10">
           <div className="badges flex gap-2 flex-wrap">
@@ -79,58 +82,54 @@ export default function Sound() {
         <div className='py-5'>
           <Table
             data={[
-              {
-                key: '1',
-                station: 'สถานีอุตุนิยมวิทยาลำปาง',
-                dBA24: 48.9,
-                dBA1: 30.6,
-                dBA15: 966,
-                dBA5: 66.2,
-                updated: DateFormator(new Date()),
-              },
+                {
+                    key: '1',
+                    station: 'แขวงการทางสมุทรสาคร',
+                    point: 'จุดที่1',
+                    updated: '19 มิ.ย. 66 เวลา 09:00 น.',
+                    CO: 2,
+                    Flow: '337,024.09',
+                    Particulate: 0.31,
+                  },
             ]}
 
             columns={[
-              {
-                title:<div className="text-[#475467]">สถานี</div> ,
-                dataIndex: 'station',
-              },
-              {
-                title:<div className="text-[#475467]">dBA/Leq 24 ชม</div> ,
-                dataIndex: 'dBA24',
-                // sorter: {
-                //   compare: (a: { dBA24: number; }, b: { dBA24: number; }) => (a.dBA24) - (b.dBA24),
-                //   multiple: 3,
-                // },
-              },
-              {
-                title:<div className="text-[#475467]">dBA/Leq 1 ชม</div> ,
-                dataIndex: 'dBA1',
-                // sorter: {
-                //   compare: (a: { dBA1: number; }, b: { dBA1: number; }) => (a.dBA1) - (b.dBA1),
-                //   multiple: 3,
-                // },
-              },
-              {
-                title:<div className="text-[#475467]">dBA/Leq 15 นาที</div> ,
-                dataIndex: 'dBA15',
-                // sorter: {
-                //   compare: (a: { dBA15: number; }, b: { dBA15: number; }) => (a.dBA15) - (b.dBA15),
-                //   multiple: 3,
-                // },
-              },
-              {
-                title:<div className="text-[#475467]">dBA/Leq 5 นาที</div> ,
-                dataIndex: 'dBA5',
-                // sorter: {
-                //   compare: (a: { dBA5: number; }, b: { dBA5: number; }) => (a.dBA5) - (b.dBA5),
-                //   multiple: 3,
-                // },
-              },
-              {
-                title:<div className="text-[#475467]">เวลาอัพเดต</div> ,
-                dataIndex: 'updated',
-              },
+                {
+                    title: <div className="text-[#475467]">สถานี</div>, // Station
+                    dataIndex: 'station',
+                  },
+                  {
+                    title: <div className="text-[#475467]">จุดตรวจวัด</div>, // Measurement Point
+                    dataIndex: 'point',
+                  },
+                  {
+                    title: <div className="text-[#475467]">เวลาอัพเดต</div>, // Updated Time
+                    dataIndex: 'updated',
+                  },
+                  {
+                    title: <div className="text-[#475467]">CO (ppm)</div>, // CO (ppm)
+                    dataIndex: 'CO',
+                    sorter: {
+                      compare: (a: { CO: number; }, b: { CO: number; }) => a.CO - b.CO,
+                      multiple: 3,
+                    },
+                  },
+                  {
+                    title: <div className="text-[#475467]">Flow (m³/hr)</div>, // Flow (m³/hr)
+                    dataIndex: 'Flow',
+                    sorter: {
+                      compare: (a: { Flow: string; }, b: { Flow: string; }) => parseFloat(a.Flow.replace(/,/g, '')) - parseFloat(b.Flow.replace(/,/g, '')),
+                      multiple: 3,
+                    },
+                  },
+                  {
+                    title: <div className="text-[#475467]">Particulate (mg/m³)</div>, // Particulate (mg/m³)
+                    dataIndex: 'Particulate',
+                    sorter: {
+                      compare: (a: { Particulate: number; }, b: { Particulate: number; }) => a.Particulate - b.Particulate,
+                      multiple: 3,
+                    },
+                  },
             ]}
           />
 

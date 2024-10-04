@@ -1,8 +1,133 @@
-export default function Water() {
-    return (
-      <div>
-          Water
-      </div>
-    );
-  }
-  
+'use client'
+
+import { Input, Radio, Segmented } from 'antd';
+import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import Card from '../components/Card';
+import Badge from '../components/Badge';
+import Table from '../components/Table';
+import MapPick from '../components/MapPick';
+import DateFormator from '../ultilities/DateFormater';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import { SegmentList } from '../globals';
+import SegmentMenu from '../components/SegmentMenu';
+import Image from 'next/image';
+
+export default function Sound() {
+
+
+  const [display, setDisplay] = useState<'List' | 'Map'>('List');
+
+  return (
+    <>
+
+      <section id="header" className="px-10 py-4 bg-white">
+
+        <SegmentMenu />
+        <div className="text-[18px] text-[--primary] font-bold">ประจำวันจันทร์ ที่ 19 มิถุนายน เวลา 09:05 น.</div>
+        <div className="text-[36px] font-bold">ดัชนีคุณภาพน้ำ</div>
+
+        <div className="flex justify-between pt-10">
+          <div className="badges flex gap-2 flex-wrap">
+            <Badge text="คุณภาพดีมาก" className="bg-[--primary-50] text-[--primary] border-[--primary]"></Badge>
+            <Badge text="คุณภาพดี" className="bg-[--success-50] text-[--success] border-[--success]"></Badge>
+            <Badge text="คุณภาพปานกลาง" className="bg-[--yellow-50] text-[--yellow] border-[--yellow]"></Badge>
+            <Badge text="เริ่มมีผลกระทบ" className="bg-[--orange-50] text-[--orange] border-[--orange]"></Badge>
+            <Badge text="มีผลกระทบ" className="bg-[--error-50] text-[--error] border-[--error]"></Badge>
+          </div>
+          <div className="badges flex flex-wrap gap-2">
+            <div className="search"> <Input size="middle" placeholder="ค้นหา" className="text-slate-500 noto-sans" prefix={<Search />} /></div>
+            <div className="tabs">
+              <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
+                <Radio.Button value="List"><div className='flex gap-2 items-center'><Grid2X2 />รายการ </div></Radio.Button>
+                <Radio.Button value="Map"><div className='flex gap-2 items-center'><Image src="/icons/map.svg" width={24} height={24} alt="wind icon"></Image>แผนที่ </div></Radio.Button>
+              </Radio.Group>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="lists" className='px-10 bg-white py-5'>
+        {display == "List" && <div className="grid lg:grid-cols-3 md:grid-cols-2  gap-5 ">
+          {[1, 2, 3, 4, 5, 6].map(item => <Link href="water/detail/someid">
+            <Card key={item}></Card>
+          </Link>)}
+        </div>}
+
+        {display == "Map" && <div className="flex  gap-5 ">
+          <div className="basis-2/5">
+            <Link href="water/detail/someid">
+              <Card ></Card>
+            </Link>
+          </div>
+          <div className="basis-3/5">
+            <MapPick />
+          </div>
+        </div>}
+      </section>
+
+      <section id="table" className="px-10 py-10">
+        <div className="flex flex-wrap gap-2 justify-between">
+          <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพน้ำ</div>
+          <div className="search"> <Input size="middle" placeholder="ค้นหา" className="text-slate-500 noto-sans" prefix={<Search />} /></div>
+        </div>
+
+        <div className='py-5'>
+          <Table
+            data={[
+              {
+                key: '1',
+                station: 'แขวงการทางสมุทรสาคร',
+                COD: 51.3,
+                Flow: 63.6,
+                PH: 66.2,
+                updated: DateFormator(new Date()),
+              },
+            ]}
+
+            columns={[
+              {
+                title: <div className="text-[#475467]">สถานี</div>,
+                dataIndex: 'station',
+              },
+              {
+                title: <div className="text-[#475467]">COD (mg/L)</div>,
+                dataIndex: 'COD',
+                sorter: {
+                  compare: (a: { COD: number; }, b: { COD: number; }) => a.COD - b.COD,
+                  multiple: 3,
+                },
+              },
+              {
+                title: <div className="text-[#475467]">Flow (m³/s)</div>,
+                dataIndex: 'Flow',
+                sorter: {
+                  compare: (a: { Flow: number; }, b: { Flow: number; }) => a.Flow - b.Flow,
+                  multiple: 3,
+                },
+              },
+              {
+                title: <div className="text-[#475467]">PH</div>,
+                dataIndex: 'PH',
+                sorter: {
+                  compare: (a: { PH: number; }, b: { PH: number; }) => a.PH - b.PH,
+                  multiple: 3,
+                },
+              },
+              {
+                title: <div className="text-[#475467]">เวลาอัพเดต</div>,
+                dataIndex: 'updated',
+              },
+            ]}
+          />
+
+        </div>
+      </section>
+
+
+    </>
+  );
+}
