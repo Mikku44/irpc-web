@@ -14,6 +14,8 @@ import { useRouter } from 'next/navigation';
 import { SegmentList } from '../globals';
 import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
+import SoundCard from '../components/SoundCard';
+import Badges from '../components/Badges';
 
 export default function Sound() {
 
@@ -31,13 +33,7 @@ export default function Sound() {
         <div className="text-[36px] font-bold">ดัชนีคุณภาพเสียง</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-          <div className="badges flex gap-2 flex-wrap">
-            <Badge text="คุณภาพดีมาก" className="bg-[--primary-50] text-[--primary] border-[--primary]"></Badge>
-            <Badge text="คุณภาพดี" className="bg-[--success-50] text-[--success] border-[--success]"></Badge>
-            <Badge text="คุณภาพปานกลาง" className="bg-[--yellow-50] text-[--yellow] border-[--yellow]"></Badge>
-            <Badge text="เริ่มมีผลกระทบ" className="bg-[--orange-50] text-[--orange] border-[--orange]"></Badge>
-            <Badge text="มีผลกระทบ" className="bg-[--error-50] text-[--error] border-[--error]"></Badge>
-          </div>
+        <Badges />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
             <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
@@ -67,14 +63,14 @@ export default function Sound() {
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="grid lg:grid-cols-3 md:grid-cols-2  gap-5 justify-center ">
           {[1, 2, 3, 4, 5, 6].map(item => <Link href="sound/detail/someid">
-            <Card key={item}></Card>
+            <SoundCard key={item}></SoundCard>
           </Link>)}
         </div>}
 
         {display == "Map" && <div className="flex  gap-5 ">
           <div className="basis-2/5 lg:block md:hidden hidden">
             <Link href="sound/detail/someid">
-              <Card ></Card>
+              <SoundCard ></SoundCard>
             </Link>
           </div>
           <div className="lg:basis-3/5  w-full lg:h-auto md:h-[50vh] h-[50vh]">
