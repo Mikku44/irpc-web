@@ -49,7 +49,9 @@ body {
 .text-mute{
   color:var(--tertiary);
 }
-
+.background{
+  background: url("/images/background.svg");
+}
 
 @layer utilities {
   .text-balance {
