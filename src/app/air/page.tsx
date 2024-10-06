@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { SegmentList } from '../globals';
 import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
+import Badges from '../components/Badges';
 
 export default function Air() {
 
@@ -40,13 +41,7 @@ export default function Air() {
         <div className="text-[36px] font-bold">ดัชนีคุณภาพอากาศ</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-          <div className="badges flex gap-2 flex-wrap">
-            <Badge text="คุณภาพดีมาก" className="bg-[--primary-50] text-[--primary] border-[--primary]"></Badge>
-            <Badge text="คุณภาพดี" className="bg-[--success-50] text-[--success] border-[--success]"></Badge>
-            <Badge text="คุณภาพปานกลาง" className="bg-[--yellow-50] text-[--yellow] border-[--yellow]"></Badge>
-            <Badge text="เริ่มมีผลกระทบ" className="bg-[--orange-50] text-[--orange] border-[--orange]"></Badge>
-            <Badge text="มีผลกระทบ" className="bg-[--error-50] text-[--error] border-[--error]"></Badge>
-          </div>
+          <Badges />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
             <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
