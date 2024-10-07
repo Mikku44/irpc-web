@@ -1,6 +1,6 @@
 'use client'
 
-import { Input, Radio, Segmented } from 'antd';
+import { Input, Pagination, Radio, Segmented } from 'antd';
 import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -22,6 +22,11 @@ export default function Environment() {
 
     const [display, setDisplay] = useState<'List' | 'Map'>('List');
 
+    const currentPage = 0;
+    const pageSize = 1;
+
+    const environments = [1, 2, 3, 4, 5, 6];
+    const environmentsSplited = environments[currentPage]
 
 
 
@@ -36,7 +41,7 @@ export default function Environment() {
                 <div className="text-[36px] font-bold">ดัชนีคุณภาพแวดล้อม</div>
 
                 <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-                   <Badges />
+                    <Badges />
                     <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
                         <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
                         <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
@@ -47,7 +52,7 @@ export default function Environment() {
                             >
                                 <Radio.Button value="List" className="w-1/2">
                                     <div className='flex gap-2 items-center justify-center w-full'>
-                                        <Grid2X2 />รายการ
+                                        <Grid2X2 className='w-[34px]'  />รายการ
                                     </div>
                                 </Radio.Button>
                                 <Radio.Button value="Map" className="w-1/2">
@@ -64,11 +69,18 @@ export default function Environment() {
             </section>
 
             <section id="lists" className='px-10 bg-white py-5'>
-                {display == "List" && <div className="grid lg:grid-cols-3 md:grid-cols-2  gap-5 justify-center">
-                    {[1, 2, 3, 4, 5, 6].map(item => <Link href="environment/detail/someid">
+                {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
+                    {environments.map(item => <Link href="environment/detail/someid">
                         <EnvironmentCard key={item}></EnvironmentCard>
                     </Link>)}
                 </div>}
+
+                {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
+                    {[environmentsSplited].map(item => <Link href="sound/detail/someid">
+                        <EnvironmentCard key={item}></EnvironmentCard>
+                    </Link>)}
+                </div>}
+
 
                 {display == "Map" && <div className="flex  gap-5 ">
                     <div className="basis-2/5 lg:block md:hidden hidden">
@@ -80,6 +92,8 @@ export default function Environment() {
                         <MapPick />
                     </div>
                 </div>}
+
+                <Pagination pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={environments.length} className="lg:hidden md:hidden flex justify-center py-3" />
             </section>
 
             <section id="table" className="px-10 py-10">

@@ -82,7 +82,7 @@ export default function Detail() {
                         </p>
                     </div>
                 </div>
-                <div className="lg:basis-2/3">
+                <div className="lg:basis-2/3 w-[90vw]">
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
                         <div>
                             <div className='text-[#475467]'>COD</div>
