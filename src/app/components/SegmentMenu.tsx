@@ -49,7 +49,10 @@ export default function SegmentMenu() {
             />
         </div>
         <div className="lg:block md:hidden hidden w-full py-5 ">
-            <Segmented options={SegmentList} size='large' className='w-full py-2 px-2' value={segmentValue} onChange={setSegmentValue} block />
+            <Segmented options={SegmentList}  size='large' className='w-full py-2 px-2' value={segmentValue} onChange={e => {
+                setSegmentValue(e);
+                router.push(`/${e}`)
+            }} block />
         </div>
     </>
 }
