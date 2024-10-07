@@ -24,14 +24,14 @@ export default function SegmentMenu() {
         setCookie("currenSegment", `${segment}`, 30)
     }, [])
 
-    const [segmentValue, setSegmentValue] = useState<string | number>(getCookie("currenSegment")!);
+    const [segmentValue, setSegmentValue] = useState<string>(getCookie("currenSegment")!);
 
     const router = useRouter();
 
 
 
     useEffect(() => {
-        if (segmentValue && segmentValue in allCategories) {
+        if (segmentValue && allCategories.includes(segmentValue)) {
             router.push(`/${segmentValue}`)
         }
     }, [segmentValue])
