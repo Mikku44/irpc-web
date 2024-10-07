@@ -76,7 +76,7 @@ export default function Environment() {
                 </div>}
 
                 {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
-                    {[environmentsSplited].map(item => <Link href="sound/detail/someid">
+                    {[environmentsSplited].map(item => <Link href="environment/detail/someid">
                         <EnvironmentCard key={item}></EnvironmentCard>
                     </Link>)}
                 </div>}

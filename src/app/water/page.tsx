@@ -72,7 +72,7 @@ export default function Sound() {
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
-          {[watersSplited].map(item => <Link href="sound/detail/someid">
+          {[watersSplited].map(item => <Link href="water/detail/someid">
             <WaterCard key={item}></WaterCard>
           </Link>)}
         </div>}
