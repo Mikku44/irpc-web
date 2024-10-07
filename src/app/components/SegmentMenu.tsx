@@ -9,6 +9,14 @@ import { Select } from "antd";
 
 
 export default function SegmentMenu() {
+    const allCategories = [
+        "air",
+        "water",
+        "sound",
+        "environment",
+        "flare",
+        "EQMs"
+    ]
 
     useEffect(() => {
         const segment = window.location.href.split('/').pop()
@@ -23,7 +31,7 @@ export default function SegmentMenu() {
 
 
     useEffect(() => {
-        if (segmentValue) {
+        if (segmentValue && segmentValue in allCategories) {
             router.push(`/${segmentValue}`)
         }
     }, [segmentValue])

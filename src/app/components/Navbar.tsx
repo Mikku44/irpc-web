@@ -72,6 +72,7 @@ export default function Navbar() {
   useEffect(() => {
     if (!localStorage.theme)
       localStorage.theme = 'light'
+    document.documentElement.classList.add('light')
   }, [])
 
 
