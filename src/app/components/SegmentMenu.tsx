@@ -9,6 +9,14 @@ import { Select } from "antd";
 
 
 export default function SegmentMenu() {
+    const allCategories = [
+        "air",
+        "water",
+        "sound",
+        "environment",
+        "flare",
+        "EQMs"
+    ]
 
     useEffect(() => {
         const segment = window.location.href.split('/').pop()
@@ -16,14 +24,14 @@ export default function SegmentMenu() {
         setCookie("currenSegment", `${segment}`, 30)
     }, [])
 
-    const [segmentValue, setSegmentValue] = useState<string | number>(getCookie("currenSegment")!);
+    const [segmentValue, setSegmentValue] = useState<string>(getCookie("currenSegment")!);
 
     const router = useRouter();
 
 
 
     useEffect(() => {
-        if (segmentValue) {
+        if (segmentValue && allCategories.includes(segmentValue)) {
             router.push(`/${segmentValue}`)
         }
     }, [segmentValue])
@@ -41,7 +49,10 @@ export default function SegmentMenu() {
             />
         </div>
         <div className="lg:block md:hidden hidden w-full py-5 ">
-            <Segmented options={SegmentList} size='large' className='w-full py-2 px-2' value={segmentValue} onChange={setSegmentValue} block />
+            <Segmented options={SegmentList}  size='large' className='w-full py-2 px-2' value={segmentValue} onChange={e => {
+                setSegmentValue(e);
+                router.push(`/${e}`)
+            }} block />
         </div>
     </>
 }
