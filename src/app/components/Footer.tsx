@@ -1,8 +1,53 @@
 export default function Footer() {
-    return (
-      <div className="w-full bg-white text-center">
-          Footer
+  return (
+    <div className="w-full bg-white text-center">
+      <div className="w-full bg-white">
+        <footer className="bg-white border-t py-8">
+          <div className="flex justify-between items-center px-0">
+            <div className="flex flex-col items-start mb-6 md:mb-0 text-left ml-20">
+              <img src="/images/irpc-logo.svg" alt="IRPC Logo" className="h-8 mb-4" />
+              <p className="text-gray-600 text-sm max-w-xs">Design amazing digital experiences that create more happy in the world.</p>
+              <div className="flex flex-wrap justify-start space-x-7 mt-4">
+                <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Overview</a>
+                <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Features</a>
+                <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Pricing</a>
+                <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Careers</a>
+                <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Help</a>
+                <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Privacy</a>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-end text-left mr-20">
+              <div className="flex flex-col space-y-2">
+                <p className="text-blue-500 mb-2 ">Get the app</p>
+                <a href="#">
+                  <img src="/images/appstore.svg" alt="App Store" className="h-10" />
+                </a>
+                <a href="#">
+                  <img src="/images/googleplay.svg" alt="Google Play" className="h-10" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t mt-6 pt-6 w-full max-w-[90vw] mx-auto px-0">
+            <div className="w-full flex flex-col md:flex-row justify-between items-center text-gray-600">
+              <p className="text-sm ">&copy; 2024 IRPC, Inc. All rights reserved.</p>
+              <div className="flex space-x-6 ">
+                <a href="#" className="hover:text-blue-500">
+                  <img src="/images/x.svg" alt="X" className="h-5" />
+                </a>
+                <a href="#" className="hover:text-blue-500">
+                  <img src="/images/linkedin.svg" alt="LinkedIn" className="h-5" />
+                </a>
+                <a href="#" className="hover:text-blue-500">
+                  <img src="/images/facebook.svg" alt="Facebook" className="h-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
-    );
-  }
-  
+    </div>
+  );
+}
