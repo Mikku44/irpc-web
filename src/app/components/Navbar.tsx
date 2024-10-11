@@ -81,7 +81,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="w-full bg-white text-center flex justify-between py-5 lg:px-28 md:px-[10px] px-5 items-center">
+    <div className="w-full bg-white text-center flex justify-between py-4 lg:px-28 md:px-[10px] px-5 items-center">
       <div className="flex gap-10 items-center text-lg ">
         <div className="flex gap-2 items-center">
 

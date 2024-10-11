@@ -1,6 +1,6 @@
 'use client'
 
-import { Input, Pagination, Radio, Segmented } from 'antd';
+import { Input, Radio, Segmented } from 'antd';
 import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -16,7 +16,7 @@ import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
 import EnvironmentCard from '../components/EnvironmentCard';
 import Badges from '../components/Badges';
-
+import Pagination from '../components/Pagination';
 export default function Environment() {
 
 
@@ -93,7 +93,7 @@ export default function Environment() {
                     </div>
                 </div>}
 
-                <Pagination pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={environments.length} className="lg:hidden md:hidden flex justify-center py-3" />
+                <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={1} total={environments.length} className="lg:hidden md:hidden flex justify-center py-3" />
             </section>
 
             <section id="table" className="px-10 py-10">

@@ -1,6 +1,6 @@
 'use client'
 
-import { Input, Pagination, Radio, Segmented } from 'antd';
+import { Input, Radio, Segmented } from 'antd';
 import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Card from '../components/Card';
@@ -16,7 +16,13 @@ import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
 import Badges from '../components/Badges';
 
-export default function Air() {
+import Pagination from '../components/Pagination';
+import { getData } from '../ultilities/api';
+
+export default async function Air() {
+
+
+  
 
   const [segmentValue, setSegmentValue] = useState<string | number>('air');
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
@@ -24,17 +30,22 @@ export default function Air() {
 
   const router = useRouter();
 
-
+  
+  useEffect(()=>{
+    getData('/forWeb/getAirLast.php')
+  },[])
 
   useEffect(() => {
 
+    
     router.push(`/${segmentValue}`)
+    
   }, [segmentValue])
 
   const currentPage = 0;
   const pageSize = 1;
 
-  const airs = [1, 2, 3, 4, 5, 6];
+  const airs = [1,2,3,4];
   const airSplited = airs[currentPage]
 
   return (
@@ -99,7 +110,7 @@ export default function Air() {
           </div>
         </div>}
 
-        <Pagination pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={airs.length} className="lg:hidden md:hidden flex justify-center py-3" />
+        <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={1} total={airs.length} className="lg:hidden md:hidden flex justify-center py-3" />
       </section>
 
       <section id="table" className="px-10 py-10">
