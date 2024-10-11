@@ -20,7 +20,7 @@ export default function Detail() {
 
     return <>
         <Image src="/images/cover-image.png" width={1664} height={240} className='w-[100vw] bg-black' alt={''}></Image>
-        <div className="container bg-white">
+        <div className="container-x bg-white">
             <Breadcrumb
                 separator={<ChevronRight />}
 
@@ -56,7 +56,7 @@ export default function Detail() {
             </section>
 
             <div className="w-full bg-slate-200 h-[1px]  rounded-xl my-10"></div>
-            <section className="flex flex-wrap">
+            <section className="flex lg:flex-row flex-col">
                 <div className="lg:basis-1/3">
                     {/* Location */}
 
@@ -177,18 +177,26 @@ export default function Detail() {
                                         {
                                             title: <div className="text-[#475467]">เวลาอัพเดต</div>,
                                             dataIndex: 'updated',
+                                            width: 100,
+                                            ellipsis: true,
                                         },
                                         {
                                             title: <div className="text-[#475467]">Leq</div>,
                                             dataIndex: 'Leq',
+                                            width: 100,
+                                            ellipsis: true,
                                         },
                                         {
                                             title: <div className="text-[#475467]">Lmin</div>,
                                             dataIndex: 'Lmin',
+                                            width: 100,
+                                            ellipsis: true,
                                         },
                                         {
                                             title: <div className="text-[#475467]">Lmax</div>,
                                             dataIndex: 'Lmax',
+                                            width: 100,
+                                            ellipsis: true,
                                         },
                                     ]
                                 }
