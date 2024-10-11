@@ -20,7 +20,7 @@ export default function Detail() {
 
     return <>
         <Image src="/images/cover-image.png" width={1664} height={240} className='w-[100vw] bg-black' alt={''}></Image>
-        <div className="container bg-white">
+        <div className="container-x bg-white">
             <Breadcrumb
                 separator={<ChevronRight />}
 

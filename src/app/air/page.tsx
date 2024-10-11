@@ -17,8 +17,12 @@ import Image from 'next/image';
 import Badges from '../components/Badges';
 
 import Pagination from '../components/Pagination';
+import { getData } from '../ultilities/api';
 
-export default function Air() {
+export default async function Air() {
+
+
+  
 
   const [segmentValue, setSegmentValue] = useState<string | number>('air');
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
@@ -26,17 +30,22 @@ export default function Air() {
 
   const router = useRouter();
 
-
+  
+  useEffect(()=>{
+    getData('/forWeb/getAirLast.php')
+  },[])
 
   useEffect(() => {
 
+    
     router.push(`/${segmentValue}`)
+    
   }, [segmentValue])
 
   const currentPage = 0;
   const pageSize = 1;
 
-  const airs = [1, 2, 3, 4, 5, 6];
+  const airs = [1,2,3,4];
   const airSplited = airs[currentPage]
 
   return (
