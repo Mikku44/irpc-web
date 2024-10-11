@@ -53,7 +53,7 @@ export default function Detail() {
             </section>
 
             <div className="w-full bg-slate-200 h-[1px]  rounded-xl my-10"></div>
-            <section className="flex flex-wrap">
+            <section className="flex lg:flex-row flex-col">
                 <div className="lg:basis-1/3">
                     {/* Location */}
                     <span className="text-[14px] text-gray-500 mb-2">ตำแหน่งที่ตั้ง</span>

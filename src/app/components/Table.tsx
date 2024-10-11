@@ -78,8 +78,8 @@ const onChange: TableProps['onChange'] = (pagination, filters, sorter, extra) =>
 };
 
 export default function Table({columns,data,className}:any){
-    return   <div className=" border border-1 rounded-xl overflow-hidden shadow-md ">
-    <AntTable className={`${className}`} columns={columns} dataSource={data} pagination={false}  virtual onChange={onChange} />
+    return   <div className=" border w-full  border-1 rounded-xl overflow-hidden shadow-md ">
+    <AntTable className={`${className} w-fit min-w-full `} columns={columns} dataSource={data} pagination={false}  virtual onChange={onChange} />
     <div className="bg-[#fafafa] flex justify-between p-3">
       <div className="text-sm">{`หน้าที่ 1 จาก 10`}</div>
       <div className="text-sm"><Button>ถัดไป</Button></div>
