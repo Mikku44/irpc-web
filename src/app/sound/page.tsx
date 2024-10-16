@@ -17,16 +17,27 @@ import Image from 'next/image';
 import SoundCard from '../components/SoundCard';
 import Badges from '../components/Badges';
 import Pagination from '../components/Pagination';
+import { getData } from '../ultilities/api';
 export default function Sound() {
 
  
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
+  const [sounds, setSounds] = useState<any>([]);
 
   const currentPage = 0;
   const pageSize = 1;
 
-  const sounds = [1, 2, 3, 4, 5, 6];
-  const soundsSplited = sounds[currentPage]
+  const soundsSplited = sounds ? sounds[currentPage] : []
+
+  const fetchData = async () => {
+    const result = await getData('/forWeb/getSoundLast.php')
+    setSounds(result.stations || [])
+
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [])
 
 
   return (
