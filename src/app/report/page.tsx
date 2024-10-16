@@ -126,6 +126,7 @@ export default function Report() {
             <Button type="primary" htmlType="submit" style={{ width: '100%', maxWidth: '600px' }}>
               ส่งข้อมูล
             </Button>
+          <p className='underline decoration-1 cursor-pointer m-5 text-center'>ประวัติการใช้งาน</p>
           </Form.Item>
         </div>
       </Form>
