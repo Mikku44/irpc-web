@@ -1,6 +1,6 @@
 'use client'
 
-import { Input, Pagination, Radio, Segmented } from 'antd';
+import { Input, Radio, Segmented } from 'antd';
 import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Card from '../components/Card';
@@ -16,17 +16,28 @@ import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
 import SoundCard from '../components/SoundCard';
 import Badges from '../components/Badges';
-
+import Pagination from '../components/Pagination';
+import { getData } from '../ultilities/api';
 export default function Sound() {
 
  
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
+  const [sounds, setSounds] = useState<any>([]);
 
   const currentPage = 0;
   const pageSize = 1;
 
-  const sounds = [1, 2, 3, 4, 5, 6];
-  const soundsSplited = sounds[currentPage]
+  const soundsSplited = sounds ? sounds[currentPage] : []
+
+  const fetchData = async () => {
+    const result = await getData('/forWeb/getSoundLast.php')
+    setSounds(result.stations || [])
+
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [])
 
 
   return (
@@ -91,7 +102,7 @@ export default function Sound() {
           </div>
         </div>}
 
-        <Pagination pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
+        <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={1} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
       </section>
 
       <section id="table" className="px-10 py-10">
@@ -100,8 +111,9 @@ export default function Sound() {
           <div className="search"> <Input size="middle" placeholder="ค้นหา" className="text-slate-500 noto-sans" prefix={<Search />} /></div>
         </div>
 
-        <div className='py-5'>
+        <div className='py-5 '>
           <Table
+          className="w-full"
             data={[
               {
                 key: '1',

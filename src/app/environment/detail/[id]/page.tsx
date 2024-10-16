@@ -17,7 +17,7 @@ export default function Detail() {
 
     return <>
         <Image src="/images/cover-image.png" width={1664} height={240} className='w-[100vw] bg-black' alt={''}></Image>
-        <div className="container bg-white">
+        <div className="container-x bg-white">
             <Breadcrumb
                 separator={<ChevronRight />}
 
@@ -53,7 +53,7 @@ export default function Detail() {
             </section>
 
             <div className="w-full bg-slate-200 h-[1px]  rounded-xl my-10"></div>
-            <section className="flex flex-wrap">
+            <section className="lg:flex-row flex-col flex ">
                 <div className="lg:basis-1/3">
                     {/* Location */}
                     <span className="text-[14px] text-gray-500 mb-2">ตำแหน่งที่ตั้ง</span>
@@ -78,7 +78,7 @@ export default function Detail() {
                     <div>
                         <span className="text-[14px] text-gray-500">ประเภทพื้นที่</span>
                         <p className="text-[16px] font-semibold text-gray-900">
-                        ชุมชน
+                            ชุมชน
                         </p>
                     </div>
                 </div>
@@ -155,46 +155,55 @@ export default function Detail() {
                                         title: <div className="text-[#475467]">จุดตรวจวัด</div>,
                                         dataIndex: 'station',
                                         key: 'station',
+                                        
                                     },
                                     {
                                         title: <div className="text-[#475467]">เวลาอัพเดต</div>,
                                         dataIndex: 'updated',
                                         key: 'updated',
+                                        
                                     },
                                     {
                                         title: <div className="text-[#475467]">CO (ppm)</div>,
                                         dataIndex: 'CO',
                                         key: 'CO',
+                                        
                                     },
                                     {
                                         title: <div className="text-[#475467]">NOx (ppm)</div>,
                                         dataIndex: 'NOx',
                                         key: 'NOx',
+                                        
                                     },
                                     {
                                         title: <div className="text-[#475467]">SO2 (ppm)</div>,
                                         dataIndex: 'SO2',
                                         key: 'SO2',
+                                        
                                     },
                                     {
                                         title: <div className="text-[#475467]">Temp (°C)</div>,
                                         dataIndex: 'temperature',
                                         key: 'temperature',
+                                        
                                     },
                                     {
                                         title: <div className="text-[#475467]">O2 (%)</div>,
                                         dataIndex: 'O2',
                                         key: 'O2',
+                                        
                                     },
                                     {
                                         title: <div className="text-[#475467]">Flow (m³/hr)</div>,
                                         dataIndex: 'flow',
                                         key: 'flow',
+                                        
                                     },
                                     {
                                         title: <div className="text-[#475467]">Particulate (mg/m³)</div>,
                                         dataIndex: 'particulate',
                                         key: 'particulate',
+                                        
                                     },
                                 ]}
                             />

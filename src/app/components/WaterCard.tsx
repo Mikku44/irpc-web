@@ -2,8 +2,14 @@ import { Avatar, Card as AntCard } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import { AArrowDown, Bookmark } from 'lucide-react';
 import Image from 'next/image';
+import { Water } from '../models/models';
+import { useEffect } from 'react';
 
-export default function WaterCard() {
+export default function WaterCard({data}:{data:Water}) {
+
+    useEffect(()=>{
+        console.log("CARD : ",data)
+    },[])
     return <>
         <AntCard
             className="rounded-3xl overflow-hidden shadow-md  h-fit max-w-[410.5px]"
@@ -35,7 +41,7 @@ export default function WaterCard() {
         >
             <div className="grid">
                 <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-[24px] font-semibold">แขวงการทางสมุทรสาคร</h3>
+                    <h3 className="text-[24px] font-semibold">{data && data.nameTH}</h3>
                     <span className="text-red-500 bg-red-100 px-2 py-1 rounded-full">มีผลกระทบ</span>
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">

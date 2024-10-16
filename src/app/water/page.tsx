@@ -1,6 +1,6 @@
 'use client'
 
-import { Input, Pagination, Radio, Segmented } from 'antd';
+import { Input, Radio, Segmented } from 'antd';
 import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import WaterCard from '../components/WaterCard';
@@ -15,17 +15,31 @@ import { SegmentList } from '../globals';
 import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
 import Badges from '../components/Badges';
-
+import Pagination from '../components/Pagination';
+import { getData } from '../ultilities/api';
+import { Water } from '../models/models';
 export default function Sound() {
 
 
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
+  const [waters, setWater] = useState<any>([]);
 
   const currentPage = 0;
   const pageSize = 1;
 
-  const waters = [1, 2, 3, 4, 5, 6];
-  const watersSplited = waters[currentPage]
+  // const waters = [1, 2, 3, 4, 5, 6];
+  const watersSplited = waters ? waters[currentPage] : []
+
+  const fetchData = async () => {
+    const result = await getData('/forWeb/getWaterLast.php')
+    setWater(result.stations || [])
+
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [])
+
 
   return (
     <>
@@ -48,7 +62,7 @@ export default function Sound() {
               >
                 <Radio.Button value="List" className="w-1/2">
                   <div className='flex gap-2 items-center justify-center w-full'>
-                    <Grid2X2 className='w-[34px]'  />รายการ
+                    <Grid2X2 className='w-[34px]' />รายการ
                   </div>
                 </Radio.Button>
                 <Radio.Button value="Map" className="w-1/2">
@@ -66,14 +80,14 @@ export default function Sound() {
 
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-          {[1, 2, 3, 4, 5, 6].map(item => <Link href="water/detail/someid">
-            <WaterCard key={item}></WaterCard>
+          {waters.map((item:Water) => <Link href="water/detail/someid">
+            <WaterCard key={item.stationID} data={item}></WaterCard>
           </Link>)}
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
           {[watersSplited].map(item => <Link href="water/detail/someid">
-            <WaterCard key={item}></WaterCard>
+            <WaterCard key={item} data={item}></WaterCard>
           </Link>)}
         </div>}
 
@@ -81,7 +95,7 @@ export default function Sound() {
         {display == "Map" && <div className="flex  gap-5 ">
           <div className="basis-2/5 lg:block md:hidden hidden">
             <Link href="water/detail/someid">
-              <WaterCard ></WaterCard>
+              {/* <WaterCard data={waters[0]}></WaterCard> */}
             </Link>
           </div>
           <div className="lg:basis-3/5  w-full lg:h-auto md:h-[50vh] h-[50vh]">
@@ -89,7 +103,7 @@ export default function Sound() {
           </div>
         </div>}
 
-        <Pagination pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={waters.length} className="lg:hidden md:hidden flex justify-center py-3" />
+        <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={1} total={waters.length} className="lg:hidden md:hidden flex justify-center py-3" />
       </section>
 
       <section id="table" className="px-10 py-10">
