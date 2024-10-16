@@ -86,7 +86,7 @@ body {
 /* Extra small devices (phones, less than 576px) */
 @media (max-width: 575.98px) {
   /* Styles for extra small devices */
-  .container {
+  .container-x {
     padding: 20px 15px;
   }
 }
@@ -94,7 +94,7 @@ body {
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767.98px) {
   /* Styles for small devices */
-  .container {
+  .container-x {
     padding: 20px 25px;
   }
 }
@@ -102,8 +102,8 @@ body {
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px) {
   /* Styles for medium devices */
-  .container {
-    padding: 20px 35px;
+  .container-x {
+    padding: 20px 20px;
   }
 }
 
