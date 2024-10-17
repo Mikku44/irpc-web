@@ -2,36 +2,55 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Area } from '@antv/g2plot';
+import { ShortDateFormator } from '../ultilities/DateFormater';
+import extractKeys from '../ultilities/ExtractKeys';
 
-export default function AreaGraph() {
+export default function AreaGraph({ data }: any) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<Area | null>(null); // To track the chart instance
 
+
   useEffect(() => {
+
+    // console.log("DATA : ", data)
+
+    const keys = data ? extractKeys(data) : []
+    // console.log("KEYS : ", keys)
+ 
     // Fetch data and render chart only if not already rendered
     if (!chartRef.current) {
-      fetch('https://gw.alipayobjects.com/os/bmw-prod/360c3eae-0c73-46f0-a982-4746a6095010.json')
-        .then((res) => res.json())
-        .then((data) => {
-          if (containerRef.current) {
-            chartRef.current = new Area(containerRef.current, {
-              data,
-              xField: 'timePeriod',
-              yField: 'value',
-              xAxis: {
-                range: [0, 1],
-              },
-              yAxis: {
-                label: {
-                  formatter: (val) => `${val}`, // Customize y-axis label if needed
-                },
-              },
-              smooth: true, // Enable smooth curves
-              areaStyle: { fill: 'l(90) 0:#1890ff 1:#f0f0f0' }, // Custom gradient fill
-            });
-            chartRef.current.render();
-          }
+      if (containerRef.current) {
+        chartRef.current = new Area(containerRef.current, {
+          data: data?.length > 0 ?  data : [
+          ],
+          
+          xField: keys.length > 0 ? keys[0] : 'timePeriod',
+          yField: keys.length > 0 ? keys[1] : 'value',
+          xAxis: {
+            label:{
+              formatter: (val) => {
+                try {
+                 return ShortDateFormator(new Date(val.split(" ").join("T")))
+                  
+                } catch (error) {
+                   return  val
+                }
+              }
+            },
+            range: [0, 1],
+
+          },
+          yAxis: {
+            label: {
+              formatter: (val) => `${val}`, // Customize y-axis label if needed
+            },
+            range:[0,1]
+          },
+          smooth: true, // Enable smooth curves
+          areaStyle: { fill: 'l(90) 0:#1890ff 1:#f0f0f0' }, // Custom gradient fill
         });
+        chartRef.current.render();
+      }
     }
 
     return () => {
@@ -45,3 +64,5 @@ export default function AreaGraph() {
 
   return <div id="chart" ref={containerRef} style={{ height: 400, width: '100%' }} />;
 }
+
+
