@@ -23,9 +23,9 @@ export default function ColumnGraph({ data }: any) {
           data: data?.length > 0 ?  data : [
           ],
           isStack: true,
-          seriesField: keys.length > 0 ? keys[0] : "name",
-          xField: keys.length > 0 ? keys[1] : 'timePeriod',
-          yField: keys.length > 0 ? keys[2] : 'value',
+        
+          xField: keys.length > 0 ? keys[0] : 'timePeriod',
+          yField: keys.length > 0 ? keys[1] : 'value',
           xAxis: {
             label:{
               formatter: (val) => {

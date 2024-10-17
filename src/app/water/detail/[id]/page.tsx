@@ -11,6 +11,7 @@ import DateFormator, { FullDateFormator } from '@/app/ultilities/DateFormater';
 import { Breadcrumb, Radio } from 'antd';
 import { ChevronRight, House, MapPin, Waves } from 'lucide-react';
 import Image from 'next/image';
+import { Image as AntImage } from 'antd';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -27,7 +28,7 @@ export default function Detail({ params }: { params: any }) {
     }
 
     const namedArray = (data: any, name: string) => {
-        if(!data) return []
+        if (!data) return []
         const result = data.map((item: any) => ({
             name,
             ...item,
@@ -41,7 +42,13 @@ export default function Detail({ params }: { params: any }) {
 
 
     return <>
-        <Image src="/images/cover-image.png" width={1664} height={240} className='w-[100vw] bg-black' alt={''}></Image>
+        <div className="h-[240px] overflow-hidden w-full flex justify-center">
+            <AntImage
+                src={`${watersDetail?.image_url || "/images/cover-image.png"}`}
+                className="w-full h-full object-cover bg-black"
+                alt={''}
+            />
+        </div>
         <div className="container-x bg-white">
             <Breadcrumb
                 separator={<ChevronRight />}
@@ -134,9 +141,11 @@ export default function Detail({ params }: { params: any }) {
                         </div>
                         <div className=" overflow-hidden flex justify-center">
                             {display == "ALL" && watersDetail && <MultiLineGraph data={
-                                [...namedArray(watersDetail.Last24H?.COD, "COD"),
-                                ...namedArray(watersDetail.Last24H?.pH, "pH"),
-                                ...namedArray(watersDetail.Last24H?.Flow, "Flow")]
+                                [
+                                    ...namedArray(watersDetail.Last24H?.pH, "pH"),
+                                    ...namedArray(watersDetail.Last24H?.Flow, "Flow"),
+                                    ...namedArray(watersDetail.Last24H?.COD, "COD"),
+                            ]
                             } />}
                             {display == "COD" && watersDetail && <AreaGraph data={watersDetail.Last24H?.COD} />}
                             {display == "PH" && watersDetail && <AreaGraph data={watersDetail.Last24H?.pH} />}
@@ -159,7 +168,7 @@ export default function Detail({ params }: { params: any }) {
                             {display == "COD" && watersDetail && <ColumnGraph data={watersDetail.Last24H?.COD} />}
                             {display == "PH" && watersDetail && <ColumnGraph data={watersDetail.Last24H?.pH} />}
                             {display == "FLOW" && watersDetail && <ColumnGraph data={watersDetail.Last24H?.Flow} />}
-                           
+
                         </div>
                     </section>
 
