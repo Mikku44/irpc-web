@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import Badge from '../components/Badge';
 import Table from '../components/Table';
 import MapPick from '../components/MapPick';
-import DateFormator from '../ultilities/DateFormater';
+import DateFormator, { FullDateFormator } from '../ultilities/DateFormater';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -17,18 +17,31 @@ import Image from 'next/image';
 import EnvironmentCard from '../components/EnvironmentCard';
 import Badges from '../components/Badges';
 import Pagination from '../components/Pagination';
+import { getData } from '../ultilities/api';
 export default function Environment() {
 
 
     const [display, setDisplay] = useState<'List' | 'Map'>('List');
+    const [cems, setCems] = useState<any>([]);
 
     const currentPage = 0;
+    const today = FullDateFormator(new Date())
     const pageSize = 1;
 
     const environments = [1, 2, 3, 4, 5, 6];
     const environmentsSplited = environments[currentPage]
 
 
+    const fetchData = async () => {
+        const result = await getData('/forWeb/getCemsLast.php')
+        setCems(result.stations || [])
+    
+      }
+    
+      useEffect(() => {
+        fetchData();
+      }, [])
+    
 
 
     return (
@@ -37,7 +50,7 @@ export default function Environment() {
             <section id="header" className="px-10 py-4 bg-white">
 
                 <SegmentMenu />
-                <div className="text-[18px] text-[--primary] font-bold">ประจำวันจันทร์ ที่ 19 มิถุนายน เวลา 09:05 น.</div>
+                <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
                 <div className="text-[36px] font-bold">ดัชนีคุณภาพแวดล้อม</div>
 
                 <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
@@ -52,7 +65,7 @@ export default function Environment() {
                             >
                                 <Radio.Button value="List" className="w-1/2">
                                     <div className='flex gap-2 items-center justify-center w-full'>
-                                        <Grid2X2 className='w-[34px]'  />รายการ
+                                        <Grid2X2 className='w-[34px]' />รายการ
                                     </div>
                                 </Radio.Button>
                                 <Radio.Button value="Map" className="w-1/2">
@@ -70,14 +83,14 @@ export default function Environment() {
 
             <section id="lists" className='px-10 bg-white py-5'>
                 {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-                    {environments.map(item => <Link href="environment/detail/someid">
-                        <EnvironmentCard key={item}></EnvironmentCard>
+                    {cems.map((item:any) => <Link href={`environment/detail/${item.stationID}`} key={item.stationID}>
+                        <EnvironmentCard  data={item}></EnvironmentCard>
                     </Link>)}
                 </div>}
 
                 {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
                     {[environmentsSplited].map(item => <Link href="environment/detail/someid">
-                        <EnvironmentCard key={item}></EnvironmentCard>
+                        <EnvironmentCard key={item} data={item}></EnvironmentCard>
                     </Link>)}
                 </div>}
 
@@ -104,30 +117,35 @@ export default function Environment() {
 
                 <div className='py-5'>
                     <Table
-                        data={[
-                            {
-                                key: '1',
-                                station: 'แขวงการทางสมุทรสาคร',
-                                point: 'จุดที่1',
-                                updated: '19 มิ.ย. 66 เวลา 09:00 น.',
-                                CO: 2,
-                                Flow: '337,024.09',
-                                Particulate: 0.31,
-                            },
-                        ]}
+                        data={
+                        //     [
+                        //     {
+                        //         key: '1',
+                        //         station: 'แขวงการทางสมุทรสาคร',
+                        //         point: 'จุดที่1',
+                        //         updated: '19 มิ.ย. 66 เวลา 09:00 น.',
+                        //         CO: 2,
+                        //         Flow: '337,024.09',
+                        //         Particulate: 0.31,
+                        //     },
+                        // ]
+                        cems
+                    }
+
 
                         columns={[
                             {
                                 title: <div className="text-[#475467]">สถานี</div>, // Station
-                                dataIndex: 'station',
+                                dataIndex: 'nameTH',
                             },
                             {
                                 title: <div className="text-[#475467]">จุดตรวจวัด</div>, // Measurement Point
-                                dataIndex: 'point',
+                                dataIndex: 'areaTH',
                             },
                             {
                                 title: <div className="text-[#475467]">เวลาอัพเดต</div>, // Updated Time
                                 dataIndex: 'updated',
+                                render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || 'N/A',
                             },
                             {
                                 title: <div className="text-[#475467]">CO (ppm)</div>, // CO (ppm)
@@ -136,14 +154,13 @@ export default function Environment() {
                                     compare: (a: { CO: number; }, b: { CO: number; }) => a.CO - b.CO,
                                     multiple: 3,
                                 },
+                                render: (text: string, record: any) => record.LastUpdate?.CO_7p || 'N/A',
                             },
                             {
                                 title: <div className="text-[#475467]">Flow (m³/hr)</div>, // Flow (m³/hr)
                                 dataIndex: 'Flow',
-                                sorter: {
-                                    compare: (a: { Flow: string; }, b: { Flow: string; }) => parseFloat(a.Flow.replace(/,/g, '')) - parseFloat(b.Flow.replace(/,/g, '')),
-                                    multiple: 3,
-                                },
+                                render: (text: string, record: any) => record.LastUpdate?.Dust || 'N/A',
+                               
                             },
                             {
                                 title: <div className="text-[#475467]">Particulate (mg/m³)</div>, // Particulate (mg/m³)

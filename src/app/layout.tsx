@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Navbar from "./components/Navbar";
 import { Inter, Noto_Sans_Thai, Prompt } from 'next/font/google'
 import Footer from "./components/Footer";
-
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -56,7 +56,7 @@ export default function RootLayout({
         className={` ${noto.variable} ${prompt.variable} ${inter.variable} antialiased`}
       >
         <Navbar />
-        {children}
+        <AntdRegistry> {children}</AntdRegistry>
 
       </body>
     </html>
