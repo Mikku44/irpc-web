@@ -70,8 +70,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.theme)
-      localStorage.theme = 'light'
+    
     document.documentElement.classList.add('light')
   }, [])
 
@@ -133,9 +132,11 @@ export default function Navbar() {
       </div>
 
 
-      <Button type="text" onClick={e => setOpen(true)} className="lg:hidden md:block block">
-        <Menu  />
-      </Button>
+      <div className="lg:hidden md:block block">
+        <Button type="text" onClick={e => setOpen(true)} className="">
+          <Menu  />
+        </Button>
+      </div>
 
       <Drawer
         title={`เมนู`}

@@ -3,7 +3,7 @@ import Meta from 'antd/es/card/Meta';
 import { AArrowDown, Bookmark } from 'lucide-react';
 import Image from 'next/image';
 
-export default function EnvironmentCard() {
+export default function EnvironmentCard({data}:any) {
     return <>
         <AntCard
             className="rounded-3xl overflow-hidden shadow-md  h-fit max-w-[410.5px]"
@@ -21,7 +21,7 @@ export default function EnvironmentCard() {
                     <div className="bg-black/20 backdrop-blur-md border-t-[1px] border-white/30 absolute flex w-full justify-between bottom-0 px-4 py-6 items-center z-1">
                     
                         <div className=" text-white ">
-                            <span className="text-4xl font-bold">75</span>
+                            <span className="text-4xl font-bold">{data?.LastUpdate?.NOx_7p}</span>
                             <span className="text-lg pl-2">NOx</span>
                         </div>
                         {/* <div className=" text-white">
@@ -40,7 +40,7 @@ export default function EnvironmentCard() {
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
                     <p>COD</p>
-                    <p className="font-bold">48.39 mg/I</p>
+                    <p className="font-bold">{data?.LastUpdate?.SOx_7p} mg/I</p>
                 </div>
                 <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467] mt-1">

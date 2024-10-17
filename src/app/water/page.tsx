@@ -7,7 +7,7 @@ import WaterCard from '../components/WaterCard';
 import Badge from '../components/Badge';
 import Table from '../components/Table';
 import MapPick from '../components/MapPick';
-import DateFormator from '../ultilities/DateFormater';
+import DateFormator, { FullDateFormator } from '../ultilities/DateFormater';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -16,8 +16,10 @@ import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
 import Badges from '../components/Badges';
 import Pagination from '../components/Pagination';
-import { getData } from '../ultilities/api';
+
 import { Water } from '../models/models';
+import { getData } from '../ultilities/api';
+
 export default function Sound() {
 
 
@@ -25,6 +27,7 @@ export default function Sound() {
   const [waters, setWater] = useState<any>([]);
 
   const currentPage = 0;
+  const today = FullDateFormator(new Date())
   const pageSize = 1;
 
   // const waters = [1, 2, 3, 4, 5, 6];
@@ -47,7 +50,7 @@ export default function Sound() {
       <section id="header" className="px-10 py-4 bg-white">
 
         <SegmentMenu />
-        <div className="text-[18px] text-[--primary] font-bold">ประจำวันจันทร์ ที่ 19 มิถุนายน เวลา 09:05 น.</div>
+        <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
         <div className="text-[36px] font-bold">ดัชนีคุณภาพน้ำ</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
@@ -80,14 +83,14 @@ export default function Sound() {
 
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-          {waters.map((item:Water) => <Link href="water/detail/someid">
+          {waters.map((item: Water) => <Link key={item.stationID} href={`water/detail/${item.stationID}`}>
             <WaterCard key={item.stationID} data={item}></WaterCard>
           </Link>)}
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
-          {[watersSplited].map(item => <Link href="water/detail/someid">
-            <WaterCard key={item} data={item}></WaterCard>
+          {[watersSplited].map((item: Water, index: number) => <Link key={index} href={`water/detail/${index}`}>
+            {/* <WaterCard  data={item}></WaterCard> */}
           </Link>)}
         </div>}
 
@@ -114,29 +117,33 @@ export default function Sound() {
 
         <div className='py-5'>
           <Table
-            data={[
-              {
-                key: '1',
-                station: 'แขวงการทางสมุทรสาคร',
-                COD: 51.3,
-                Flow: 63.6,
-                PH: 66.2,
-                updated: DateFormator(new Date()),
-              },
-            ]}
+            data={
+              //   [
+              //   {
+              //     key: '1',
+              //     station: 'แขวงการทางสมุทรสาคร',
+              //     COD: 51.3,
+              //     Flow: 63.6,
+              //     PH: 66.2,
+              //     updated: DateFormator(new Date()),
+              //   },
+              // ]
+              waters
+            }
 
             columns={[
               {
                 title: <div className="text-[#475467]">สถานี</div>,
-                dataIndex: 'station',
+                dataIndex: 'nameTH',
               },
               {
                 title: <div className="text-[#475467]">COD (mg/L)</div>,
-                dataIndex: 'COD',
+                dataIndex: 'LastUpdate',
                 sorter: {
                   compare: (a: { COD: number; }, b: { COD: number; }) => a.COD - b.COD,
                   multiple: 3,
                 },
+                render: (text: string, record: any) => record.LastUpdate?.COD || 'N/A',
               },
               {
                 title: <div className="text-[#475467]">Flow (m³/s)</div>,
@@ -145,6 +152,7 @@ export default function Sound() {
                   compare: (a: { Flow: number; }, b: { Flow: number; }) => a.Flow - b.Flow,
                   multiple: 3,
                 },
+                render: (text: string, record: any) => record.LastUpdate?.Flow || 'N/A',
               },
               {
                 title: <div className="text-[#475467]">PH</div>,
@@ -153,10 +161,12 @@ export default function Sound() {
                   compare: (a: { PH: number; }, b: { PH: number; }) => a.PH - b.PH,
                   multiple: 3,
                 },
+                render: (text: string, record: any) => record.LastUpdate?.pH || 'N/A',
               },
               {
                 title: <div className="text-[#475467]">เวลาอัพเดต</div>,
                 dataIndex: 'updated',
+                render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || 'N/A',
               },
             ]}
           />

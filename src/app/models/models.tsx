@@ -4,6 +4,7 @@ export interface Water {
     nameEN: string;
     areaTH: string;
     areaEN: string;
+    image_url:string;
     stationType: string;
     lat: number | null;
     long: number | null;
