@@ -80,6 +80,12 @@ body {
   color:#344054 !important;
 
 }
+
+.ant-input{
+  font-family:"prompt" !important;
+}
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

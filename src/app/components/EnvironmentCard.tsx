@@ -11,7 +11,7 @@ export default function EnvironmentCard({data}:any) {
                 <div className="relative h-[280px]">
                     <img
                         alt="Station"
-                        src="https://i.ytimg.com/vi/-DB5gItkGE8/maxresdefault.jpg" // Replace with your image source
+                        src={`${data?.image_url}`} // Replace with your image source
                         className="object-cover w-full h-full relative z-0"
                     />
                     <div className="absolute top-4 right-4 p-2 bg-white/20 glass border-[1px] border-white/80  rounded-full">

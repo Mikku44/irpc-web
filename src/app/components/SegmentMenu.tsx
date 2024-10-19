@@ -40,7 +40,8 @@ export default function SegmentMenu() {
     return <>
         <div className="lg:hidden md:block block w-full py-5 ">
             <Select
-                className="w-full h-12"
+                style={{ height: "45px" }}
+                className="w-full "
                 placeholder="Search to Select"
                 optionFilterProp="label"
                 value={segmentValue}
@@ -49,7 +50,7 @@ export default function SegmentMenu() {
             />
         </div>
         <div className="lg:block md:hidden hidden w-full py-5 ">
-            <Segmented options={SegmentList}  size='large' className='w-full py-2 px-2' value={segmentValue} onChange={e => {
+            <Segmented options={SegmentList} size='large' style={{ padding: "8px" }} className='w-full py-2 px-2' value={segmentValue} onChange={e => {
                 setSegmentValue(e);
                 router.push(`/${e}`)
             }} block />
