@@ -26,18 +26,24 @@ export default function Sound() {
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
   const [waters, setWater] = useState<any>([]);
 
-  const currentPage = 0;
+  const [selectedPlace, setSelectedPlace] = useState<any>();
+
+  const [currentPage,setCurrentPage] = useState(0);
   const today = FullDateFormator(new Date())
   const pageSize = 1;
 
-  // const waters = [1, 2, 3, 4, 5, 6];
-  const watersSplited = waters ? waters[currentPage] : []
 
   const fetchData = async () => {
     const result = await getData('/forWeb/getWaterLast.php')
     setWater(result.stations || [])
 
   }
+
+  useEffect(() => {
+    if (waters) {
+      setSelectedPlace(waters[0])
+    }
+  }, [waters])
 
   useEffect(() => {
     fetchData();
@@ -56,7 +62,7 @@ export default function Sound() {
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
           <Badges />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
-            <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" style={{fontFamily:"prompt"}}  className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
+            <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
               <Radio.Group
                 value={display}
@@ -88,31 +94,34 @@ export default function Sound() {
           </Link>)}
         </div>}
 
-        {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
-          {[watersSplited].map((item: Water, index: number) => <Link key={index} href={`water/detail/${index}`}>
-            {/* <WaterCard  data={item}></WaterCard> */}
-          </Link>)}
+        {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
+
+          <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={waters.length} className="lg:hidden md:hidden flex justify-center py-3" >
+            {[waters[currentPage]].map((item: Water) => <Link key={item?.stationID} href={`water/detail/${item?.stationID}`}>
+              <WaterCard key={item?.stationID} data={item}></WaterCard>
+            </Link>)}
+          </Pagination>
         </div>}
 
 
-        {display == "Map" && <div className="flex  gap-5 ">
-          <div className="basis-2/5 lg:block md:hidden hidden">
-            <Link href="water/detail/someid">
-              {/* <WaterCard data={waters[0]}></WaterCard> */}
+        {display == "Map" && <div className="flex lg:flex-row flex-col  gap-5 ">
+          <div className="lg:basis-2/5 basis-full flex justify-center">
+            <Link href={`water/detail/${selectedPlace?.stationID!}`}>
+              <WaterCard data={selectedPlace}></WaterCard>
             </Link>
           </div>
-          <div className="lg:basis-3/5  w-full lg:h-auto md:h-[50vh] h-[50vh]">
-            <MapPick />
+          <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
+            <MapPick data={waters} setState={setSelectedPlace} unit="mg/L" key="COD"/>
           </div>
         </div>}
 
-        <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={1} total={waters.length} className="lg:hidden md:hidden flex justify-center py-3" />
+
       </section>
 
       <section id="table" className="px-10 py-10">
         <div className="flex flex-wrap gap-2 justify-between">
           <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพน้ำ</div>
-          <div className="search"> <Input size="middle" placeholder="ค้นหา" style={{fontFamily:"prompt"}}  className="text-slate-500 noto-sans" prefix={<Search />} /></div>
+          <div className="search"> <Input size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans" prefix={<Search />} /></div>
         </div>
 
         <div className='py-5'>

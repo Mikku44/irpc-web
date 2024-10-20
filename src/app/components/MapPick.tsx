@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Badge from './Badge';
+import DateFormator from '../ultilities/DateFormater';
 
 const geojson: any = {
     type: 'FeatureCollection',
@@ -46,7 +47,7 @@ const geojson: any = {
     ]
 };
 
-export default function MapPick() {
+export default function MapPick({ data, setState, key, unit }: any) {
     // Explicitly type the map container ref
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null); // Type for Mapbox map
@@ -60,13 +61,15 @@ export default function MapPick() {
         if (!mapboxgl.supported()) {
             alert('Your browser does not support Mapbox GL');
         } else {
+
+
             if (mapContainerRef.current) {
                 // Initialize map only once
                 mapRef.current = new mapboxgl.Map({
                     container: mapContainerRef.current,
                     style: 'mapbox://styles/mapbox/streets-v12',
-                    center: [100.5018, 13.7563],
-                    zoom: 14
+                    center: [100.5518, 13.8063],
+                    zoom: 11
                 });
 
 
@@ -75,7 +78,15 @@ export default function MapPick() {
                 //     .setPopup(popup)
                 //     .addTo(mapRef.current);
 
-                for (const marker of geojson.features) {
+                // for (const marker of data || geojson.features) {
+                var setCentered = false;
+                for (const marker of data) {
+                    if (marker.LastUpdated?.lat && !setCentered) {
+                        setCentered = true;
+                        mapRef.current.setCenter([parseFloat(marker.LastUpdated?.long), parseFloat(marker.LastUpdated?.lat)])
+                    }
+               
+
                     const el = document.createElement('div');
                     const elChild = document.createElement('div');
                     const elChild1 = document.createElement('div');
@@ -84,9 +95,9 @@ export default function MapPick() {
                     el.style.cursor = 'pointer';
 
 
-                    elChild1.className = "w-12 h-12 rounded-full flex justify-center items-center animate-pulse bg-blue-400 absolute top-[-4px] right-[-4px] duration-50"
-                    elChild.className = "w-10 h-10 rounded-full flex justify-center items-center text-white bg-[--primary] relative z-10";
-                    elChild.innerHTML = marker.properties.message;
+                    elChild1.className = "w-12 h-12 rounded-full flex justify-center items-center animate-pulse bg-[#2970FF]/40 absolute top-[-4px] right-[-4px] duration-50"
+                    elChild.className = "w-10 h-10 rounded-full flex justify-center items-center text-white bg-[#2970FF]/60 relative z-10";
+                    elChild.innerHTML =  marker.LastUpdate?.AQI?.aqi ||  marker.LastUpdate?.COD ||  marker.LastUpdate?.NOx_7p || "N/A";
 
 
                     el.appendChild(elChild1)
@@ -94,29 +105,34 @@ export default function MapPick() {
 
 
                     el.addEventListener('click', () => {
-                        console.log(marker.properties.message);
+                        // console.log(marker.LastUpdate?.COD);
+                        //call back function
+
+                        marker && setState && setState(marker)
                     });
 
 
                     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-                     `<div style="display: grid;">
+                        `<div style="display: grid;">
                         <div style="display: flex; justify-content: space-between;">
-                            <div style="font-size: 1.25rem;">
-                                208 <span style="font-size: 1.125rem;">AQI</span>
+                            <div style="font-size: 1.25rem; font-weight:bold;">
+                                ${ marker.LastUpdate?.AQI?.aqi ||  marker.LastUpdate?.COD ||  marker.LastUpdate?.NOx_7p  || "N/A"} <span style="font-size: 1.125rem;font-weight:normal;">${unit}</span>
                             </div>
-                            <div>มีผลกระทบ</div>
+                            <div style="background:#FEF3F2;border:1px solid #ef4444;border-radius:20px;padding:2px 10px;color:#ef4444;">มีผลกระทบ</div>
                         </div>
-                        <div style="display: grid;">
-                            <div style="font-size: 1.125rem; font-weight: bold;">วัดปลวกเกตุ</div>
-                            <div style="color: #6b7280;">อัปเดตล่าสุด : 19 ส.ค. 2564 19:00 น.</div>
+                        <div style="height:2px;margin:10px;background:#EAECF0;border-radius:10px;"></div>
+                        <div style="display: grid;justify-items:center;">
+                            <div style="font-size: 1.125rem; font-weight: bold;">${marker?.nameTH}</div>
+                            <div style="color: #6b7280;text-align: center;">อัปเดตล่าสุด : ${marker?.LastUpdate?.date && DateFormator(new Date(`${marker?.LastUpdate.date}T${marker?.LastUpdate.time}`))}</div>
                         </div>
                     </div>`
                     );
 
+
                     new mapboxgl.Marker(el)
-                        .setLngLat(marker.geometry.coordinates)
+                        .setLngLat([100.5018 + Math.random() * 0.1, 13.7563 + Math.random() * 0.1])
                         .setPopup(popup)
-                        .addTo(mapRef.current);
+                        .addTo(mapRef.current)
                 }
 
 
@@ -131,7 +147,7 @@ export default function MapPick() {
                 mapRef.current.remove();
             }
         };
-    }, []);
+    }, [data]);
 
     return (
         <div className="w-full h-full rounded-xl bg-slate-100 overflow-hidden">

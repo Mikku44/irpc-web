@@ -23,25 +23,31 @@ export default function Environment() {
 
     const [display, setDisplay] = useState<'List' | 'Map'>('List');
     const [cems, setCems] = useState<any>([]);
+    const [selectedPlace, setSelectedPlace] = useState<any>();
+    const [currentPage, setCurrentPage] = useState(0);
 
-    const currentPage = 0;
+
     const today = FullDateFormator(new Date())
     const pageSize = 1;
 
-    const environments = [1, 2, 3, 4, 5, 6];
-    const environmentsSplited = environments[currentPage]
 
 
     const fetchData = async () => {
         const result = await getData('/forWeb/getCemsLast.php')
         setCems(result.stations || [])
-    
-      }
-    
-      useEffect(() => {
+       
+
+    }
+
+    useEffect(() => {
         fetchData();
-      }, [])
-    
+    }, [])
+
+    useEffect(() => {
+        if(cems)
+         setSelectedPlace(cems[0])
+    }, [cems])
+
 
 
     return (
@@ -56,7 +62,7 @@ export default function Environment() {
                 <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
                     <Badges />
                     <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
-                        <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" style={{fontFamily:"prompt"}}  className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
+                        <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
                         <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
                             <Radio.Group
                                 value={display}
@@ -83,54 +89,55 @@ export default function Environment() {
 
             <section id="lists" className='px-10 bg-white py-5'>
                 {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-                    {cems.map((item:any) => <Link href={`environment/detail/${item.stationID}`} key={item.stationID}>
-                        <EnvironmentCard  data={item}></EnvironmentCard>
+                    {cems.map((item: any) => <Link href={`environment/detail/${item.stationID}`} key={item.stationID}>
+                        <EnvironmentCard data={item}></EnvironmentCard>
                     </Link>)}
                 </div>}
 
-                {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
-                    {[environmentsSplited].map(item => <Link href="environment/detail/someid">
-                        <EnvironmentCard key={item} data={item}></EnvironmentCard>
-                    </Link>)}
+                {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
+                    <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={cems?.length} className="lg:hidden md:hidden flex justify-center py-3" >
+                        {[cems[currentPage]].map((item:any) => <Link key={item?.stationID} href={`/environment/detail/${item?.stationID}`}>
+                            <EnvironmentCard  data={item}></EnvironmentCard>
+                        </Link>)}
+                    </Pagination>
                 </div>}
 
 
-                {display == "Map" && <div className="flex  gap-5 ">
-                    <div className="basis-2/5 lg:block md:hidden hidden">
-                        <Link href="environment/detail/someid">
-                            <EnvironmentCard ></EnvironmentCard>
+                {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">
+                   {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
+                        <Link href={`environment/detail/${selectedPlace?.stationID}`}>
+                            <EnvironmentCard data={selectedPlace}></EnvironmentCard>
                         </Link>
-                    </div>
-                    <div className="lg:basis-3/5  w-full lg:h-auto md:h-[50vh] h-[50vh]">
-                        <MapPick />
+                    </div>}
+                    <div className=" w-full lg:h-auto md:h-[50vh] h-[50vh]">
+                        <MapPick data={cems} setState={setSelectedPlace} unit="NOx" key="NOx_7p"/>
                     </div>
                 </div>}
 
-                <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={1} total={environments.length} className="lg:hidden md:hidden flex justify-center py-3" />
             </section>
 
             <section id="table" className="px-10 py-10">
                 <div className="flex flex-wrap gap-2 justify-between">
                     <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพเสียง</div>
-                    <div className="search"> <Input size="middle" placeholder="ค้นหา" style={{fontFamily:"prompt"}}  className="text-slate-500 noto-sans" prefix={<Search />} /></div>
+                    <div className="search"> <Input size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans" prefix={<Search />} /></div>
                 </div>
 
                 <div className='py-5'>
                     <Table
                         data={
-                        //     [
-                        //     {
-                        //         key: '1',
-                        //         station: 'แขวงการทางสมุทรสาคร',
-                        //         point: 'จุดที่1',
-                        //         updated: '19 มิ.ย. 66 เวลา 09:00 น.',
-                        //         CO: 2,
-                        //         Flow: '337,024.09',
-                        //         Particulate: 0.31,
-                        //     },
-                        // ]
-                        cems
-                    }
+                            //     [
+                            //     {
+                            //         key: '1',
+                            //         station: 'แขวงการทางสมุทรสาคร',
+                            //         point: 'จุดที่1',
+                            //         updated: '19 มิ.ย. 66 เวลา 09:00 น.',
+                            //         CO: 2,
+                            //         Flow: '337,024.09',
+                            //         Particulate: 0.31,
+                            //     },
+                            // ]
+                            cems
+                        }
 
 
                         columns={[
@@ -160,7 +167,7 @@ export default function Environment() {
                                 title: <div className="text-[#475467]">Flow (m³/hr)</div>, // Flow (m³/hr)
                                 dataIndex: 'Flow',
                                 render: (text: string, record: any) => record.LastUpdate?.Dust || 'N/A',
-                               
+
                             },
                             {
                                 title: <div className="text-[#475467]">Particulate (mg/m³)</div>, // Particulate (mg/m³)
