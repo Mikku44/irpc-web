@@ -1,20 +1,46 @@
 'use client'
 import AreaGraph from '@/app/components/AreaGraph';
 import Badge from '@/app/components/Badge';
+import { getData } from '@/app/ultilities/api';
+import { FullDateFormator } from '@/app/ultilities/DateFormater';
 import { Breadcrumb, Radio } from 'antd';
 import { ChevronRight, House, MapPin, Waves } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { Image as AntImage } from 'antd';
+import ColumnGraph from '@/app/components/ColumnGraph';
+import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
 
 
-export default function Detail() {
+export default function Detail({ params }: { params: any }) {
 
     const [display, setDisplay] = useState<'PM2' | 'PM10'>('PM10');
     const [display2, setDisplay2] = useState<'Tempurature' | 'Pressure' | 'RH'>('Tempurature');
 
+    const [airsDetail, setAirsDetail] = useState<any>();
+
+    const fetchData = async () => {
+        const result = await getData(`/forWeb/getAir24H.php?stationID=${params.id}`)
+        setAirsDetail(result.stations && result.stations[0])
+
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+
     return <>
-        <Image src="/images/cover-image.png" width={1664} height={240} className='w-[100vw] bg-black' alt={''}></Image>
+        <div className="h-[240px] overflow-hidden w-full flex justify-center">
+            <AntImage
+                src={`${airsDetail?.image_url || "/images/cover-image.png"}`}
+                className="w-full h-full object-cover bg-black"
+                alt={''}
+            />
+        </div>
+
         <div className="container-x bg-white">
             <Breadcrumb
                 separator={<ChevronRight />}
@@ -35,47 +61,47 @@ export default function Detail() {
                         ),
                     },
                     {
-                        title: <div className='rounded-md bg-slate-200 px-2 font-bold'>วัดปลวกเกตุ</div>,
+                        title: <div className='rounded-md bg-slate-200 px-2 font-bold'>{airsDetail?.nameTH}</div>,
                     },
                 ]}
             />
             <section className="flex justify-between">
                 <div>
-                    <h3 className="font-bold text-[30px]">วัดปลวกเกตุ</h3>
-                    <div className="text-mute text-[16px]">ประจำวันจันทร์ ที่ 19 มิถุนายน 2566 เวลา 09:05 น.</div>
+                    <h3 className="font-bold text-[30px]">{airsDetail?.nameTH}</h3>
+                    <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${airsDetail?.LastUpdate.date}T${airsDetail?.LastUpdate.time}`))}</div>
                 </div>
                 <div>
                     <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
-                    <div className="text-[36px] font-bold">208 <span className="text-[20px] font-normal">AQI</span></div>
+                    <div className="text-[36px] font-bold">{airsDetail?.LastUpdate.O3 || "N/A"} <span className="text-[20px] font-normal">AQI</span></div>
                 </div>
             </section>
 
             <div className="w-full bg-slate-200 h-[1px]  rounded-xl my-10"></div>
             <section className="flex flex-wrap">
-                <div className="lg:basis-1/3">
+                <div className="lg:basis-1/3 py-5">
                     {/* Location */}
                     <div className="flex items-center mb-4">
                         <MapPin></MapPin>
-                        <span className="text-[14px]">จังหวัดระยอง</span>
+                        <span className="text-[14px]">{airsDetail?.areaTH}</span>
                     </div>
 
                     {/* Station Name */}
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">ชื่อสถานี</span>
-                        <p className="text-[16px] font-semibold text-gray-900">ห้วยคิง</p>
+                        <p className="text-[16px] font-semibold text-gray-900">{airsDetail?.nameTH}</p>
                     </div>
 
                     {/* Station Code */}
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">รหัสสถานี</span>
-                        <p className="text-[16px] font-semibold text-gray-900">A1234</p>
+                        <p className="text-[16px] font-semibold text-gray-900">{airsDetail?.stationID}</p>
                     </div>
 
                     {/* Latest Data */}
                     <div>
                         <span className="text-[14px] text-gray-500">ข้อมูลล่าสุด</span>
                         <p className="text-[16px] font-semibold text-gray-900">
-                            19 มิถุนายน 2566 เวลา 09:05 น.
+                            {FullDateFormator(new Date(`${airsDetail?.LastUpdate.date}T${airsDetail?.LastUpdate.time}`))}
                         </p>
                     </div>
                 </div>
@@ -83,15 +109,15 @@ export default function Detail() {
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
                         <div>
                             <div className='text-[#475467]'>ความเร็วลม</div>
-                            <div className='inline-flex gap-2 font-extrabold'><Waves /><span>1.9 ms</span></div>
+                            <div className='inline-flex gap-2 font-extrabold'><Waves /><span>{airsDetail?.LastUpdate.WS || "N/A"} ms</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>PM2.5 เฉลี่ย 24 ชม</div>
-                            <div className='inline-flex gap-2 font-extrabold'>6.0 มคก/ลบ.ม.</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM25 || "N/A"} มคก/ลบ.ม.</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>PM10 เฉลี่ย 24 ชม</div>
-                            <div className='inline-flex gap-2 font-extrabold'>9 มคก/ลบ.ม.</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM10 || 'N/A'} มคก/ลบ.ม.</div>
                         </div>
                     </div>
 
@@ -106,7 +132,10 @@ export default function Detail() {
                             </div>
                         </div>
                         <div className=" overflow-hidden flex justify-center">
-                            <AreaGraph />
+
+                            {display == "PM2" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM25,"value")} />}
+                            {display == "PM10" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM10,"value")} />}
+
                         </div>
                     </section>
 
@@ -124,7 +153,9 @@ export default function Detail() {
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                            <AreaGraph />
+
+                            {display == "PM2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM25,"value")} />}
+                            {display == "PM10" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM10,"value")} />}
                         </div>
                     </section>
                 </div>

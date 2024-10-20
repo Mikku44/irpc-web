@@ -69,10 +69,7 @@ export default function Navbar() {
 
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    
-    document.documentElement.classList.add('light')
-  }, [])
+
 
 
   const onClose = () => {

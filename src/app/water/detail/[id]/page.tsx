@@ -14,6 +14,8 @@ import Image from 'next/image';
 import { Image as AntImage } from 'antd';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
+import rearrangeData from '@/app/ultilities/parseFromDate';
 
 
 export default function Detail({ params }: { params: any }) {
@@ -142,14 +144,14 @@ export default function Detail({ params }: { params: any }) {
                         <div className=" overflow-hidden flex justify-center">
                             {display == "ALL" && watersDetail && <MultiLineGraph data={
                                 [
-                                    ...namedArray(watersDetail.Last24H?.pH, "pH"),
-                                    ...namedArray(watersDetail.Last24H?.Flow, "Flow"),
-                                    ...namedArray(watersDetail.Last24H?.COD, "COD"),
-                            ]
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last24H?.pH, "pH"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last24H?.Flow, "Flow"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last24H?.COD, "COD"), 'value'),
+                                ]
                             } />}
-                            {display == "COD" && watersDetail && <AreaGraph data={watersDetail.Last24H?.COD} />}
-                            {display == "PH" && watersDetail && <AreaGraph data={watersDetail.Last24H?.pH} />}
-                            {display == "FLOW" && watersDetail && <AreaGraph data={watersDetail.Last24H?.Flow} />}
+                            {display == "COD" && watersDetail && <AreaGraph data={convertPropertyToNumber(watersDetail.Last24H?.COD, "value")} />}
+                            {display == "PH" && watersDetail && <AreaGraph data={convertPropertyToNumber(watersDetail.Last24H?.pH, "value")} />}
+                            {display == "FLOW" && watersDetail && <AreaGraph data={convertPropertyToNumber(watersDetail.Last24H?.Flow, 'value')} />}
                         </div>
                     </section>
 
@@ -160,14 +162,17 @@ export default function Detail({ params }: { params: any }) {
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                            {display == "ALL" && watersDetail && <MultiColumnGraph data={
-                                [...namedArray(watersDetail.Last24H?.COD, "COD"),
-                                ...namedArray(watersDetail.Last24H?.pH, "pH"),
-                                ...namedArray(watersDetail.Last24H?.Flow, "Flow")]
+                            {display == "ALL" && watersDetail && <MultiColumnGraph data={ 
+                                watersDetail?.Last7D &&
+                                [
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.COD, "COD"),'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.pH, "pH"),'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.Flow, "Flow"),'value')
+                                ]
                             } />}
-                            {display == "COD" && watersDetail && <ColumnGraph data={watersDetail.Last24H?.COD} />}
-                            {display == "PH" && watersDetail && <ColumnGraph data={watersDetail.Last24H?.pH} />}
-                            {display == "FLOW" && watersDetail && <ColumnGraph data={watersDetail.Last24H?.Flow} />}
+                            {display == "COD" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.COD,'value')} />}
+                            {display == "PH" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.pH,'value')} />}
+                            {display == "FLOW" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.Flow,'value')} />}
 
                         </div>
                     </section>
@@ -182,21 +187,25 @@ export default function Detail({ params }: { params: any }) {
                         <div className=" overflow-hidden flex justify-center w-full">
                             <Table
                                 className="w-full"
-                                data={[
-                                    {
-                                        key: '1',
-                                        updated: '11 มิ.ย. 66 เวลา 09:00 น.',
-                                        COD: 51.3,
-                                        flow: 63.6,
-                                        PH: 66.2,
-                                    },
-                                ]}
+                                data={
+                                //     [
+                                //     {
+                                //         key: '1',
+                                //         updated: '11 มิ.ย. 66 เวลา 09:00 น.',
+                                //         COD: 51.3,
+                                //         flow: 63.6,
+                                //         PH: 66.2,
+                                //     },
+                                // ]
+                                rearrangeData(watersDetail?.Last24H)
+                            }
 
                                 columns={[
                                     {
                                         title: <div className="text-[#475467]">เวลาอัพเดต</div>,
-                                        dataIndex: 'updated',
-                                        key: 'updated',
+                                        dataIndex: 'DATETIMEDATA',
+                                        key: 'DATETIMEDATA',
+                                        render: (text: string, record: any) => `${DateFormator(new Date(record?.DATETIMEDATA.split(" ").join("T")))}` || 'N/A',
                                     },
                                     {
                                         title: <div className="text-[#475467]">COD (mg/l)</div>,
@@ -205,13 +214,13 @@ export default function Detail({ params }: { params: any }) {
                                     },
                                     {
                                         title: <div className="text-[#475467]">Flow (m³)</div>,
-                                        dataIndex: 'flow',
-                                        key: 'flow',
+                                        dataIndex: 'Flow',
+                                        key: 'Flow',
                                     },
                                     {
                                         title: <div className="text-[#475467]">PH</div>,
-                                        dataIndex: 'PH',
-                                        key: 'PH',
+                                        dataIndex: 'pH',
+                                        key: 'pH',
                                     },
                                 ]}
                             />

@@ -3,20 +3,54 @@ import AreaGraph from '@/app/components/AreaGraph';
 import Badge from '@/app/components/Badge';
 import ColumnGraph from '@/app/components/ColumnGraph';
 import Table from '@/app/components/Table';
+import { getData } from '@/app/ultilities/api';
 import { Breadcrumb, Radio } from 'antd';
 import { ChevronRight, House, MapPin, Waves } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Image as AntImage } from 'antd';
+import rearrangeData from '@/app/ultilities/parseFromDate';
+import DateFormator, { FullDateFormator } from '@/app/ultilities/DateFormater';
+import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
+import MultiColumnGraph from '@/app/components/MultiColumnGraph';
+import MultiLineGraph from '@/app/components/MultiLineGraph';
 
-
-export default function Detail() {
+export default function Detail({ params }: { params: any }) {
 
     const [display, setDisplay] = useState<'ALL' | 'COD' | 'FLOW' | 'WATT'>('ALL');
 
+    const [cemsDetail, setCemsDetail] = useState<any>();
+
+    const fetchData = async () => {
+        const result = await getData(`/forWeb/getCems24H.php?stationID=${params.id}`)
+        setCemsDetail(result.stations && result.stations[0])
+
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+
+    const namedArray = (data: any, name: string) => {
+        if (!data) return []
+        const result = data.map((item: any) => ({
+            name,
+            ...item,
+        }));
+        return result
+    }
+
 
     return <>
-        <Image src="/images/cover-image.png" width={1664} height={240} className='w-[100vw] bg-black' alt={''}></Image>
+        <div className="h-[240px] overflow-hidden w-full flex justify-center">
+            <AntImage
+                src={`${cemsDetail?.image_url || "/images/cover-image.png"}`}
+                className="w-full h-full object-cover bg-black"
+                alt={''}
+            />
+        </div>
         <div className="container-x bg-white">
             <Breadcrumb
                 separator={<ChevronRight />}
@@ -37,18 +71,18 @@ export default function Detail() {
                         ),
                     },
                     {
-                        title: <div className='rounded-md bg-slate-200 px-2 font-bold'>ไออาร์พีซี คลีน</div>,
+                        title: <div className='rounded-md bg-slate-200 px-2 font-bold'>{cemsDetail?.nameTH}</div>,
                     },
                 ]}
             />
             <section className="flex justify-between">
                 <div>
-                    <h3 className="font-bold text-[30px]">ไออาร์พีซี คลีน</h3>
-                    <div className="text-mute text-[16px]">ประจำวันจันทร์ ที่ 19 มิถุนายน 2566 เวลา 09:05 น.</div>
+                    <h3 className="font-bold text-[30px]">{cemsDetail?.nameTH}</h3>
+                    <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${cemsDetail?.LastUpdate.date}T${cemsDetail?.LastUpdate.time}`))}</div>
                 </div>
                 <div>
                     <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
-                    <div className="text-[36px] font-bold">19 <span className="text-[20px] font-normal">COD/mgI</span></div>
+                    <div className="text-[36px] font-bold">{cemsDetail?.LastUpdate.NOx} <span className="text-[20px] font-normal">COD/mgI</span></div>
                 </div>
             </section>
 
@@ -59,7 +93,7 @@ export default function Detail() {
                     <span className="text-[14px] text-gray-500 mb-2">ตำแหน่งที่ตั้ง</span>
                     <div className="flex items-center mb-4">
                         <MapPin></MapPin>
-                        <span className="text-[14px]">ต.พระบาท, อ.เมือง ลำปาง</span>
+                        <span className="text-[14px]">{cemsDetail?.areaTH}</span>
                     </div>
 
                     {/* Station Name */}
@@ -71,7 +105,7 @@ export default function Detail() {
                     {/* Station Code */}
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">รหัสสถานี</span>
-                        <p className="text-[16px] font-semibold text-gray-900">A1234</p>
+                        <p className="text-[16px] font-semibold text-gray-900">{cemsDetail?.stationID}</p>
                     </div>
 
                     {/* Latest Data */}
@@ -111,7 +145,22 @@ export default function Detail() {
                             </div>
                         </div>
                         <div className=" overflow-hidden flex justify-center">
-                            <AreaGraph />
+                            {display == "ALL" && cemsDetail && <MultiLineGraph data={
+                                [
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.O2, "O2"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.NOx, "NOx"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.SOx, "SOx"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.CO, "CO"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.CO2, "CO2"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.NH3, "NH3"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.H2S, "H2S"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Dust, "Dust"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Opacity, "Opacity"), 'value'),
+                                ]
+                            } />}
+                            {display == "COD" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.COD, "value")} />}
+                            {display == "FLOW" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.Flow, 'value')} />}
+                            {display == "WATT" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.pH, "value")} />}
                         </div>
                     </section>
 
@@ -122,7 +171,23 @@ export default function Detail() {
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                            <ColumnGraph />
+                            {display == "ALL" && cemsDetail && <MultiColumnGraph data={
+                                cemsDetail?.Last7D &&
+                                [
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.O2, "O2"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.NOx, "NOx"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.SOx, "SOx"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.CO, "CO"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.CO2, "CO2"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.NH3, "NH3"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.H2S, "H2S"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Dust, "Dust"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Opacity, "Opacity"), 'value'),
+                                ]
+                            } />}
+                            {display == "COD" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.COD, 'value')} />}
+                            {display == "WATT" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.pH, 'value')} />}
+                            {display == "FLOW" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.Flow, 'value')} />}
                         </div>
                     </section>
 
@@ -135,75 +200,79 @@ export default function Detail() {
 
                         <div className=" overflow-hidden flex justify-center">
                             <Table
-                                data={[
-                                    {
-                                        key: '1',
-                                        station: 'HRSG 21',
-                                        updated: '19 มิ.ย. 66 เวลา 09:00 น.',
-                                        CO: 2,
-                                        NOx: 30.94,
-                                        SO2: 0.07,
-                                        temperature: 111.45,
-                                        O2: 15.16,
-                                        flow: 337024.09,
-                                        particulate: 0.31,
-                                    },
-                                ]}
+                                data={
+                                    //     [
+                                    //     {
+                                    //         key: '1',
+                                    //         station: 'HRSG 21',
+                                    //         updated: '19 มิ.ย. 66 เวลา 09:00 น.',
+                                    //         CO: 2,
+                                    //         NOx: 30.94,
+                                    //         SO2: 0.07,
+                                    //         temperature: 111.45,
+                                    //         O2: 15.16,
+                                    //         flow: 337024.09,
+                                    //         particulate: 0.31,
+                                    //     },
+                                    // ]
+                                    rearrangeData(cemsDetail?.Last24H)
+                                }
 
                                 columns={[
-                                    {
-                                        title: <div className="text-[#475467]">จุดตรวจวัด</div>,
-                                        dataIndex: 'station',
-                                        key: 'station',
-                                        
-                                    },
+                                    // {
+                                    //     title: <div className="text-[#475467]">จุดตรวจวัด</div>,
+                                    //     dataIndex: 'nameTH',
+                                    //     key: 'nameTH',
+
+                                    // },
                                     {
                                         title: <div className="text-[#475467]">เวลาอัพเดต</div>,
                                         dataIndex: 'updated',
                                         key: 'updated',
-                                        
+                                        render: (text: string, record: any) => `${DateFormator(new Date(record?.DATETIMEDATA.split(" ").join("T")))}` || 'N/A',
+
                                     },
                                     {
                                         title: <div className="text-[#475467]">CO (ppm)</div>,
                                         dataIndex: 'CO',
                                         key: 'CO',
-                                        
+
                                     },
                                     {
                                         title: <div className="text-[#475467]">NOx (ppm)</div>,
                                         dataIndex: 'NOx',
                                         key: 'NOx',
-                                        
+
                                     },
                                     {
-                                        title: <div className="text-[#475467]">SO2 (ppm)</div>,
-                                        dataIndex: 'SO2',
-                                        key: 'SO2',
-                                        
+                                        title: <div className="text-[#475467]">SOx (ppm)</div>,
+                                        dataIndex: 'SOx',
+                                        key: 'SOx',
+
                                     },
                                     {
                                         title: <div className="text-[#475467]">Temp (°C)</div>,
                                         dataIndex: 'temperature',
                                         key: 'temperature',
-                                        
+
                                     },
                                     {
                                         title: <div className="text-[#475467]">O2 (%)</div>,
                                         dataIndex: 'O2',
                                         key: 'O2',
-                                        
+
                                     },
                                     {
                                         title: <div className="text-[#475467]">Flow (m³/hr)</div>,
                                         dataIndex: 'flow',
                                         key: 'flow',
-                                        
+
                                     },
                                     {
                                         title: <div className="text-[#475467]">Particulate (mg/m³)</div>,
                                         dataIndex: 'particulate',
                                         key: 'particulate',
-                                        
+
                                     },
                                 ]}
                             />

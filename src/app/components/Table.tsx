@@ -23,7 +23,7 @@ export default function Table({ columns, data, className }: any) {
   return (
     <div className="border w-full border-1 rounded-xl overflow-hidden shadow-md">
       <AntTable
-        className={`${className} w-fit min-w-full`}
+        className={`${className} `}
         columns={columns}
         dataSource={pageItems}
         pagination={false}

@@ -41,8 +41,9 @@ export default function AreaGraph({ data }: any) {
 
           },
           yAxis: {
+            
             label: {
-              formatter: (val) => `${val}`, // Customize y-axis label if needed
+              formatter: (val) => `${(val)}`, // Customize y-axis label if needed
             },
             range:[0,1]
           },
