@@ -7,7 +7,7 @@ import Card from '../components/Card';
 import Badge from '../components/Badge';
 import Table from '../components/Table';
 import MapPick from '../components/MapPick';
-import DateFormator from '../ultilities/DateFormater';
+import DateFormator, { FullDateFormator } from '../ultilities/DateFormater';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -17,29 +17,38 @@ import Image from 'next/image';
 import StationCard from '../components/StationCard';
 import Badges from '../components/Badges';
 import Pagination from '../components/Pagination';
+import { getData, postData } from '../ultilities/api';
 
-export default function CEMs() {
+export default function EQMs() {
 
    
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
 
   const currentPage = 0;
+  const today = FullDateFormator(new Date())
   const pageSize = 1;
 
   const sounds = [1, 2, 3, 4, 5, 6];
   const soundsSplited = sounds[currentPage]
+
+
+  const fetchData = async () => {
+    // const result = await getData('/UpdateV2/eqms/createImage.php')
+    // console.log(result)
+
+  }
   return (
     <>
 
       <section id="header" className="px-10 py-4 bg-white">
 
         <SegmentMenu />
-        <div className="text-[18px] text-[--primary] font-bold">ประจำวันจันทร์ ที่ 19 มิถุนายน เวลา 09:05 น.</div>
+        <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
         <div className="flex justify-between">
           <div className="text-[36px] font-bold">สถานีทั้งหมด</div>
           <div className="text-[16px] font-bold flex gap-2">
             <Button ><RefreshCw className='size-[14px]' /> อัปเดต</Button>
-            <Button type='primary' ><Download className='size-[14px]' />ดาวน์โหลด</Button>
+            <form action="https://irpc-air.com/UpdateV2/eqms/createImage.php" ><Button  type='primary' htmlType="submit" ><Download className='size-[14px]' />ดาวน์โหลด</Button></form>
           </div>
         </div>
 

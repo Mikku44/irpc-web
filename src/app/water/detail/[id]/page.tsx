@@ -2,21 +2,55 @@
 import AreaGraph from '@/app/components/AreaGraph';
 import Badge from '@/app/components/Badge';
 import ColumnGraph from '@/app/components/ColumnGraph';
+import MultiColumnGraph from '@/app/components/MultiColumnGraph';
+import MultiLineGraph from '@/app/components/MultiLineGraph';
 import Table from '@/app/components/Table';
+import { Water } from '@/app/models/models';
+import { getData } from '@/app/ultilities/api';
+import DateFormator, { FullDateFormator } from '@/app/ultilities/DateFormater';
 import { Breadcrumb, Radio } from 'antd';
 import { ChevronRight, House, MapPin, Waves } from 'lucide-react';
 import Image from 'next/image';
+import { Image as AntImage } from 'antd';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
+import rearrangeData from '@/app/ultilities/parseFromDate';
 
 
-export default function Detail() {
+export default function Detail({ params }: { params: any }) {
 
     const [display, setDisplay] = useState<'ALL' | 'COD' | 'FLOW' | 'PH'>('ALL');
+    const [watersDetail, setWatersDetail] = useState<any>();
+
+    const fetchData = async () => {
+        const result = await getData(`/forWeb/getWater24H.php?stationID=${params.id}`)
+        setWatersDetail(result.stations && result.stations[0])
+
+    }
+
+    const namedArray = (data: any, name: string) => {
+        if (!data) return []
+        const result = data.map((item: any) => ({
+            name,
+            ...item,
+        }));
+        return result
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [])
 
 
     return <>
-        <Image src="/images/cover-image.png" width={1664} height={240} className='w-[100vw] bg-black' alt={''}></Image>
+        <div className="h-[240px] overflow-hidden w-full flex justify-center">
+            <AntImage
+                src={`${watersDetail?.image_url || "/images/cover-image.png"}`}
+                className="w-full h-full object-cover bg-black"
+                alt={''}
+            />
+        </div>
         <div className="container-x bg-white">
             <Breadcrumb
                 separator={<ChevronRight />}
@@ -37,18 +71,18 @@ export default function Detail() {
                         ),
                     },
                     {
-                        title: <div className='rounded-md bg-slate-200 px-2 font-bold'>แขวงการทางสมุทรสาคร</div>,
+                        title: <div className='rounded-md bg-slate-200 px-2 font-bold'>{watersDetail?.nameTH}</div>,
                     },
                 ]}
             />
             <section className="flex justify-between">
                 <div>
-                    <h3 className="font-bold text-[30px]">แขวงการทางสมุทรสาคร</h3>
-                    <div className="text-mute text-[16px]">ประจำวันจันทร์ ที่ 19 มิถุนายน 2566 เวลา 09:05 น.</div>
+                    <h3 className="font-bold text-[30px]">{watersDetail?.nameTH}</h3>
+                    <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${watersDetail?.LastUpdate.date!}T${watersDetail?.LastUpdate.time!}`))} </div>
                 </div>
                 <div>
                     <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
-                    <div className="text-[36px] font-bold">19 <span className="text-[20px] font-normal">COD/mgI</span></div>
+                    <div className="text-[36px] font-bold">{watersDetail?.LastUpdate.COD}<span className="text-[20px] font-normal">COD/mgI</span></div>
                 </div>
             </section>
 
@@ -59,39 +93,39 @@ export default function Detail() {
                     <span className="text-[14px] text-gray-500 mb-2">ตำแหน่งที่ตั้ง</span>
                     <div className="flex items-center mb-4">
                         <MapPin></MapPin>
-                        <span className="text-[14px]">ต.พระบาท, อ.เมือง ลำปาง</span>
+                        <span className="text-[14px]">{watersDetail?.areaTH}</span>
                     </div>
 
                     {/* Station Name */}
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">ประเภทข้อมูล</span>
-                        <p className="text-[16px] font-semibold text-gray-900">กรมควบคุมมลพิษ</p>
+                        <p className="text-[16px] font-semibold text-gray-900">{watersDetail?.stationType}</p>
                     </div>
 
                     {/* Station Code */}
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">รหัสสถานี</span>
-                        <p className="text-[16px] font-semibold text-gray-900">A1234</p>
+                        <p className="text-[16px] font-semibold text-gray-900">{watersDetail?.stationID}</p>
                     </div>
 
                     {/* Latest Data */}
                     <div>
                         <span className="text-[14px] text-gray-500">ประเภทพื้นที่</span>
                         <p className="text-[16px] font-semibold text-gray-900">
-                        ชุมชน
+                            ชุมชน
                         </p>
                     </div>
                 </div>
                 <div className="lg:basis-2/3">
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
-                        
+
                         <div>
                             <div className='text-[#475467]'>Flow</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>1,000 m3/hr</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow} m3/hr</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>PH</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>5</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.pH} </div>
                         </div>
                     </div>
 
@@ -108,7 +142,16 @@ export default function Detail() {
                             </div>
                         </div>
                         <div className=" overflow-hidden flex justify-center">
-                            <AreaGraph />
+                            {display == "ALL" && watersDetail && <MultiLineGraph data={
+                                [
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last24H?.pH, "pH"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last24H?.Flow, "Flow"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last24H?.COD, "COD"), 'value'),
+                                ]
+                            } />}
+                            {display == "COD" && watersDetail && <AreaGraph data={convertPropertyToNumber(watersDetail.Last24H?.COD, "value")} />}
+                            {display == "PH" && watersDetail && <AreaGraph data={convertPropertyToNumber(watersDetail.Last24H?.pH, "value")} />}
+                            {display == "FLOW" && watersDetail && <AreaGraph data={convertPropertyToNumber(watersDetail.Last24H?.Flow, 'value')} />}
                         </div>
                     </section>
 
@@ -119,7 +162,18 @@ export default function Detail() {
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                            <ColumnGraph />
+                            {display == "ALL" && watersDetail && <MultiColumnGraph data={ 
+                                watersDetail?.Last7D &&
+                                [
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.COD, "COD"),'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.pH, "pH"),'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.Flow, "Flow"),'value')
+                                ]
+                            } />}
+                            {display == "COD" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.COD,'value')} />}
+                            {display == "PH" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.pH,'value')} />}
+                            {display == "FLOW" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.Flow,'value')} />}
+
                         </div>
                     </section>
 
@@ -132,38 +186,42 @@ export default function Detail() {
 
                         <div className=" overflow-hidden flex justify-center w-full">
                             <Table
-                            className="w-full"
-                                data={[
-                                    {
-                                        key: '1',
-                                        updated: '11 มิ.ย. 66 เวลา 09:00 น.',
-                                        COD: 51.3,
-                                        flow: 63.6,
-                                        PH: 66.2,
-                                      },
-                                ]}
+                                className="w-full"
+                                data={
+                                //     [
+                                //     {
+                                //         key: '1',
+                                //         updated: '11 มิ.ย. 66 เวลา 09:00 น.',
+                                //         COD: 51.3,
+                                //         flow: 63.6,
+                                //         PH: 66.2,
+                                //     },
+                                // ]
+                                rearrangeData(watersDetail?.Last24H)
+                            }
 
                                 columns={[
                                     {
                                         title: <div className="text-[#475467]">เวลาอัพเดต</div>,
-                                        dataIndex: 'updated',
-                                        key: 'updated',
-                                      },
-                                      {
+                                        dataIndex: 'DATETIMEDATA',
+                                        key: 'DATETIMEDATA',
+                                        render: (text: string, record: any) => `${DateFormator(new Date(record?.DATETIMEDATA.split(" ").join("T")))}` || 'N/A',
+                                    },
+                                    {
                                         title: <div className="text-[#475467]">COD (mg/l)</div>,
                                         dataIndex: 'COD',
                                         key: 'COD',
-                                      },
-                                      {
+                                    },
+                                    {
                                         title: <div className="text-[#475467]">Flow (m³)</div>,
-                                        dataIndex: 'flow',
-                                        key: 'flow',
-                                      },
-                                      {
+                                        dataIndex: 'Flow',
+                                        key: 'Flow',
+                                    },
+                                    {
                                         title: <div className="text-[#475467]">PH</div>,
-                                        dataIndex: 'PH',
-                                        key: 'PH',
-                                      },
+                                        dataIndex: 'pH',
+                                        key: 'pH',
+                                    },
                                 ]}
                             />
                         </div>

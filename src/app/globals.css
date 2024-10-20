@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+
 :root {
   --background: #F9FAFB;
   --foreground: #171717;
@@ -25,6 +28,8 @@
 
 .mapboxgl-popup-content{
   border-radius: 15px !important;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  width: max-content;
   padding: 20px !important;
 }
 .mapboxgl-popup-close-button{
@@ -77,6 +82,11 @@ body {
   color:#344054 !important;
 
 }
+
+.ant-input{
+  font-family:"prompt" !important;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

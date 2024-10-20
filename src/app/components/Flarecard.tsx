@@ -6,7 +6,7 @@ export default function Flarecard({item}:{item:any}) {
   return (
     <div>
       <AntCard
-        className="rounded-3xl overflow-hidden shadow-md  h-fit max-w-[410.5px]"
+        className="min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px]"
         cover={
           <div className="relative h-[280px]">
             <img
