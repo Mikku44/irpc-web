@@ -84,14 +84,14 @@ export default function Air() {
 
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-          {airs.map((item: any) => <Link href={`/airs/detail/${item.stationID}`} key={item.stationID}>
+          {airs.map((item: any) => <Link href={`/air/detail/${item.stationID}`} key={item.stationID}>
             <Card data={item}></Card>
           </Link>)}
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
           <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={airs?.length} className="lg:hidden md:hidden flex justify-center py-3" >
-            {[airs[currentPage]].map((item: any) => <Link key={item?.stationID} href={`/airs/detail/${item?.stationID}`}>
+            {[airs[currentPage]].map((item: any) => <Link key={item?.stationID} href={`/air/detail/${item?.stationID}`}>
               <Card data={item}></Card>
             </Link>)}
           </Pagination>
@@ -100,7 +100,7 @@ export default function Air() {
 
         {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">
           {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
-            <Link href={`/airs/detail/${selectedPlace?.stationID}`}>
+            <Link href={`/air/detail/${selectedPlace?.stationID}`}>
               <Card data={selectedPlace}></Card>
             </Link>
           </div>}
