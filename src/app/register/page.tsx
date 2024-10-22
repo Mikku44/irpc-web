@@ -1,17 +1,73 @@
 "use client"
 import Image from "next/image";
-import { Input, Select } from 'antd';
+import Link from "next/link";
+import { Input, Select, message } from 'antd';
+import { postData } from "../ultilities/api";
+import { useState } from "react";
 
 const { Option } = Select;
-const selectBefore = (
-    <Select defaultValue="66">
-        <Option value="66">66</Option>
-        <Option value="67">65</Option>
-    </Select>
-);
+const opt = <>
+    <Option value="66">66</Option>
+    <Option value="65">65</Option>
+</>
+
 export default function Login() {
+
+    const fetchData = async () => {
+        console.log({
+            "fullname": fullname,
+            "tel": codeCountry + tel,
+            "email": email,
+            "password": password
+        })
+        alert()
+        if (validateEmail(email)) {
+            const result = await postData('/forWeb/singin.php', {
+                "fullname": fullname,
+                "tel": codeCountry + tel,
+                "email": email,
+                "password": password
+            })
+            if (result.status == "ok") {
+                success()
+            }
+            else {
+                error("อีเมลล์นี้ถูกใช้งานเเล้ว")
+            }
+        }
+        error("รูปแบบอีเมลไม่ถูกต้อง กรุณาตรวจสอบว่ามี “@” และโดเมน เช่น .com หรือ .co.th")
+    }
+
+    const [messageApi, contextHolder] = message.useMessage();
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const error = (e: string) => {
+        messageApi.open({
+            type: 'error',
+            content: e,
+        });
+    };
+
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'สมัครเข้าใช้งานสำเร็จ',
+        });
+    };
+
+    const [fullname, setFullname] = useState("")
+    const [codeCountry, setCodecountry] = useState("66")
+    const [tel, setTel] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+
     return (
         <>
+            {contextHolder}
             <div className="lg:block md:block hidden">
                 <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute left-[26%] w-full max-w-[758px] h-auto "></Image>
                 <div className="flex flex-col items-center justify-center relative z-[1] pt-20 pb-10 ">
@@ -23,27 +79,30 @@ export default function Login() {
                         <form>
                             <div className="mb-4">
                                 <label htmlFor="fullName" className="block text-gray-700 mb-2">ชื่อและนามสกุล</label>
-                                <Input className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
+                                <Input onChange={e => setFullname(e.target.value)} className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="phone" className="block text-gray-700 mb-2">เบอร์โทรศัพท์</label>
                                 <div className="flex">
-                                    <Input addonBefore={selectBefore} classNames={{ input: "w-full p-3 " }} />
+                                    <Input onChange={e => setTel(e.target.value)} addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="66">
+                                        {opt}
+                                    </Select>}
+                                        classNames={{ input: "w-full p-3 " }} maxLength={9} />
                                 </div>
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
-                                <Input className="p-3 w-full " placeholder="กรอกอีเมลของคุณ" />
+                                <Input type="email" onChange={e => setEmail(e.target.value)} className="p-3 w-full " placeholder="กรอกอีเมลของคุณ" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                <Input.Password className="p-3 w-full " placeholder="รหัสผ่าน" />
+                                <Input.Password onChange={e => setPassword(e.target.value)} className="p-3 w-full " placeholder="รหัสผ่าน" minLength={8} />
                             </div>
-                            <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
+                            <button onClick={e => { fetchData() }} type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
                         </form>
                     </div>
                     <div className="text-center mt-6">
-                        <p className="text-gray-600">มีบัญชีผู้ใช้แล้ว? <a href="#" className="text-blue-500 font-bold">เข้าสู่ระบบ</a></p>
+                        <p className="text-gray-600">มีบัญชีผู้ใช้แล้ว? <Link href="/login" className="text-blue-500 font-bold">เข้าสู่ระบบ</Link></p>
                     </div>
                 </div>
             </div>
@@ -57,30 +116,31 @@ export default function Login() {
                     <form>
                         <div className="mb-4">
                             <label htmlFor="fullName" className="block text-gray-700 mb-2">ชื่อและนามสกุล</label>
-                            <Input className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
+                            <Input onChange={e => setFullname(e.target.value)} className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
                         </div>
                         <div className="mb-4">
                             <label htmlFor="phone" className="block text-gray-700 mb-2">เบอร์โทรศัพท์</label>
                             <div className="flex">
-                                <Input addonBefore={selectBefore} classNames={{ input: "w-full p-3 " }} />
+                                <Input onChange={e => setTel(e.target.value)} addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="66">
+                                    {opt}
+                                </Select>} classNames={{ input: "w-full p-3 " }} />
                             </div>
                         </div>
                         <div className="mb-4">
                             <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
-                            <Input type="email" className="p-3 w-full " placeholder="กรอกอีเมลของคุณ" />
+                            <Input onChange={e => setEmail(e.target.value)} type="email" className="p-3 w-full " placeholder="กรอกอีเมลของคุณ" />
                         </div>
                         <div className="mb-4">
                             <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                            <Input.Password className="p-3 w-full " placeholder="รหัสผ่าน" />
+                            <Input.Password onChange={e => setPassword(e.target.value)} className="p-3 w-full " placeholder="รหัสผ่าน" />
                         </div>
-                        <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
+                        <button onClick={e => { fetchData() }} type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
                     </form>
                 </div>
                 <div className="text-center mt-6">
-                    <p className="text-gray-600">มีบัญชีผู้ใช้แล้ว? <a href="#" className="text-blue-500 font-bold">เข้าสู่ระบบ</a></p>
+                    <p className="text-gray-600">มีบัญชีผู้ใช้แล้ว? <Link href="/login" className="text-blue-500 font-bold">เข้าสู่ระบบ</Link></p>
                 </div>
             </div>
-
         </>
     );
 }
