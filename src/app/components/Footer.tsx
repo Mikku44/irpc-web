@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+
 export default function Footer() {
   return (
     <div className="w-full bg-white text-center">
@@ -13,7 +16,7 @@ export default function Footer() {
                 <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Pricing</a>
                 <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Careers</a>
                 <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Help</a>
-                <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Privacy</a>
+                <Link href="/privacy-policy/th" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Privacy</Link>
               </div>
             </div>
 
