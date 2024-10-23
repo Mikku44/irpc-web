@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function EnvironmentCard({ data }: any) {
     return <>
         <AntCard
-            className="min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px]"
+            className="lg:min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px]"
             cover={
                 <div className="relative h-[280px]">
                     <img

@@ -1,9 +1,9 @@
 import { Badge, Checkbox, Image } from "antd";
 
-export default function StationCard() {
+export default function StationCard({className}:any) {
     return (
         <>
-            <div className="rounded-xl border-2 border-[#84ADFF] grid gap-5 h-fit p-5 shadow-md">
+            <div className={`rounded-xl border-2 border-[#84ADFF] grid gap-5 h-fit p-5 shadow-md ${className}`}>
                 <div className="flex justify-between">
                     <div className="grid">
                         <div className="text-[14px] ">SSDD</div>

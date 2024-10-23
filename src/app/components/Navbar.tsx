@@ -102,10 +102,10 @@ export default function Navbar() {
             </a>
           </Dropdown>
 
-          <Link href="#">
+          <Link href="/favourite">
             <li>รายการโปรด</li>
           </Link>
-          <Link href="#">
+          <Link href="/news">
             <li>ข่าวสาร</li>
           </Link>
         </ul>
@@ -180,10 +180,10 @@ export default function Navbar() {
             </Button>
           </Link>
 
-          <Link href="#">
+          <Link href="/favourite">
             <Button type="text" className="w-full flex items-center justify-start">รายการโปรด</Button>
           </Link>
-          <Link href="#">
+          <Link href="/news">
             <Button type="text" className="w-full flex items-center justify-start">ข่าวสาร</Button>
           </Link>
 
