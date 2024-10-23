@@ -273,7 +273,7 @@ export default function Home() {
               <EnvironmentCard data={selectedPlace}></EnvironmentCard>
             </Link>}
             {segmentValue === "flare" && <Link href={`flare/detail/${selectedPlace?.stationID!}`}>
-              <Flarecard></Flarecard>
+              <Flarecard item={selectedPlace}></Flarecard>
             </Link>}
             {segmentValue === "EQMs" && <Link href={`EQMs/detail/${selectedPlace?.stationID!}`}>
               <StationCard></StationCard>
