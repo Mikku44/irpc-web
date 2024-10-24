@@ -7,7 +7,7 @@ import SoundCard from "./components/SoundCard";
 import SegmentMenu from "./components/SegmentMenu";
 import { FullDateFormator } from "./ultilities/DateFormater";
 import Badges from "./components/Badges";
-import { Button, Segmented, Select,Image as ImageAnt } from "antd";
+import { Button, Segmented, Select, Image as ImageAnt } from "antd";
 import WaterCard from "./components/WaterCard";
 import MapPick from "./components/MapPick";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ import StationCard from "./components/StationCard";
 import { getData } from "./ultilities/api";
 
 
-const MeasuringMap : any = {
+const MeasuringMap: any = {
   "air": "/forWeb/getAirLast.php",
   "sound": "/forWeb/getAirLast.php",
   "water": "/forWeb/getWaterLast.php",
@@ -28,7 +28,7 @@ const MeasuringMap : any = {
   "EQMs": "/forWeb/getCemsLast.php",
 }
 
-const MeasuringUnitMap : any = {
+const MeasuringUnitMap: any = {
   "air": "AQI",
   "sound": "dBA",
   "water": "COD/mgl",
@@ -65,8 +65,8 @@ export default function Home() {
 
   useEffect(() => {
     // console.log("Current Data : ",MeasuringData);
-    if(MeasuringData)
-    setSelectedPlace(MeasuringData[0])
+    if (MeasuringData)
+      setSelectedPlace(MeasuringData[0])
   }, [MeasuringData]);
 
 
@@ -289,7 +289,6 @@ export default function Home() {
         <div className="flex justify-between py-10">
           <div className="text-2xl font-bold">ข่าวสาร ประชาสัมพันธ์</div>
           <Link href="/news"><Button className="text-[--primary]" style={{ color: "var(--primary)" }}>ดูทั้งหมด</Button></Link>
-
         </div>
 
 

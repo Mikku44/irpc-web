@@ -18,7 +18,11 @@ import MultiLineGraph from '@/app/components/MultiLineGraph';
 
 export default function Detail({ params }: { params: any }) {
 
-    const [display, setDisplay] = useState<'ALL' | 'COD' | 'FLOW' | 'WATT'>('ALL');
+    const RadioList = [
+        'O2' , 'NOx' , 'SOx', 'CO' , 'CO2' , 'NH3' , 'H2S' , 'Dust' , 'Opacity'
+    ]
+
+    const [display, setDisplay] = useState<'ALL' | 'O2' | 'NOx' | 'SOx'| 'CO' | 'CO2' | 'NH3' | 'H2S' | 'Dust' | 'Opacity'>('ALL');
 
     const [cemsDetail, setCemsDetail] = useState<any>();
 
@@ -99,7 +103,7 @@ export default function Detail({ params }: { params: any }) {
                     {/* Station Name */}
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">ประเภทข้อมูล</span>
-                        <p className="text-[16px] font-semibold text-gray-900">กรมควบคุมมลพิษ</p>
+                        <p className="text-[16px] font-semibold text-gray-900">{cemsDetail?.stationType}</p>
                     </div>
 
                     {/* Station Code */}
@@ -119,28 +123,52 @@ export default function Detail({ params }: { params: any }) {
                 <div className="lg:basis-2/3 w-[90vw]">
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
                         <div>
-                            <div className='text-[#475467]'>COD</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>48.39 mg/I</span></div>
+                            <div className='text-[#475467]'>O2</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.O2}</span></div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>Flow</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>1,000 m3/hr</div>
+                            <div className='text-[#475467]'>NOx</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.NOx}</span></div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>Watt</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>27.56 kW</div>
+                            <div className='text-[#475467]'>SOx</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.SOx}</span></div>
                         </div>
+                        <div>
+                            <div className='text-[#475467]'>CO</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.CO}</span></div>
+                        </div>
+                        <div>
+                            <div className='text-[#475467]'>CO2</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.CO2}</span></div>
+                        </div>
+                        <div>
+                            <div className='text-[#475467]'>NH3</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.NH3}</span></div>
+                        </div>
+                        <div>
+                            <div className='text-[#475467]'>H2S</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.H2S}</span></div>
+                        </div>
+                        <div>
+                            <div className='text-[#475467]'>Dust</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Dust}</span></div>
+                        </div>
+                        <div>
+                            <div className='text-[#475467]'>Opacity</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Opacity}</span></div>
+                        </div>
+                       
                     </div>
 
                     <section>
-                        <div className="flex justify-between py-8 flex-wrap">
+                        <div className="flex justify-between py-8 gap-5 flex-wrap">
                             <div className="font-bold">ค่า COD, Flow, Watt ย้อนหลัง 24 ชั่วโมง</div>
                             <div className="">
                                 <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
                                     <Radio.Button value="ALL"><div className='flex gap-2 items-center'>ทั้งหมด </div></Radio.Button>
-                                    <Radio.Button value="COD"><div className='flex gap-2 items-center'>COD </div></Radio.Button>
-                                    <Radio.Button value="FLOW"><div className='flex gap-2 items-center'>Flow</div></Radio.Button>
-                                    <Radio.Button value="WATT"><div className='flex gap-2 items-center'>Watt</div></Radio.Button>
+                                    {RadioList.map( item => <Radio.Button value={item} key={item}><div className='flex gap-2 items-center'>{item}</div></Radio.Button>)}
+                                   
                                 </Radio.Group>
                             </div>
                         </div>
@@ -158,15 +186,21 @@ export default function Detail({ params }: { params: any }) {
                                     ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Opacity, "Opacity"), 'value'),
                                 ]
                             } />}
-                            {display == "COD" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.COD, "value")} />}
-                            {display == "FLOW" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.Flow, 'value')} />}
-                            {display == "WATT" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.pH, "value")} />}
+                            {display == "O2" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.O2, "value")} />}
+                            {display == "CO" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.CO, 'value')} />}
+                            {display == "CO2" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.CO2, "value")} />}
+                            {display == "Dust" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.Dust, "value")} />}
+                            {display == "H2S" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.H2S, "value")} />}
+                            {display == "NH3" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.NH3, "value")} />}
+                            {display == "NOx" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.NOx, "value")} />}
+                            {display == "Opacity" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.Opacity, "value")} />}
+                            {display == "SOx" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.SOx, "value")} />}
                         </div>
                     </section>
 
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ระดับคุณภาพเฉลี่ยรายชั่วโมง (COD, 24hr) ย้อนหลัง 7 วัน</div>
+                            <div className="font-bold">ระดับคุณภาพเฉลี่ยรายชั่วโมง (COD, 7D) ย้อนหลัง 7 วัน</div>
 
                         </div>
 
@@ -174,27 +208,33 @@ export default function Detail({ params }: { params: any }) {
                             {display == "ALL" && cemsDetail && <MultiColumnGraph data={
                                 cemsDetail?.Last7D &&
                                 [
-                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.O2, "O2"), 'value'),
-                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.NOx, "NOx"), 'value'),
-                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.SOx, "SOx"), 'value'),
-                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.CO, "CO"), 'value'),
-                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.CO2, "CO2"), 'value'),
-                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.NH3, "NH3"), 'value'),
-                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.H2S, "H2S"), 'value'),
-                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Dust, "Dust"), 'value'),
-                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Opacity, "Opacity"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.O2, "O2"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.NOx, "NOx"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.SOx, "SOx"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.CO, "CO"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.CO2, "CO2"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.NH3, "NH3"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.H2S, "H2S"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.Dust, "Dust"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.Opacity, "Opacity"), 'value'),
                                 ]
                             } />}
-                            {display == "COD" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.COD, 'value')} />}
-                            {display == "WATT" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.pH, 'value')} />}
-                            {display == "FLOW" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.Flow, 'value')} />}
+                            {display == "CO" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.CO, 'value')} />}
+                            {display == "CO2" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.CO2, 'value')} />}
+                            {display == "Dust" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.Dust, 'value')} />}
+                            {display == "H2S" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.H2S, 'value')} />}
+                            {display == "NH3" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.NH3, 'value')} />}
+                            {display == "NOx" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.NOx, 'value')} />}
+                            {display == "O2" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.O2, 'value')} />}
+                            {display == "Opacity" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.Opacity, 'value')} />}
+                            {display == "SOx" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.SOx, 'value')} />}
                         </div>
                     </section>
 
 
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ระดับคุณภาพเฉลี่ยรายชั่วโมง (CEMS, 24hr) ย้อนหลัง 7 วัน</div>
+                            <div className="font-bold">ระดับคุณภาพเฉลี่ยรายชั่วโมง (CEMS, 7D) ย้อนหลัง 7 วัน</div>
 
                         </div>
 
@@ -215,7 +255,7 @@ export default function Detail({ params }: { params: any }) {
                                     //         particulate: 0.31,
                                     //     },
                                     // ]
-                                    rearrangeData(cemsDetail?.Last24H)
+                                    rearrangeData(cemsDetail?.Last7D)
                                 }
 
                                 columns={[
@@ -227,53 +267,117 @@ export default function Detail({ params }: { params: any }) {
                                     // },
                                     {
                                         title: <div className="text-[#475467]">เวลาอัพเดต</div>,
+                                        
                                         dataIndex: 'updated',
                                         key: 'updated',
                                         render: (text: string, record: any) => `${DateFormator(new Date(record?.DATETIMEDATA.split(" ").join("T")))}` || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">CO (ppm)</div>,
-                                        dataIndex: 'CO',
-                                        key: 'CO',
-
-                                    },
-                                    {
-                                        title: <div className="text-[#475467]">NOx (ppm)</div>,
-                                        dataIndex: 'NOx',
-                                        key: 'NOx',
-
-                                    },
-                                    {
-                                        title: <div className="text-[#475467]">SOx (ppm)</div>,
-                                        dataIndex: 'SOx',
-                                        key: 'SOx',
-
-                                    },
-                                    {
-                                        title: <div className="text-[#475467]">Temp (°C)</div>,
-                                        dataIndex: 'temperature',
-                                        key: 'temperature',
-
-                                    },
-                                    {
-                                        title: <div className="text-[#475467]">O2 (%)</div>,
+                                        title: <div className="text-[#475467]">O2</div>,
+                                        
                                         dataIndex: 'O2',
-                                        key: 'O2',
+                                        render: (text: string, record: any) => record?.O2 || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">Flow (m³/hr)</div>,
-                                        dataIndex: 'flow',
-                                        key: 'flow',
+                                        title: <div className="text-[#475467]">NOx</div>,
+                                        
+                                        dataIndex: 'NOx',
+                                        render: (text: string, record: any) => record?.NOx || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">Particulate (mg/m³)</div>,
-                                        dataIndex: 'particulate',
-                                        key: 'particulate',
+                                        title: <div className="text-[#475467]">SOx</div>,
+                                        
+                                        dataIndex: 'SOx',
+                                        render: (text: string, record: any) => record?.SOx || 'N/A',
 
                                     },
+                                    {
+                                        title: <div className="text-[#475467]">CO</div>,
+                                        
+                                        dataIndex: 'CO',
+                                        render: (text: string, record: any) => record?.CO || 'N/A',
+
+                                    },
+                                    {
+                                        title: <div className="text-[#475467]">CO2</div>,
+                                        
+                                        dataIndex: 'CO2',
+                                        render: (text: string, record: any) => record?.CO2 || 'N/A',
+
+                                    },
+                                    {
+                                        title: <div className="text-[#475467]">NH3</div>,
+                                        
+                                        dataIndex: 'NH3',
+                                        render: (text: string, record: any) => record?.NH3 || 'N/A',
+
+                                    },
+                                    {
+                                        title: <div className="text-[#475467]">H2S</div>,
+                                        
+                                        dataIndex: 'H2S',
+                                        render: (text: string, record: any) => record?.H2S || 'N/A',
+
+                                    },
+                                    {
+                                        title: <div className="text-[#475467]">Dust</div>,
+                                        
+                                        dataIndex: 'Dust',
+                                        render: (text: string, record: any) => record?.Dust || 'N/A',
+
+                                    },
+                                    {
+                                        title: <div className="text-[#475467]">Opacity</div>,
+                                        
+                                        dataIndex: 'Opacity',
+                                        render: (text: string, record: any) => record?.Opacity || 'N/A',
+
+                                    },
+                                    // {
+                                    //     title: <div className="text-[#475467]">CO (ppm)</div>,
+                                    //     dataIndex: 'CO',
+                                    //     key: 'CO',
+
+                                    // },
+                                    // {
+                                    //     title: <div className="text-[#475467]">NOx (ppm)</div>,
+                                    //     dataIndex: 'NOx',
+                                    //     key: 'NOx',
+
+                                    // },
+                                    // {
+                                    //     title: <div className="text-[#475467]">SOx (ppm)</div>,
+                                    //     dataIndex: 'SOx',
+                                    //     key: 'SOx',
+
+                                    // },
+                                    // {
+                                    //     title: <div className="text-[#475467]">Temp (°C)</div>,
+                                    //     dataIndex: 'temperature',
+                                    //     key: 'temperature',
+
+                                    // },
+                                    // {
+                                    //     title: <div className="text-[#475467]">O2 (%)</div>,
+                                    //     dataIndex: 'O2',
+                                    //     key: 'O2',
+
+                                    // },
+                                    // {
+                                    //     title: <div className="text-[#475467]">Flow (m³/hr)</div>,
+                                    //     dataIndex: 'flow',
+                                    //     key: 'flow',
+
+                                    // },
+                                    // {
+                                    //     title: <div className="text-[#475467]">Particulate (mg/m³)</div>,
+                                    //     dataIndex: 'particulate',
+                                    //     key: 'particulate',
+
+                                    // },
                                 ]}
                             />
                         </div>

@@ -39,18 +39,18 @@ export default function EnvironmentCard({ data }: any) {
                     <span className="text-red-500 bg-red-100 px-2 py-1 rounded-full">มีผลกระทบ</span>
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
-                    <p>COD</p>
+                    <p>SOx</p>
                     <p className="font-bold">{data?.LastUpdate?.SOx_7p || "N/A"} mg/I</p>
                 </div>
                 <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467] mt-1">
-                    <p>Flow</p>
-                    <p className="font-bold">1,000 m3/hr</p>
+                    <p>CO</p>
+                    <p className="font-bold">{data?.LastUpdate?.CO_7p || "N/A"}</p>
                 </div>
                 <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467] mt-1">
-                    <p>Watt</p>
-                    <p className="font-bold">27.56 kW</p>
+                    <p>NH3</p>
+                    <p className="font-bold">{data?.LastUpdate?.NH3_7p || "N/A"}</p>
                 </div>
             </div>
         </AntCard>
