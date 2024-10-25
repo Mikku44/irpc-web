@@ -76,7 +76,7 @@ export default function Login() {
                         <p className="text-gray-600 text-[16px]">กรุณาใส่ข้อมูลเพื่อลงทะเบียนเข้าใช้งาน</p>
                     </div>
                     <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                        <form>
+                        <form action={fetchData}>
                             <div className="mb-4">
                                 <label htmlFor="fullName" className="block text-gray-700 mb-2">ชื่อและนามสกุล</label>
                                 <Input onChange={e => setFullname(e.target.value)} className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
@@ -98,7 +98,7 @@ export default function Login() {
                                 <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
                                 <Input.Password onChange={e => setPassword(e.target.value)} className="p-3 w-full " placeholder="รหัสผ่าน" minLength={8} />
                             </div>
-                            <button onClick={e => { fetchData() }} type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
+                            <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
                         </form>
                     </div>
                     <div className="text-center mt-6">
@@ -113,7 +113,7 @@ export default function Login() {
                     <p className="text-gray-600 text-[16px]">กรุณาใส่ข้อมูลเพื่อลงทะเบียนเข้าใช้งาน</p>
                 </div>
                 <div className=" w-full max-w-md">
-                    <form>
+                    <form action={fetchData}>
                         <div className="mb-4">
                             <label htmlFor="fullName" className="block text-gray-700 mb-2">ชื่อและนามสกุล</label>
                             <Input onChange={e => setFullname(e.target.value)} className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
@@ -134,7 +134,7 @@ export default function Login() {
                             <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
                             <Input.Password onChange={e => setPassword(e.target.value)} className="p-3 w-full " placeholder="รหัสผ่าน" />
                         </div>
-                        <button onClick={e => { fetchData() }} type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
+                        <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
                     </form>
                 </div>
                 <div className="text-center mt-6">

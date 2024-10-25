@@ -15,7 +15,7 @@ export default function EnvironmentCard({ data }: any) {
                         className="object-cover w-full h-full relative z-0"
                     />
                     <div className="absolute top-4 right-4 p-2 bg-white/20 glass border-[1px] border-white/80  rounded-full">
-                        <Bookmark className="text-white size-4 fill-white text-lg" />
+                        <Bookmark className="text-white size-4 text-lg" />
                     </div>
 
                     <div className="bg-black/20 backdrop-blur-md border-t-[1px] border-white/30 absolute flex w-full justify-between bottom-0 px-4 py-6 items-center z-1">

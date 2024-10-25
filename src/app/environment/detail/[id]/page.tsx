@@ -4,7 +4,7 @@ import Badge from '@/app/components/Badge';
 import ColumnGraph from '@/app/components/ColumnGraph';
 import Table from '@/app/components/Table';
 import { getData } from '@/app/ultilities/api';
-import { Breadcrumb, Radio } from 'antd';
+import { Breadcrumb, Radio, Select } from 'antd';
 import { ChevronRight, House, MapPin, Waves } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -49,7 +49,7 @@ export default function Detail({ params }: { params: any }) {
 
     return <>
         <div className="h-[240px] overflow-hidden w-full flex justify-center">
-            <AntImage
+           <Image width={1023} height={300}
                 src={`${cemsDetail?.image_url || "/images/cover-image.png"}`}
                 className="w-full h-full object-cover bg-black"
                 alt={''}
@@ -84,7 +84,7 @@ export default function Detail({ params }: { params: any }) {
                     <h3 className="font-bold text-[30px]">{cemsDetail?.nameTH}</h3>
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${cemsDetail?.LastUpdate.date}T${cemsDetail?.LastUpdate.time}`))}</div>
                 </div>
-                <div>
+                <div className="flex flex-col items-end">
                     <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
                     <div className="text-[36px] font-bold">{cemsDetail?.LastUpdate.NOx} <span className="text-[20px] font-normal">COD/mgI</span></div>
                 </div>
@@ -92,7 +92,7 @@ export default function Detail({ params }: { params: any }) {
 
             <div className="w-full bg-slate-200 h-[1px]  rounded-xl my-10"></div>
             <section className="lg:flex-row flex-col flex ">
-                <div className="lg:basis-1/3">
+                <div className="lg:basis-1/3 py-2">
                     {/* Location */}
                     <span className="text-[14px] text-gray-500 mb-2">ตำแหน่งที่ตั้ง</span>
                     <div className="flex items-center mb-4">
@@ -165,11 +165,26 @@ export default function Detail({ params }: { params: any }) {
                         <div className="flex justify-between py-8 gap-5 flex-wrap">
                             <div className="font-bold">ค่า COD, Flow, Watt ย้อนหลัง 24 ชั่วโมง</div>
                             <div className="">
-                                <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
+                                {/* <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
                                     <Radio.Button value="ALL"><div className='flex gap-2 items-center'>ทั้งหมด </div></Radio.Button>
                                     {RadioList.map( item => <Radio.Button value={item} key={item}><div className='flex gap-2 items-center'>{item}</div></Radio.Button>)}
                                    
-                                </Radio.Group>
+                                </Radio.Group> */}
+
+                                <Select
+                                    // showSearch
+                                    onChange={(e) => setDisplay(e)}
+                                    style={{ width: 200 }}
+                                    placeholder="Search to Select"
+                                    optionFilterProp="label"
+                                    value={display}
+                                    options={RadioList.map(item => {
+                                        return {
+                                            value: item,
+                                            label: item
+                                        }
+                                    })}
+                                />
                             </div>
                         </div>
                         <div className=" overflow-hidden flex justify-center">

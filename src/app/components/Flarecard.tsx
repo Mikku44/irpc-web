@@ -14,7 +14,7 @@ export default function Flarecard({item}:{item:any}) {
               src={item?.image_url} // Replace with your image source
               className="object-cover w-full h-full relative z-0" />
             <div className="absolute top-4 right-4 p-2 bg-white/20 glass border-[1px] border-white/80  rounded-full">
-              <Bookmark className="text-white size-4 fill-white text-lg" />
+              <Bookmark className="text-white size-4 text-lg" />
             </div>
           </div>
         }

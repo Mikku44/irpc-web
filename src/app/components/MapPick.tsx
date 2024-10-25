@@ -110,7 +110,15 @@ export default function MapPick({ data, setState, key, unit }: any) {
 
                         marker && setState && setState(marker)
                     });
-
+                    
+                    const colorMap = [
+                        '',
+                        '<div style="background:#EFF4FF;border:1px solid #155EEF;border-radius:20px;padding:2px 10px;color:#155EEF;">คุณภาพดีมาก</div>',
+                        '<div style="background:#ECFDF3;border:1px solid #067647;border-radius:20px;padding:2px 10px;color:#067647;">คุณภาพดี</div>',
+                        '<div style="background:#FFFAEB;border:1px solid #B54708;border-radius:20px;padding:2px 10px;color:#B54708;">คุณภาพปานกลาง</div>',
+                        '<div style="background:#FEF6EE;border:1px solid #B93815;border-radius:20px;padding:2px 10px;color:#B93815;">เริ่มมีผลกระทบ</div>',
+                        '<div style="background:#FEF3F2;border:1px solid #ef4444;border-radius:20px;padding:2px 10px;color:#ef4444;">มีผลกระทบ</div>'
+                    ]
 
                     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                         `<div style="display: grid;">
@@ -118,7 +126,7 @@ export default function MapPick({ data, setState, key, unit }: any) {
                             <div style="font-size: 1.25rem; font-weight:bold;">
                                 ${ marker.LastUpdate?.AQI?.aqi ||  marker.LastUpdate?.COD ||  marker.LastUpdate?.NOx_7p  || "N/A"} <span style="font-size: 1.125rem;font-weight:normal;">${unit}</span>
                             </div>
-                            <div style="background:#FEF3F2;border:1px solid #ef4444;border-radius:20px;padding:2px 10px;color:#ef4444;">มีผลกระทบ</div>
+                            ${colorMap[(marker.LastUpdate?.AQI?.color_id)]}
                         </div>
                         <div style="height:2px;margin:10px;background:#EAECF0;border-radius:10px;"></div>
                         <div style="display: grid;justify-items:center;">

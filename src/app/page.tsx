@@ -1,5 +1,5 @@
 'use client'
-import { ArrowRight, ArrowUpRight, ChevronRight, Fullscreen } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronRight, FlagOff, Fullscreen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Card from "./components/Card";
@@ -17,6 +17,7 @@ import EnvironmentCard from "./components/EnvironmentCard";
 import Flarecard from "./components/Flarecard";
 import StationCard from "./components/StationCard";
 import { getData } from "./ultilities/api";
+import { getArrayFromLocalStorage } from "./ultilities/localStorageManager";
 
 
 const MeasuringMap: any = {
@@ -55,8 +56,17 @@ export default function Home() {
 
   }
 
+  const [Fav, setFav] = useState<any>(null);
+
+  function getFav() {
+    const localFav = getArrayFromLocalStorage('favData');
+    // console.log(localFav)
+    setFav(localFav);
+  }
+
   useEffect(() => {
     fetchData();
+    getFav();
   }, [])
 
   useEffect(() => {
@@ -226,13 +236,15 @@ export default function Home() {
 
 
       <section className="bg-[#F9FAFB] max-w-[90vw] py-10 mx-auto">
-        <div className="text-[24px] font-bold py-5">รายการโปรด (2)</div>
+        <div className="text-[24px] font-bold py-5">รายการโปรด ({Fav?.length || 0})</div>
         <div className="flex gap-10 overflow-x-auto py-5 w-[90vw]">
-          {/* <Card></Card> */}
-          <SoundCard className="min-w-[400px]"></SoundCard>
-          <SoundCard className="min-w-[400px]"></SoundCard>
-          <SoundCard className="min-w-[400px]"></SoundCard>
-          {/* <SoundCard></SoundCard> */}
+          {Fav?.map((item: any) => {
+            return <Card data={item} className="min-w-[400px]"></Card>
+          })}
+          {Fav?.length === 0 && <div className="w-full flex justify-center flex-col gap-5 items-center">
+            <FlagOff className="size-[48px] text-[--primary]"></FlagOff>
+            No have favourites.</div>}
+
         </div>
       </section>
 

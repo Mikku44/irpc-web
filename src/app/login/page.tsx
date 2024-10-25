@@ -43,7 +43,7 @@ export default function Login() {
                         <p className="text-gray-600 text-[16px]">กรุณาใส่อีเมลและรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
                     </div>
                     <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                        <form>
+                        <form action={fetchData}>
                             <div className="mb-4">
                                 <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
                                 <Input type="email" onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกอีเมลของคุณ" />
@@ -58,7 +58,7 @@ export default function Login() {
                                 </div>
                                 <a href="#" className="text-blue-500">ลืมรหัสผ่าน?</a>
                             </div>
-                            <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition" onClick={e => fetchData()}>เข้าสู่ระบบ</button>
+                            <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">เข้าสู่ระบบ</button>
                         </form>
                         <div className="text-center mt-6 ">
                             <p className="text-gray-600"> ยังไม่มีบัญชีผู้ใช้? <Link href="/register" className="text-blue-500 font-bold">ลงทะเบียน</Link></p>
@@ -74,7 +74,7 @@ export default function Login() {
                         <p className="text-gray-600 text-[16px]">กรุณาใส่อีเมลและรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
                     </div>
                     <div className="p-8 rounded-lg w-full">
-                        <form>
+                        <form action={fetchData}>
                             <div className="mb-4">
                                 <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
                                 <Input onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกอีเมลของคุณ" />
@@ -89,7 +89,7 @@ export default function Login() {
                                 </div>
                                 <a href="#" className="text-blue-500">ลืมรหัสผ่าน?</a>
                             </div>
-                            <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition" onClick={e => fetchData()}>เข้าสู่ระบบ</button>
+                            <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition" >เข้าสู่ระบบ</button>
                         </form>
                         <div className="text-center mt-6 ">
                             <p className="text-gray-600"> ยังไม่มีบัญชีผู้ใช้? <Link href="/register" className="text-blue-500 font-bold">ลงทะเบียน</Link></p>

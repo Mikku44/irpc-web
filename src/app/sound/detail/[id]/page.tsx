@@ -49,7 +49,7 @@ export default function Detail() {
                     <h3 className="font-bold text-[30px]">สถานีอุตุนิยมวิทยาลำปาง</h3>
                     <div className="text-mute text-[16px]">ประจำวันจันทร์ ที่ 19 มิถุนายน 2566 เวลา 09:05 น.</div>
                 </div>
-                <div>
+                <div className="flex flex-col items-end">
                     <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
                     <div className="text-[36px] font-bold">70.3 <span className="text-[20px] font-normal">dBA/Leq 24 ชม</span></div>
                 </div>
