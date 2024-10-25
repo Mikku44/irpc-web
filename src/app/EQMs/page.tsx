@@ -23,20 +23,22 @@ export default function EQMs() {
 
    
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
+  const [EQMs, setEQMs] = useState<any>();
+  const [currentPage, setCurrentPage] = useState<any>(0);
 
-  const currentPage = 0;
   const today = FullDateFormator(new Date())
   const pageSize = 1;
 
-  const sounds = [1, 2, 3, 4, 5, 6];
-  const soundsSplited = sounds[currentPage]
-
-
   const fetchData = async () => {
-    // const result = await getData('/UpdateV2/eqms/createImage.php')
-    // console.log(result)
+    const result = await getData('/forWeb/getEqmsList.php')
+    setEQMs(result || [])
 
-  }
+
+}
+
+useEffect(() => {
+    fetchData();
+}, [])
   return (
     <>
 
@@ -58,14 +60,14 @@ export default function EQMs() {
 
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-          {[1, 2, 3, 4, 5, 6].map(item => <Link href="#">
-            <StationCard key={item}></StationCard>
+          {EQMs?.map((item:any) => <Link  key={item?.EqmsID} href="#">
+            <StationCard data={item}></StationCard>
           </Link>)}
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
-          {[soundsSplited].map(item => <Link href="#">
-            <StationCard key={item}></StationCard>
+          {[EQMs?.[0]].map(item => <Link key={item?.EqmsID}  href="#">
+            <StationCard data={item}></StationCard>
           </Link>)}
         </div>}
 
@@ -81,9 +83,7 @@ export default function EQMs() {
           </div>
         </div>}
 
-        <Pagination current={1} onChange={(e: any) => 
-          console.log("Clickedd",e)
-        } pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
+        <Pagination current={currentPage} onChange={setCurrentPage} pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={EQMs?.length} className="lg:hidden md:hidden flex justify-center py-3" />
       </section>
 
       

@@ -45,7 +45,7 @@ export default function Detail({ params }: { params: any }) {
 
     return <>
         <div className="h-[240px] overflow-hidden w-full flex justify-center">
-            <AntImage
+           <Image width={1023} height={300}
                 src={`${watersDetail?.image_url || "/images/cover-image.png"}`}
                 className="w-full h-full object-cover bg-black"
                 alt={''}
@@ -80,7 +80,7 @@ export default function Detail({ params }: { params: any }) {
                     <h3 className="font-bold text-[30px]">{watersDetail?.nameTH}</h3>
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${watersDetail?.LastUpdate.date!}T${watersDetail?.LastUpdate.time!}`))} </div>
                 </div>
-                <div>
+                <div className="flex flex-col items-end">
                     <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
                     <div className="text-[36px] font-bold">{watersDetail?.LastUpdate.COD}<span className="text-[20px] font-normal">COD/mgI</span></div>
                 </div>

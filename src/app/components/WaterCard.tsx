@@ -5,14 +5,14 @@ import Image from 'next/image';
 import { Water } from '../models/models';
 import { useEffect } from 'react';
 
-export default function WaterCard({data}:{data:any}) {
+export default function WaterCard({data,className}:any) {
 
     // useEffect(()=>{
     //     console.log("CARD : ",data)
     // },[])
     return <>
         <AntCard
-            className="min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px]"
+            className={`lg:min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px] ${className}`}
             cover={
                 <div className="relative h-[280px]">
                     <img
@@ -21,7 +21,7 @@ export default function WaterCard({data}:{data:any}) {
                         className="object-cover w-full h-full relative z-0"
                     />
                     <div className="absolute top-4 right-4 p-2 bg-white/20 glass border-[1px] border-white/80  rounded-full">
-                        <Bookmark className="text-white size-4 fill-white text-lg" />
+                        <Bookmark className="text-white size-4 text-lg" />
                     </div>
 
                     <div className="bg-black/20 backdrop-blur-md border-t-[1px] border-white/30 absolute flex w-full justify-between bottom-0 px-4 py-6 items-center z-1">

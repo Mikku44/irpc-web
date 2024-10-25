@@ -35,12 +35,7 @@
 .mapboxgl-popup-close-button{
   padding:5px 10px !important;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+
 *{
   font-family: var(--font-inter),var(--font-prompt),var(--font-noto);
   /* color:#101828 */

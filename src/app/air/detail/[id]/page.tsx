@@ -3,7 +3,7 @@ import AreaGraph from '@/app/components/AreaGraph';
 import Badge from '@/app/components/Badge';
 import { getData } from '@/app/ultilities/api';
 import { FullDateFormator } from '@/app/ultilities/DateFormater';
-import { Breadcrumb, Radio } from 'antd';
+import { Breadcrumb, Radio, Select } from 'antd';
 import { ChevronRight, House, MapPin, Waves } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,7 +16,11 @@ import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
 
 export default function Detail({ params }: { params: any }) {
 
-    const [display, setDisplay] = useState<'PM2' | 'PM10'>('PM10');
+    const types = [
+        'AQI', 'PM2', 'PM10', 'O3', 'CO', 'NO2', 'SO2', 'WS', 'WD'
+    ];
+
+    const [display, setDisplay] = useState<'PM2' | 'PM10' | 'O3' | 'CO' | 'NO2' | 'SO2' | 'WS' | 'WD' | 'AQI'>('AQI');
     const [display2, setDisplay2] = useState<'Tempurature' | 'Pressure' | 'RH'>('Tempurature');
 
     const [airsDetail, setAirsDetail] = useState<any>();
@@ -34,7 +38,7 @@ export default function Detail({ params }: { params: any }) {
 
     return <>
         <div className="h-[240px] overflow-hidden w-full flex justify-center">
-            <AntImage
+            <Image width={1023} height={300}
                 src={`${airsDetail?.image_url || "/images/cover-image.png"}`}
                 className="w-full h-full object-cover bg-black"
                 alt={''}
@@ -70,7 +74,7 @@ export default function Detail({ params }: { params: any }) {
                     <h3 className="font-bold text-[30px]">{airsDetail?.nameTH}</h3>
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${airsDetail?.LastUpdate.date}T${airsDetail?.LastUpdate.time}`))}</div>
                 </div>
-                <div>
+                <div className="flex flex-col items-end">
                     <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
                     <div className="text-[36px] font-bold">{airsDetail?.LastUpdate.O3 || "N/A"} <span className="text-[20px] font-normal">AQI</span></div>
                 </div>
@@ -125,37 +129,66 @@ export default function Detail({ params }: { params: any }) {
                         <div className="flex justify-between py-8 flex-wrap">
                             <div className="font-bold">ข้อมูลตรวจวัดปริมาณฝุ่นละออง PM2.5 ย้อนหลัง 24 ชั่วโมง</div>
                             <div className="">
-                                <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
-                                    <Radio.Button value="PM10"><div className='flex gap-2 items-center'>PM10 </div></Radio.Button>
-                                    <Radio.Button value="PM2"><div className='flex gap-2 items-center'>PM2.5 </div></Radio.Button>
-                                </Radio.Group>
+                                {/* <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
+                                    {types.map(item => <Radio.Button value={item}><div className='flex gap-2 items-center'>{item} </div></Radio.Button>)}
+
+                                </Radio.Group> */}
+
+                                <Select
+                                    // showSearch
+                                    onChange={(e) => setDisplay(e)}
+                                    style={{ width: 200 }}
+                                    placeholder="Search to Select"
+                                    optionFilterProp="label"
+                                    value={display}
+                                    options={types.map(item => {
+                                        return {
+                                            value: item,
+                                            label: item
+                                        }
+                                    })}
+                                />
                             </div>
                         </div>
                         <div className=" overflow-hidden flex justify-center">
 
-                            {display == "PM2" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM25,"value")} />}
-                            {display == "PM10" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM10,"value")} />}
+                            {display == "AQI" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last24H?.AQI, "value")} />}
+                            {display == "CO" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last24H?.CO, "value")} />}
+                            {display == "NO2" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last24H?.NO2, "value")} />}
+                            {display == "PM2" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last24H?.PM25, "value")} />}
+                            {display == "PM10" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last24H?.PM10, "value")} />}
+                            {display == "O3" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last24H?.O3, "value")} />}
+                            {display == "SO2" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last24H?.SO2, "value")} />}
+                            {display == "WD" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last24H?.WD, "value")} />}
+                            {display == "WS" && airsDetail && <AreaGraph data={convertPropertyToNumber(airsDetail.Last24H?.WS, "value")} />}
 
                         </div>
                     </section>
 
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ค่าตรวจวัดข้อมูลทางอุตุนิยมวิทยาย้อนหลัง 24 ชั่วโมง</div>
-                            <div className="">
+                            <div className="font-bold">ค่าตรวจวัดข้อมูลทางอุตุนิยมวิทยาย้อนหลัง 7 วัน</div>
+                            {/* <div className="">
                                 <Radio.Group value={display2} onChange={(e) => setDisplay2(e.target.value)}>
                                     <Radio.Button value="Tempurature"><div className='flex gap-2 items-center'>Temperature </div></Radio.Button>
                                     <Radio.Button value="Pressure"><div className='flex gap-2 items-center'>Pressure </div></Radio.Button>
                                     <Radio.Button value="RH"><div className='flex gap-2 items-center'>RH </div></Radio.Button>
                                 </Radio.Group>
 
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
+                            {display == "AQI" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.AQI, "value")} />}
+                            {display == "CO" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.CO, "value")} />}
+                            {display == "NO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.NO2, "value")} />}
+                            {display == "PM2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.PM25, "value")} />}
+                            {display == "PM10" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.PM10, "value")} />}
+                            {display == "O3" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.O3, "value")} />}
+                            {display == "SO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.SO2, "value")} />}
+                            {display == "WD" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.WD, "value")} />}
+                            {display == "WS" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.WS, "value")} />}
 
-                            {display == "PM2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM25,"value")} />}
-                            {display == "PM10" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM10,"value")} />}
                         </div>
                     </section>
                 </div>

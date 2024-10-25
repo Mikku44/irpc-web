@@ -29,13 +29,22 @@ export default function Environment() {
 
     const today = FullDateFormator(new Date())
     const pageSize = 1;
-
+    const [airsFiltered, setAirsFiltered] = useState<any>({
+        0: "",
+        1: ""
+    });
+    const handleSearch = async (keyword: string, index: number) => {
+        setAirsFiltered((prev: any) => ({
+            ...prev,
+            [index]: keyword,
+        }));
+    };
 
 
     const fetchData = async () => {
         const result = await getData('/forWeb/getCemsLast.php')
         setCems(result.stations || [])
-       
+
 
     }
 
@@ -44,8 +53,8 @@ export default function Environment() {
     }, [])
 
     useEffect(() => {
-        if(cems)
-         setSelectedPlace(cems[0])
+        if (cems)
+            setSelectedPlace(cems[0])
     }, [cems])
 
 
@@ -62,7 +71,7 @@ export default function Environment() {
                 <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
                     <Badges />
                     <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
-                        <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
+                        <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
                         <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
                             <Radio.Group
                                 value={display}
@@ -89,28 +98,31 @@ export default function Environment() {
 
             <section id="lists" className='px-10 bg-white py-5'>
                 {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-                    {cems.map((item: any) => <Link href={`environment/detail/${item.stationID}`} key={item.stationID}>
+                    {cems.filter((item: any) => {
+                        if (!airsFiltered[0]) return item
+                        return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
+                    }).map((item: any) => <Link href={`environment/detail/${item.stationID}`} key={item.stationID}>
                         <EnvironmentCard data={item}></EnvironmentCard>
                     </Link>)}
                 </div>}
 
                 {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
                     <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={cems?.length} className="lg:hidden md:hidden flex justify-center py-3" >
-                        {[cems[currentPage]].map((item:any) => <Link key={item?.stationID} href={`/environment/detail/${item?.stationID}`}>
-                            <EnvironmentCard  data={item}></EnvironmentCard>
+                        {[cems[currentPage]].map((item: any) => <Link key={item?.stationID} href={`/environment/detail/${item?.stationID}`}>
+                            <EnvironmentCard data={item}></EnvironmentCard>
                         </Link>)}
                     </Pagination>
                 </div>}
 
 
                 {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">
-                   {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
+                    {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
                         <Link href={`environment/detail/${selectedPlace?.stationID}`}>
                             <EnvironmentCard data={selectedPlace}></EnvironmentCard>
                         </Link>
                     </div>}
                     <div className=" w-full lg:h-auto md:h-[50vh] h-[50vh]">
-                        <MapPick data={cems} setState={setSelectedPlace} unit="NOx" key="NOx_7p"/>
+                        <MapPick data={cems} setState={setSelectedPlace} unit="NOx" key="NOx_7p" />
                     </div>
                 </div>}
 
@@ -119,7 +131,7 @@ export default function Environment() {
             <section id="table" className="px-10 py-10">
                 <div className="flex flex-wrap gap-2 justify-between">
                     <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพเสียง</div>
-                    <div className="search"> <Input size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans" prefix={<Search />} /></div>
+                    <div className="search"> <Input onChange={e => handleSearch(e.target.value,1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans" prefix={<Search />} /></div>
                 </div>
 
                 <div className='py-5'>
@@ -136,47 +148,95 @@ export default function Environment() {
                             //         Particulate: 0.31,
                             //     },
                             // ]
-                            cems
+                            cems.filter((item: any) => {
+                                if(!airsFiltered[1]) return item
+                                return item?.nameTH?.toLowerCase().includes(airsFiltered[1].toLowerCase())
+                              })
                         }
 
 
                         columns={[
                             {
                                 title: <div className="text-[#475467]">สถานี</div>, // Station
+                                width: 200,
                                 dataIndex: 'nameTH',
                             },
                             {
                                 title: <div className="text-[#475467]">จุดตรวจวัด</div>, // Measurement Point
+                                width: 200,
                                 dataIndex: 'areaTH',
                             },
                             {
                                 title: <div className="text-[#475467]">เวลาอัพเดต</div>, // Updated Time
+                                width: 200,
                                 dataIndex: 'updated',
                                 render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">CO (ppm)</div>, // CO (ppm)
+                                title: <div className="text-[#475467]">O2</div>,
+                                width: 200,
+                                dataIndex: 'O2',
+                                render: (text: string, record: any) => record.LastUpdate?.O2 || 'N/A',
+                            },
+                            {
+                                title: <div className="text-[#475467]">NOx</div>,
+                                width: 200,
+                                dataIndex: 'NOx',
+                                render: (text: string, record: any) => record.LastUpdate?.NOx_7p || 'N/A',
+                            },
+                            {
+                                title: <div className="text-[#475467]">SOx</div>,
+                                width: 200,
+                                dataIndex: 'SOx',
+                                render: (text: string, record: any) => record.LastUpdate?.SOx_7p || 'N/A',
+                            },
+                            {
+                                title: <div className="text-[#475467]">CO (ppm)</div>,
+                                width: 200,
                                 dataIndex: 'CO',
-                                sorter: {
-                                    compare: (a: { CO: number; }, b: { CO: number; }) => a.CO - b.CO,
-                                    multiple: 3,
-                                },
                                 render: (text: string, record: any) => record.LastUpdate?.CO_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">Flow (m³/hr)</div>, // Flow (m³/hr)
-                                dataIndex: 'Flow',
+                                title: <div className="text-[#475467]">CO2</div>,
+                                width: 200,
+                                dataIndex: 'CO2',
+                                render: (text: string, record: any) => record.LastUpdate?.CO2_7p || 'N/A',
+                            },
+                            {
+                                title: <div className="text-[#475467]">NH3</div>,
+                                width: 200,
+                                dataIndex: 'NH3',
+                                render: (text: string, record: any) => record.LastUpdate?.NH3_7p || 'N/A',
+                            },
+                            {
+                                title: <div className="text-[#475467]">H2S</div>,
+                                width: 200,
+                                dataIndex: 'H2S',
+                                render: (text: string, record: any) => record.LastUpdate?.H2S_7p || 'N/A',
+                            },
+                            {
+                                title: <div className="text-[#475467]">Dust (m³/hr)</div>,
+                                width: 200,
+                                dataIndex: 'Dust',
                                 render: (text: string, record: any) => record.LastUpdate?.Dust || 'N/A',
 
                             },
                             {
-                                title: <div className="text-[#475467]">Particulate (mg/m³)</div>, // Particulate (mg/m³)
-                                dataIndex: 'Particulate',
-                                sorter: {
-                                    compare: (a: { Particulate: number; }, b: { Particulate: number; }) => a.Particulate - b.Particulate,
-                                    multiple: 3,
-                                },
+                                title: <div className="text-[#475467]">Opacity</div>,
+                                width: 200,
+                                dataIndex: 'Opacity',
+                                render: (text: string, record: any) => record.LastUpdate?.Opacity || 'N/A',
+
                             },
+
+                            // {
+                            //     title: <div className="text-[#475467]">Particulate (mg/m³)</div>, // Particulate (mg/m³)
+                            //     dataIndex: 'Particulate',
+                            //     sorter: {
+                            //         compare: (a: { Particulate: number; }, b: { Particulate: number; }) => a.Particulate - b.Particulate,
+                            //         multiple: 3,
+                            //     },
+                            // },
                         ]}
                     />
 

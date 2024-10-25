@@ -31,7 +31,16 @@ export default function Sound() {
   const [currentPage,setCurrentPage] = useState(0);
   const today = FullDateFormator(new Date())
   const pageSize = 1;
-
+  const [airsFiltered, setAirsFiltered] = useState<any>({
+    0: "",
+    1: ""
+  });
+  const handleSearch = async (keyword: string, index: number) => {
+    setAirsFiltered((prev: any) => ({
+      ...prev,
+      [index]: keyword,
+    }));
+  };
 
   const fetchData = async () => {
     const result = await getData('/forWeb/getWaterLast.php')
@@ -62,7 +71,7 @@ export default function Sound() {
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
           <Badges />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
-            <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
+            <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" }} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
               <Radio.Group
                 value={display}
@@ -89,7 +98,10 @@ export default function Sound() {
 
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-          {waters.map((item: Water) => <Link key={item.stationID} href={`water/detail/${item.stationID}`}>
+          {waters.filter((item: any) => {
+              if(!airsFiltered[0]) return item
+              return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
+            }).map((item: Water) => <Link key={item.stationID} href={`water/detail/${item.stationID}`}>
             <WaterCard key={item.stationID} data={item}></WaterCard>
           </Link>)}
         </div>}
@@ -137,7 +149,10 @@ export default function Sound() {
               //     updated: DateFormator(new Date()),
               //   },
               // ]
-              waters
+              waters.filter((item: any) => {
+                if(!airsFiltered[1]) return item
+                return item?.nameTH?.toLowerCase().includes(airsFiltered[1].toLowerCase())
+              })
             }
 
             columns={[

@@ -21,13 +21,7 @@ export default function MultiLineGraph({ data }: any) {
         if (!chartRef.current) {
             if (containerRef.current) {
                 chartRef.current = new Line(containerRef.current, {
-                    data: data?.length > 0 ? data : [{
-                        "timePeriod": "2006 Q3",
-                        "value": 1
-                    }, {
-                        "timePeriod": "2006 Q3",
-                        "value": 10
-                    },],
+                    data: data?.length > 0 ? data : [],
                     isStack:false,
                     seriesField:  keys.length > 0 ? keys[0] : 'name',
                     xField: keys.length > 0 ? keys[1] : 'timePeriod',
