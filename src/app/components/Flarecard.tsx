@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Card as AntCard } from 'antd';
 import { Bookmark, CirclePlay } from 'lucide-react';
 
-export default function Flarecard({item}:{item:any}) {
+export default function Flarecard({item,isFav}:any) {
   return (
     <div>
       <AntCard

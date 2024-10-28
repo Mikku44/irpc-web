@@ -4,9 +4,15 @@ import Meta from 'antd/es/card/Meta';
 import { AArrowDown, Bookmark } from 'lucide-react';
 import Image from 'next/image';
 import Badge from './Badge';
-import { getArrayFromLocalStorage, isObjectEqual, isObjectInArray, saveArrayToLocalStorage } from '../ultilities/localStorageManager';
+import { favouriteAction, getArrayFromLocalStorage, isObjectEqual, isObjectInArray, saveArrayToLocalStorage } from '../ultilities/localStorageManager';
+import { useEffect, useState } from 'react';
 
-export default function Card({ data, className }: any) {
+export default function Card({ data, className,isFav }: any) {
+    const [Fav, setFav] = useState(isFav);
+
+    useEffect(() => {
+           
+    }, [Fav]);
     return <>
         <AntCard
             className={`lg:min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px] ${className}`}
@@ -19,20 +25,13 @@ export default function Card({ data, className }: any) {
                     />}
                     <button className='' onClick={e => {
                         e.preventDefault()
-                        const tempData = getArrayFromLocalStorage("favData")
-                        if (isObjectInArray(tempData || [], data)) {
-                            // Remove 'data' if it already exists in 'tempData'
-                            saveArrayToLocalStorage("favData", tempData ? tempData.filter((item: any) => !isObjectEqual(item, data)) : []);
-                        } else {
-                            // Add 'data' if it does not exist in 'tempData'
-                            saveArrayToLocalStorage("favData", [...(tempData || []), { ...data, type: "air" }]);
-                        }
+                        favouriteAction(data,"air");
 
 
                     }}>
 
-                        <div className="absolute top-4 right-4 p-2 duration-150 hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
-                            <Bookmark className="text-white size-4 text-lg" />
+                        <div onClick={e => setFav((prev:Boolean) => !prev)} className="absolute top-4 right-4 p-2 duration-150 hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
+                            <Bookmark className={`text-white size-4 text-lg ${Fav && "fill-white"}`} />
                         </div>
                     </button>
 

@@ -5,6 +5,7 @@ import { ChevronDown, Menu, PhoneCall, Send, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getArrayFromLocalStorage } from "../ultilities/localStorageManager";
 
 
 const items: MenuProps['items'] = [
@@ -47,7 +48,7 @@ const suggestBTN: MenuProps['items'] = [
   {
     key: '1',
     label: (
-      <a target="_blank" className="flex gap-2 " rel="noopener noreferrer" href="/report">
+      <a className="flex gap-2 " rel="noopener noreferrer" href="/report">
         <Send className="size-5" style={{ color: "#667085" }} />  ไปหน้าแนะนำติชม
       </a>
     ),
@@ -55,11 +56,63 @@ const suggestBTN: MenuProps['items'] = [
   {
     key: '2',
     label: (
-      <a target="_blank" className="flex gap-2 " rel="noopener noreferrer" href="tel:+6627657380">
+      <a className="flex gap-2 " rel="noopener noreferrer" href="tel:+6627657380">
         <PhoneCall className="size-5" style={{ color: "#667085" }} /> โทรด่วน +66(0) 2765-7380
       </a>
     ),
   },
+
+];
+const loginBTN: MenuProps['items'] = [
+  {
+    key: '1',
+    label: (
+      <a className="flex gap-2 " rel="noopener noreferrer" href="/login?type=user">
+        {/* <Send className="size-5" style={{ color: "#667085" }} /> */}
+        สำหรับผู้ใช้งานทั่วไป
+      </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <a className="flex gap-2 " rel="noopener noreferrer" href="/login?type=admin">
+        {/* <PhoneCall className="size-5" style={{ color: "#667085" }} /> */}
+        สำหรับเจ้าหน้าที่
+      </a>
+    ),
+  },
+
+];
+const loginedDropdown: MenuProps['items'] = [
+  {
+    key: '1',
+    label: (
+      <div className="flex gap-2 " color="danger" rel="noopener noreferrer" >
+
+        Role : {
+          getArrayFromLocalStorage("user_data")?.role}
+      </div>
+    ),
+  },
+  {
+    key: '3',
+    label: (
+      <a className="flex gap-2 text-[--error] " color="danger" rel="noopener noreferrer" onClick={() => {
+
+        localStorage.removeItem("token")
+        localStorage.removeItem("user_data")
+        // localStorage.removeItem("favData")
+        window.location.reload()
+      }
+      }>
+
+        ออกจากระบบ
+      </a>
+    ),
+  },
+
+
 
 ];
 
@@ -68,9 +121,20 @@ const suggestBTN: MenuProps['items'] = [
 export default function Navbar() {
 
   const [open, setOpen] = useState(false);
+  const [userData, setUserData] = useState<any>();
 
+  useEffect(() => {
+    const tempUser = getArrayFromLocalStorage("user_data")
+    setUserData(tempUser)
+    console.log(tempUser)
 
+  }, [])
 
+  useEffect(() => {
+
+    console.log("USER : ", userData)
+
+  }, [userData])
 
   const onClose = () => {
     setOpen(false);
@@ -113,7 +177,7 @@ export default function Navbar() {
 
 
 
-      <div className="lg:flex md:hidden hidden  gap-2">
+      <div className="lg:flex md:hidden hidden items-center gap-3">
         <Dropdown menu={{ items: suggestBTN }}>
           <Button type="default" className="">
 
@@ -121,17 +185,28 @@ export default function Navbar() {
             <ChevronDown className="size-5"></ChevronDown>
           </Button>
         </Dropdown>
-        <Link href="/login">
-          <Button type="primary" className="text-white">
-            เข้าสู่ระบบ
-          </Button>
-        </Link>
+
+        {!userData ?
+          <Dropdown menu={{ items: loginBTN }}>
+            <Button type="primary" className="text-white w-full">
+
+              <div className="">เข้าสู่ระบบ</div>
+              <ChevronDown className="size-5"></ChevronDown>
+            </Button>
+          </Dropdown>
+          :
+          <Dropdown menu={{ items: loginedDropdown }}>
+            <Button className="">{userData?.fullname}
+              <ChevronDown className="size-5"></ChevronDown>
+            </Button>
+          </Dropdown>
+        }
       </div>
 
 
       <div className="lg:hidden md:block block">
         <Button type="text" onClick={e => setOpen(true)} className="">
-          <Menu  />
+          <Menu />
         </Button>
       </div>
 
@@ -195,11 +270,24 @@ export default function Navbar() {
             </Button>
           </Dropdown>
 
-          <Link href="/login" className="w-full">
-            <Button type="primary" className="text-white w-full">
-              เข้าสู่ระบบ
-            </Button>
-          </Link>
+
+
+
+          {!userData ?
+            <Dropdown menu={{ items: loginBTN }}>
+              <Button type="primary" className="text-white w-full">
+
+                <div className="">เข้าสู่ระบบ</div>
+                <ChevronDown className="size-5"></ChevronDown>
+              </Button>
+            </Dropdown>
+            :
+            <Dropdown menu={{ items: loginedDropdown }}>
+              <Button className="">{userData?.fullname}
+                <ChevronDown className="size-5"></ChevronDown>
+              </Button>
+            </Dropdown>
+          }
         </div>
       </Drawer>
     </div>

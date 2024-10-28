@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="w-full bg-white">
         <footer className="bg-white border-t py-8">
           <div className="lg:flex  md:grid grid justify-between items-center px-0">
-            <div className="flex flex-col items-start mb-6 md:mb-0 text-left ml-20">
+            <div className="flex flex-col items-start mb-6 md:mb-0 text-left lg:ml-20 ml-10">
               <img src="/images/irpc-logo.svg" alt="IRPC Logo" className="h-8 mb-4" />
               <p className="text-gray-600 text-sm max-w-xs">Design amazing digital experiences that create more happy in the world.</p>
               <div className="lg:flex md:grid grid flex-wrap justify-start lg:space-x-7 gap-4 mt-4">
@@ -20,7 +20,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="lg:flex md:grid grid lg:p-0 md:px-20 px-20 flex-col items-end text-left mr-20">
+            <div className="lg:flex md:grid grid lg:p-0 md:px-20 px-10 flex-col items-end text-left mr-20">
               <div className="flex flex-col space-y-2">
                 <p className="text-blue-500 mb-2 ">Get the app</p>
                 <a href="#">

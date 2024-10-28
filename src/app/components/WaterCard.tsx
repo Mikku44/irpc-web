@@ -3,13 +3,15 @@ import Meta from 'antd/es/card/Meta';
 import { AArrowDown, Bookmark } from 'lucide-react';
 import Image from 'next/image';
 import { Water } from '../models/models';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { favouriteAction } from '../ultilities/localStorageManager';
 
-export default function WaterCard({data,className}:any) {
+export default function WaterCard({ data, className, isFav }: any) {
+    const [Fav, setFav] = useState(isFav);
 
-    // useEffect(()=>{
-    //     console.log("CARD : ",data)
-    // },[])
+    useEffect(() => {
+
+    }, [Fav]);
     return <>
         <AntCard
             className={`lg:min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px] ${className}`}
@@ -20,12 +22,21 @@ export default function WaterCard({data,className}:any) {
                         src={`${data && data?.image_url || "/images/irpc-logo.png"}`}// Replace with your image source
                         className="object-cover w-full h-full relative z-0"
                     />
-                    <div className="absolute top-4 right-4 p-2 bg-white/20 glass border-[1px] border-white/80  rounded-full">
-                        <Bookmark className="text-white size-4 text-lg" />
-                    </div>
+                    <button className='' onClick={e => {
+                        e.preventDefault()
+                        favouriteAction(data, "air");
+
+
+                    }}>
+
+                        <div onClick={e => setFav((prev: Boolean) => !prev)} className="absolute top-4 right-4 p-2 duration-150 hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
+                            <Bookmark className={`text-white size-4 text-lg ${Fav && "fill-white"}`} />
+                        </div>
+                    </button>
+
 
                     <div className="bg-black/20 backdrop-blur-md border-t-[1px] border-white/30 absolute flex w-full justify-between bottom-0 px-4 py-6 items-center z-1">
-                    
+
                         <div className=" text-white ">
                             <span className="text-4xl font-bold">{data?.LastUpdate?.COD || "N/A"}</span>
                             <span className="text-lg pl-2">COD/mgI</span>
@@ -53,7 +64,7 @@ export default function WaterCard({data,className}:any) {
                     <p>ค่า PH</p>
                     <p className="font-bold">{data?.LastUpdate?.pH || "N/A"}</p>
                 </div>
-                
+
             </div>
         </AntCard>
     </>

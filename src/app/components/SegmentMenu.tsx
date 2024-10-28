@@ -1,11 +1,13 @@
 'use client'
 
 import Segmented from "antd/es/segmented"
-import { SegmentList } from "../globals"
+import { privatePath, SegmentList, SegmentUserList } from "../globals"
 import { useRouter } from "next/dist/client/components/navigation";
 import { useEffect, useState } from "react";
 import { setCookie, getCookie } from "../ultilities/setCookie";
 import { Select } from "antd";
+import { getData } from "../ultilities/api";
+import { getArrayFromLocalStorage } from "../ultilities/localStorageManager";
 
 
 export default function SegmentMenu() {
@@ -18,16 +20,53 @@ export default function SegmentMenu() {
         "EQMs"
     ]
 
+    async function fetchData() {
+        try {
+            const token = localStorage.getItem('token');
+
+
+            // Make request with Authorization header
+            const result = await getData('/forWeb/authInfo.php', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+
+            if (result?.status == "ok") {
+                setRole(result?.user_data?.role)
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            const role = getArrayFromLocalStorage("user_data")?.role
+            setRole(role || 'client')
+        }
+    }
+
     useEffect(() => {
         const segment = window.location.href.split('/').pop()
         setSegmentValue(segment!)
         setCookie("currenSegment", `${segment}`, 30)
+        fetchData()
+
     }, [])
+
+
+
+    const [role, setRole] = useState('');
 
     const [segmentValue, setSegmentValue] = useState<string>(getCookie("currenSegment")!);
 
     const router = useRouter();
 
+    useEffect(() => {
+        const segment = window.location.href.split('/').pop()
+        if (role) {
+            if (role != 'ADMIN') {
+                segment && privatePath.includes(segment) && window.location.replace('/')
+            }
+        }
+    }, [role])
 
 
     useEffect(() => {
@@ -45,12 +84,12 @@ export default function SegmentMenu() {
                 placeholder="Search to Select"
                 optionFilterProp="label"
                 value={segmentValue}
-                options={SegmentList}
+                options={role == "ADMIN" ? SegmentList : SegmentUserList}
                 onChange={setSegmentValue}
             />
         </div>
         <div className="lg:block md:hidden hidden w-full py-5 ">
-            <Segmented options={SegmentList} size='large' style={{ padding: "8px" }} className='w-full py-2 px-2' value={segmentValue} onChange={e => {
+            <Segmented options={role == "ADMIN" ? SegmentList : SegmentUserList} size='large' style={{ padding: "8px" }} className='w-full py-2 px-2' value={segmentValue} onChange={e => {
                 setSegmentValue(e);
                 router.push(`/${e}`)
             }} block />

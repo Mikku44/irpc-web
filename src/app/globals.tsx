@@ -6,8 +6,13 @@ const total = {
     "water" :3,
     "environment" :19,
     "flare" :0,
-    "EQMs" : 0,
+    "EQMs" : 31,
 }
+
+const privatePath = [
+    'EQMs',
+    'flare'
+]
 
 const SegmentList = [
     {
@@ -57,4 +62,4 @@ const SegmentUserList = [
     }
 ];
 
-export { SegmentList };
+export { SegmentList ,SegmentUserList,privatePath};

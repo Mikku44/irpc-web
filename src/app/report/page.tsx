@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Flex, message } from "antd";
 import type { GetProp, UploadProps } from "antd";
+import Link from "next/link";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -185,9 +186,11 @@ export default function Login() {
             </form>
           </div>
           <div className="text-center ">
-            <p className="underline decoration-1 cursor-pointer  text-center">
-              ประวัติการใช้งาน
-            </p>
+            <Link href="/report/history">
+              <p className="underline decoration-1 cursor-pointer  text-center">
+                ประวัติการใช้งาน
+              </p>
+            </Link>
           </div>
         </div>
       </div>

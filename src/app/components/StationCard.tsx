@@ -8,7 +8,7 @@ export default function StationCard({ className, data }: any) {
 
     return (
         <>
-            <div className={`rounded-xl border-2 border-[#84ADFF] h-[500px] grid gap-5 h-fit p-5 shadow-md ${className}`}>
+            <div className={`rounded-xl border-2 border-[#84ADFF] h-[500px] grid gap-5 p-5 shadow-md ${className}`}>
                 <div className="flex justify-between">
                     <div className="grid">
                         <div className="text-[14px] ">{data?.EqmsType}</div>
