@@ -4,15 +4,17 @@ import Link from "next/link";
 import { Checkbox, Input, message } from 'antd';
 import { postData } from "../ultilities/api";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+;
 import { saveArrayToLocalStorage } from "../ultilities/localStorageManager";
-import { getCookie, setCookie } from "../ultilities/setCookie";
+
 
 export default function Login() {
 
-    const searchParams = useSearchParams()
-
-    const type = searchParams.get('type')
+    const [type, setType] = useState('');
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        setType(params.get('type') || '');
+    }, []);
 
     const fetchData = async () => {
         if (type === "user") {
