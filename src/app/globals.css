@@ -80,6 +80,7 @@ body {
 
 .ant-input{
   font-family:"prompt" !important;
+  padding: 8px !important;
 }
 
 @layer utilities {

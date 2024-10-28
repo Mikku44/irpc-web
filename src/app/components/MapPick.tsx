@@ -94,9 +94,9 @@ export default function MapPick({ data, setState, key, unit }: any) {
                     el.className = 'marker ';
                     el.style.cursor = 'pointer';
 
-
-                    elChild1.className = "w-12 h-12 rounded-full flex justify-center items-center animate-pulse bg-[#2970FF]/40 absolute top-[-4px] right-[-4px] duration-50"
-                    elChild.className = "w-10 h-10 rounded-full flex justify-center items-center text-white bg-[#2970FF]/60 relative z-10";
+                    const color =  '#2970FF'
+                    elChild1.className = `w-12 h-12 rounded-full flex justify-center items-center animate-pulse bg-[#2970FF]/40 absolute top-[-4px] right-[-4px] duration-50`
+                    elChild.className = `w-10 h-10 rounded-full flex justify-center items-center text-white bg-[#2970FF]/60 relative z-10`;
                     elChild.innerHTML =  marker.LastUpdate?.AQI?.aqi ||  marker.LastUpdate?.COD ||  marker.LastUpdate?.NOx_7p || "N/A";
 
 
@@ -126,7 +126,7 @@ export default function MapPick({ data, setState, key, unit }: any) {
                             <div style="font-size: 1.25rem; font-weight:bold;">
                                 ${ marker.LastUpdate?.AQI?.aqi ||  marker.LastUpdate?.COD ||  marker.LastUpdate?.NOx_7p  || "N/A"} <span style="font-size: 1.125rem;font-weight:normal;">${unit}</span>
                             </div>
-                            ${colorMap[(marker.LastUpdate?.AQI?.color_id)]}
+                            ${colorMap[(marker.LastUpdate?.AQI?.color_id || 3)]}
                         </div>
                         <div style="height:2px;margin:10px;background:#EAECF0;border-radius:10px;"></div>
                         <div style="display: grid;justify-items:center;">

@@ -66,22 +66,13 @@ useEffect(() => {
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
-          {[EQMs?.[0]].map(item => <Link key={item?.EqmsID}  href="#">
+          {[EQMs?.[currentPage]].map(item => <Link key={item?.EqmsID}  href="#">
             <StationCard data={item}></StationCard>
           </Link>)}
         </div>}
 
 
-        {display == "Map" && <div className="flex  gap-5 ">
-          <div className="basis-2/5 lg:block md:hidden hidden">
-            <Link href="#">
-              <StationCard ></StationCard>
-            </Link>
-          </div>
-          <div className="lg:basis-3/5  w-full lg:h-auto md:h-[50vh] h-[50vh]">
-            <MapPick />
-          </div>
-        </div>}
+       
 
         <Pagination current={currentPage} onChange={setCurrentPage} pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={EQMs?.length} className="lg:hidden md:hidden flex justify-center py-3" />
       </section>

@@ -28,7 +28,7 @@ export default function Login() {
                 "email": email,
                 "password": password
             })
-            if (result.status == "ok") {
+            if (result?.status == "ok") {
                 success()
             }
             else {
@@ -69,7 +69,7 @@ export default function Login() {
         <>
             {contextHolder}
             <div className="lg:block md:block hidden">
-                <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute left-[26%] w-full max-w-[758px] h-auto "></Image>
+                <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26%] w-full max-w-[758px] h-auto "></Image>
                 <div className="flex flex-col items-center justify-center relative z-[1] pt-20 pb-10 ">
                     <div className="text-center mb-6">
                         <h2 className="text-[30px] font-bold mb-2">ลงทะเบียน</h2>
@@ -112,7 +112,7 @@ export default function Login() {
                     <h2 className="text-[30px] font-bold mb-2">ลงทะเบียน</h2>
                     <p className="text-gray-600 text-[16px]">กรุณาใส่ข้อมูลเพื่อลงทะเบียนเข้าใช้งาน</p>
                 </div>
-                <div className=" w-full max-w-md">
+                <div className=" w-full max-w-md p-2">
                     <form action={fetchData}>
                         <div className="mb-4">
                             <label htmlFor="fullName" className="block text-gray-700 mb-2">ชื่อและนามสกุล</label>
