@@ -17,7 +17,7 @@ export default function Login() {
     }, []);
 
     const fetchData = async () => {
-        if (type === "user") {
+        if (type !== "admin") {
             if (validateEmail(email)) {
                 const result = await postData('/forWeb/login.php', {
                     "email": email,
@@ -113,7 +113,7 @@ export default function Login() {
     return (
         <>
             {contextHolder}
-            {type == "user" && <>
+            {type !== "admin" && <>
 
                 <div className="lg:block md:block hidden">
                     <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26vw]"></Image>

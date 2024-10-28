@@ -179,15 +179,15 @@ export default function Detail({ params }: { params: any }) {
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                            {display == "AQI" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.AQI, "value")} />}
-                            {display == "CO" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.CO, "value")} />}
-                            {display == "NO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.NO2, "value")} />}
-                            {display == "PM2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.PM25, "value")} />}
-                            {display == "PM10" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.PM10, "value")} />}
-                            {display == "O3" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.O3, "value")} />}
-                            {display == "SO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.SO2, "value")} />}
-                            {display == "WD" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.WD, "value")} />}
-                            {display == "WS" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last24H?.WS, "value")} />}
+                            {display == "AQI" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.AQI, "value")} />}
+                            {display == "CO" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.CO, "value")} />}
+                            {display == "NO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.NO2, "value")} />}
+                            {display == "PM2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM25, "value")} />}
+                            {display == "PM10" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM10, "value")} />}
+                            {display == "O3" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.O3, "value")} />}
+                            {display == "SO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.SO2, "value")} />}
+                            {display == "WD" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.WD, "value")} />}
+                            {display == "WS" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.WS, "value")} />}
 
                         </div>
                     </section>
