@@ -1,7 +1,7 @@
 'use client'
 
 import Segmented from "antd/es/segmented"
-import { SegmentList, SegmentUserList } from "../globals"
+import { privatePath, SegmentList, SegmentUserList } from "../globals"
 import { useRouter } from "next/dist/client/components/navigation";
 import { useEffect, useState } from "react";
 import { setCookie, getCookie } from "../ultilities/setCookie";
@@ -33,7 +33,7 @@ export default function SegmentMenu() {
             });
 
 
-            if(result?.status == "ok"){
+            if (result?.status == "ok") {
                 setRole(result?.user_data?.role)
             }
         } catch (error) {
@@ -51,13 +51,22 @@ export default function SegmentMenu() {
 
     }, [])
 
-    const [role, setRole] = useState('client');
+
+
+    const [role, setRole] = useState('');
 
     const [segmentValue, setSegmentValue] = useState<string>(getCookie("currenSegment")!);
 
     const router = useRouter();
 
-
+    useEffect(() => {
+        const segment = window.location.href.split('/').pop()
+        if (role) {
+            if (role != 'ADMIN') {
+                segment && privatePath.includes(segment) && window.location.replace('/')
+            }
+        }
+    }, [role])
 
 
     useEffect(() => {

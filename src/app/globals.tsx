@@ -9,6 +9,11 @@ const total = {
     "EQMs" : 31,
 }
 
+const privatePath = [
+    'EQMs',
+    'flare'
+]
+
 const SegmentList = [
     {
         label: <div className='flex gap-2 items-center justify-center text-black'>
@@ -57,4 +62,4 @@ const SegmentUserList = [
     }
 ];
 
-export { SegmentList ,SegmentUserList};
+export { SegmentList ,SegmentUserList,privatePath};
