@@ -20,15 +20,26 @@ import Pagination from '../components/Pagination';
 import { getData } from '../ultilities/api';
 export default function Sound() {
 
- 
+
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
   const [sounds, setSounds] = useState<any>([]);
-
-  const currentPage = 0;
+  const [currentPage, setCurrentPage] = useState(0);
+ 
   const today = FullDateFormator(new Date())
   const pageSize = 1;
 
-  const soundsSplited = sounds ? sounds[currentPage] : []
+  const [airsFiltered, setAirsFiltered] = useState<any>({
+    0: "",
+    1: ""
+  });
+
+  const handleSearch = async (keyword: string, index: number) => {
+    setAirsFiltered((prev: any) => ({
+      ...prev,
+      [index]: keyword,
+    }));
+  };
+  const [selectedPlace, setSelectedPlace] = useState<any>();
 
   const fetchData = async () => {
     const result = await getData('/forWeb/getSoundLast.php')
@@ -46,14 +57,14 @@ export default function Sound() {
 
       <section id="header" className="px-10 py-4 bg-white">
 
-       <SegmentMenu />
+        <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
         <div className="text-[36px] font-bold">ดัชนีคุณภาพเสียง</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-        <Badges />
+          <Badges />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
-            <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" style={{fontFamily:"prompt"}}  className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
+            <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
               <Radio.Group
                 value={display}
@@ -62,7 +73,7 @@ export default function Sound() {
               >
                 <Radio.Button value="List" className="w-1/2">
                   <div className='flex gap-2 items-center justify-center w-full'>
-                    <Grid2X2 className='w-[34px]'  />รายการ
+                    <Grid2X2 className='w-[34px]' />รายการ
                   </div>
                 </Radio.Button>
                 <Radio.Button value="Map" className="w-1/2">
@@ -80,93 +91,108 @@ export default function Sound() {
 
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-          {[1, 2, 3, 4, 5, 6].map(item => <Link href="sound/detail/someid">
-            <SoundCard key={item}></SoundCard>
+          {sounds.filter((item: any) => {
+            if (!airsFiltered[0]) return item
+            return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
+          }).map((item: any, index: number) => <Link key={index} href={`sound/detail/${item?.stationID}`}>
+            <SoundCard data={item}></SoundCard>
           </Link>)}
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
-          {[soundsSplited].map(item => <Link href="sound/detail/someid">
-            <SoundCard key={item}></SoundCard>
+          {[sounds[currentPage]].map((item: any) => <Link key={item?.stationID} href={`sound/detail/${item?.stationID}`}>
+            <SoundCard data={item}></SoundCard>
           </Link>)}
         </div>}
 
 
         {display == "Map" && <div className="flex  gap-5 ">
           <div className="basis-2/5 lg:block md:hidden hidden">
-            <Link href="sound/detail/someid">
-              <SoundCard ></SoundCard>
+            <Link key={selectedPlace?.stationID} href={`sound/detail/${selectedPlace?.stationID}`}>
+              <SoundCard data={selectedPlace}></SoundCard>
             </Link>
           </div>
           <div className="lg:basis-3/5  w-full lg:h-auto md:h-[50vh] h-[50vh]">
-            <MapPick />
+            <MapPick data={sounds} setState={setSelectedPlace} unit="dBA" key="COD" />
           </div>
         </div>}
 
-        <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={1} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
+        <Pagination pageSize={pageSize} simple={{ readOnly: true }}  onChange={setCurrentPage} current={currentPage} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
       </section>
 
       <section id="table" className="px-10 py-10">
         <div className="flex flex-wrap gap-2 justify-between">
           <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพเสียง</div>
-          <div className="search"> <Input size="middle" placeholder="ค้นหา" style={{fontFamily:"prompt"}}  className="text-slate-500 noto-sans" prefix={<Search />} /></div>
+          <div className="search"> <Input onChange={e => handleSearch(e.target.value,1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}} className="text-slate-500 noto-sans" prefix={<Search />} /></div>
         </div>
 
         <div className='py-5 '>
           <Table
-          className="w-full"
-            data={[
-              {
-                key: '1',
-                station: 'สถานีอุตุนิยมวิทยาลำปาง',
-                dBA24: 48.9,
-                dBA1: 30.6,
-                dBA15: 966,
-                dBA5: 66.2,
-                updated: DateFormator(new Date()),
-              },
-            ]}
+            className="w-full"
+            data={
+            //   [
+            //   {
+            //     key: '1',
+            //     station: 'สถานีอุตุนิยมวิทยาลำปาง',
+            //     dBA24: 48.9,
+            //     dBA1: 30.6,
+            //     dBA15: 966,
+            //     dBA5: 66.2,
+            //     updated: DateFormator(new Date()),
+            //   },
+            // ]
+
+            sounds.filter((item: any) => {
+              if(!airsFiltered[1]) return item
+              return item?.nameTH?.toLowerCase().includes(airsFiltered[1].toLowerCase())
+            })
+          }
 
             columns={[
               {
-                title:<div className="text-[#475467]">สถานี</div> ,
-                dataIndex: 'station',
+                title: <div className="text-[#475467]">สถานี</div>,
+                dataIndex: 'nameTH',
               },
               {
-                title:<div className="text-[#475467]">dBA/Leq 24 ชม</div> ,
+                title: <div className="text-[#475467]">dBA/Leq 24 ชม</div>,
                 dataIndex: 'dBA24',
+                render: (text: string, record: any) => record.LastUpdate?.Leq || 'N/A',
                 // sorter: {
                 //   compare: (a: { dBA24: number; }, b: { dBA24: number; }) => (a.dBA24) - (b.dBA24),
                 //   multiple: 3,
                 // },
               },
               {
-                title:<div className="text-[#475467]">dBA/Leq 1 ชม</div> ,
+                title: <div className="text-[#475467]">dBA/Leq 1 ชม</div>,
                 dataIndex: 'dBA1',
                 // sorter: {
                 //   compare: (a: { dBA1: number; }, b: { dBA1: number; }) => (a.dBA1) - (b.dBA1),
                 //   multiple: 3,
                 // },
+                render: (text: string, record: any) => record.LastUpdate?.L50 || 'N/A',
               },
               {
-                title:<div className="text-[#475467]">dBA/Leq 15 นาที</div> ,
+                title: <div className="text-[#475467]">dBA/Leq 15 นาที</div>,
                 dataIndex: 'dBA15',
                 // sorter: {
                 //   compare: (a: { dBA15: number; }, b: { dBA15: number; }) => (a.dBA15) - (b.dBA15),
                 //   multiple: 3,
                 // },
+                render: (text: string, record: any) => record.LastUpdate?.L10 || 'N/A',
               },
               {
-                title:<div className="text-[#475467]">dBA/Leq 5 นาที</div> ,
+                title: <div className="text-[#475467]">dBA/Leq 5 นาที</div>,
                 dataIndex: 'dBA5',
                 // sorter: {
                 //   compare: (a: { dBA5: number; }, b: { dBA5: number; }) => (a.dBA5) - (b.dBA5),
                 //   multiple: 3,
                 // },
+                render: (text: string, record: any) => record.LastUpdate?.L5 || 'N/A',
               },
               {
-                title:<div className="text-[#475467]">เวลาอัพเดต</div> ,
+                title: <div className="text-[#475467]">เวลาอัพเดต</div>,
                 dataIndex: 'updated',
+                render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || 'N/A',
               },
             ]}
           />
