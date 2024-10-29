@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 export default function Detail({ params }: { params: any }) {
 
     const [display, setDisplay] = useState<'ALL' | 'LEQ' | 'LMAX' | 'LMIN'>('ALL');
-    const [display2, setDisplay2] = useState<'ALL' | 'Defaul' | 'Noise'>('ALL');
+    const [display2, setDisplay2] = useState<'ALL' | 'Default' | 'Noise'>('ALL');
     const [soundsDetail, setSoundsDetail] = useState<any>();
     const fetchData = async () => {
         const result = await getData(`/forWeb/getSound24H.php?stationID=${params.id}`)
@@ -152,11 +152,11 @@ export default function Detail({ params }: { params: any }) {
                         </div>
                         <div className=" overflow-hidden flex justify-center">
                             {/* <DualGraph /> */}
-                           {display == "ALL" && soundsDetail &&<MultiLineGraph data={[
+                            {display == "ALL" && soundsDetail && <MultiLineGraph data={[
                                 ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.Leq, "Leq"), 'value'),
                                 ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.Lmin, "Lmin"), 'value'),
                                 ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.Lmax, "Lmax"), 'value'),
-                        
+
                             ]} />}
 
                             {display == "LEQ" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.Leq, "value")}></AreaGraph>}
@@ -179,18 +179,27 @@ export default function Detail({ params }: { params: any }) {
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                            <LineGraph />
+                            {/* <LineGraph /> */}
+                            {display2 == "ALL" && soundsDetail && <MultiLineGraph data={[
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.L5, "L5"), 'value'),
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.L50, "L50"), 'value'),
+
+
+                            ]} />}
+
+                            {display2 == "Default" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.L50, "value")} />}
+                            {display2 == "Noise" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.L5, "value")} />}
 
                         </div>
                     </section>
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ระดับเสียงเฉลี่ยรายชั่วโมง (Leq, 24hr) ย้อนหลัง 7 วัน</div>
+                            <div className="font-bold">ระดับเสียงเฉลี่ยรายชั่วโมง (Leq, 7D) ย้อนหลัง 7 วัน</div>
 
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                           {soundsDetail && <ColumnGraph data={convertPropertyToNumber(soundsDetail.Last7D?.Leq,'value')} />}
+                            {soundsDetail && <ColumnGraph data={convertPropertyToNumber(soundsDetail.Last7D?.Leq, 'value')} />}
                         </div>
                     </section>
                     <section className='py-10'>
@@ -201,16 +210,16 @@ export default function Detail({ params }: { params: any }) {
 
                         <div className=" overflow-hidden flex justify-center">
                             <Table className="w-full" data={
-                            //     [
-                            //     {
-                            //         updated: DateFormator(new Date()),
-                            //         Leq: 51.3,
-                            //         Lmin: 63.6,
-                            //         Lmax: 66.2
-                            //     }
-                            // ]
-                            rearrangeData(soundsDetail?.Last7D)
-                        }
+                                //     [
+                                //     {
+                                //         updated: DateFormator(new Date()),
+                                //         Leq: 51.3,
+                                //         Lmin: 63.6,
+                                //         Lmax: 66.2
+                                //     }
+                                // ]
+                                rearrangeData(soundsDetail?.Last7D)
+                            }
 
                                 columns={
                                     [
