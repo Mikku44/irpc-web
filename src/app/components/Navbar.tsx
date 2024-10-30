@@ -200,6 +200,18 @@ export default function Navbar() {
               <ChevronDown className="size-5"></ChevronDown>
             </Button>
           </Dropdown>
+
+          // <a className="flex gap-2 px-2 cursor-pointer opacity-80 text-[15px]  " color="danger" rel="noopener noreferrer" onClick={() => {
+
+          //   localStorage.removeItem("token")
+          //   localStorage.removeItem("user_data")
+          //   // localStorage.removeItem("favData")
+          //   window.location.reload()
+          // }
+          // }>
+
+          //   ออกจากระบบ
+          // </a>
         }
       </div>
 
@@ -282,11 +294,22 @@ export default function Navbar() {
               </Button>
             </Dropdown>
             :
-            <Dropdown menu={{ items: loginedDropdown }}>
-              <Button className="">{userData?.fullname}
-                <ChevronDown className="size-5"></ChevronDown>
-              </Button>
-            </Dropdown>
+            // <Dropdown menu={{ items: loginedDropdown }}>
+            //   <Button className="">{userData?.fullname}
+            //     <ChevronDown className="size-5"></ChevronDown>
+            //   </Button>
+            // </Dropdown>
+            <a className="flex gap-2 px-2 cursor-pointer opacity-80 text-[15px] " color="danger" rel="noopener noreferrer" onClick={() => {
+
+              localStorage.removeItem("token")
+              localStorage.removeItem("user_data")
+              // localStorage.removeItem("favData")
+              window.location.reload()
+            }
+            }>
+
+              ออกจากระบบ
+            </a>
           }
         </div>
       </Drawer>

@@ -20,7 +20,7 @@ import Pagination from '../components/Pagination';
 import { Water } from '../models/models';
 import { getData } from '../ultilities/api';
 
-export default function Sound() {
+export default function Page() {
 
 
   const [display, setDisplay] = useState<'List' | 'Map'>('List');

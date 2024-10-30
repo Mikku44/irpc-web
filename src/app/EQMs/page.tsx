@@ -60,13 +60,13 @@ useEffect(() => {
 
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-          {EQMs?.map((item:any) => <Link  key={item?.EqmsID} href="#">
+          {EQMs?.map((item:any) => <Link  key={item?.EqmsID} href={`/EQMs/detail/${item?.EqmsID}`}>
             <StationCard data={item}></StationCard>
           </Link>)}
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
-          {[EQMs?.[currentPage]].map(item => <Link key={item?.EqmsID}  href="#">
+          {[EQMs?.[currentPage]].map(item => <Link key={item?.EqmsID}  href={`/EQMs/detail/${item?.EqmsID}`}>
             <StationCard data={item}></StationCard>
           </Link>)}
         </div>}

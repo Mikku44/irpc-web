@@ -366,7 +366,7 @@ export default function Home() {
           <div className="flex flex-col">
             <p className=" text-[20px] font-bold">{DashBoard?.report?.[0]?.dateThai}</p>
             <p className=" text-[16px] text-gray-500 ">ข้อมูลเชิงลึกและผลการดำเนินงานในแต่ละวัน</p>
-            <a href="#" className="text-[--primary] font-bold hover:underline flex gap-2">
+            <a href="/report/all" className="text-[--primary] font-bold hover:underline flex gap-2">
               ดูรายงาน <ArrowRight></ArrowRight>
             </a>
           </div>
