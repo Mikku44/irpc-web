@@ -27,20 +27,16 @@ export async function getData(extPath: string, config: any = {}) {
     }
 }
 export async function postData(extPath: string, formData: any) {
-    console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`)
-
+    console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`);
     try {
-        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`, formData, {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`, formData, {
             headers: {
                 'Content-Type': 'application/json',
+            },
+        });
 
-            }
-        })
-        return data;
-
-    } catch (error) {
-        return
+        return response?.data; 
+    } catch (error:any) {
+        return error.response; // Returns the response in case of an error
     }
-
-
 }

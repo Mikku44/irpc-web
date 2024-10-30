@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image"
 import Link from "next/link";
-import { Checkbox, Input, message } from 'antd';
+import { Checkbox, Input, message, Tabs } from 'antd';
 import { postData } from "../ultilities/api";
 import { useEffect, useState } from "react";
 ;
@@ -10,7 +10,7 @@ import { saveArrayToLocalStorage } from "../ultilities/localStorageManager";
 
 export default function Login() {
 
-    const [type, setType] = useState('');
+    const [type, setType] = useState<string>();
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         setType(params.get('type') || '');
@@ -113,109 +113,72 @@ export default function Login() {
     return (
         <>
             {contextHolder}
-            {type !== "admin" && <>
+            
 
-                <div className="lg:block md:block hidden">
-                    <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26vw]"></Image>
-                    <div className="flex flex-col items-center justify-center h-[80vh] pt-10 relative z-[1]">
-                        <div className="text-center mb-6">
-                            <h2 className="text-[30px] font-bold mb-2">ยินดีต้อนรับ!</h2>
-                            <p className="text-gray-600 text-[16px]">กรุณาใส่อีเมลและรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
-                        </div>
-                        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                            <form action={fetchData}>
-                                <div className="mb-4">
-                                    <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
-                                    <Input type="email" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกอีเมลของคุณ" />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                    <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
-                                </div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="flex items-center">
-                                        <Checkbox onChange={e => console.log('add')}>จดจำรหัสผ่าน</Checkbox>
+
+
+                <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26vw] lg:block md:block hidden"></Image>
+                <div className="flex flex-col items-center justify-center h-[80vh] pt-10 relative z-[1]">
+                    <div className="text-center mb-6">
+                        <h2 className="text-[30px] font-bold mb-2">ยินดีต้อนรับ! {type}</h2>
+                        <p className="text-gray-600 text-[16px]">กรุณาใส่อีเมลและรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
+                    </div>
+                    <div className="lg:bg-white md:bg-white p-8 rounded-lg lg:shadow-md md:shadow-md w-full  max-w-md">
+                        {type != null && <Tabs defaultActiveKey={type} onChange={value => setType(value)} centered items={[
+                            {
+                                key: 'user',
+                              
+                                label: <div className="lg:w-[150px] text-center opacity-70 font-bold">บุคคลทั่วไป</div>,
+                                children: <>
+                                    <form action={fetchData}>
+                                        <div className="mb-4">
+                                            <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
+                                            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกอีเมลของคุณ" />
+                                        </div>
+                                        <div className="mb-4">
+                                            <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
+                                            <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
+                                        </div>
+                                        <div className="flex items-center justify-between mb-4">
+                                            <div className="flex items-center">
+                                                <Checkbox onChange={e => console.log('add')}>จดจำรหัสผ่าน</Checkbox>
+                                            </div>
+                                            <a href="#" className="text-blue-500">ลืมรหัสผ่าน?</a>
+                                        </div>
+                                        <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">เข้าสู่ระบบ</button>
+                                    </form>
+                                    <div className="text-center mt-6 ">
+                                        <p className="text-gray-600"> ยังไม่มีบัญชีผู้ใช้? <Link href="/register" className="text-blue-500 font-bold">ลงทะเบียน</Link></p>
                                     </div>
-                                    <a href="#" className="text-blue-500">ลืมรหัสผ่าน?</a>
-                                </div>
-                                <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">เข้าสู่ระบบ</button>
-                            </form>
-                            <div className="text-center mt-6 ">
-                                <p className="text-gray-600"> ยังไม่มีบัญชีผู้ใช้? <Link href="/register" className="text-blue-500 font-bold">ลงทะเบียน</Link></p>
-                            </div>
-                        </div>
+                                </>,
+                            },
+                            {
+                                key: 'admin',
+                                label: <div className="lg:w-[150px] text-center  opacity-70 font-bold">สำหรับเจ้าหน้าที่</div>,
+                                children: <>
+                                    <form action={fetchData}>
+                                        <div className="mb-4">
+                                            <label htmlFor="username" className="block text-gray-700 mb-2">ชื่อผู้ใช้งาน</label>
+                                            <Input type="username" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกผู้ใช้งานของคุณ" />
+                                        </div>
+                                        <div className="mb-4">
+                                            <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
+                                            <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
+                                        </div>
+                                        <div className="flex items-center justify-between mb-4">
+                                            <div className="flex items-center">
+                                                <Checkbox onChange={e => setRemind(e.target.checked)}>จดจำรหัสผ่าน</Checkbox>
+                                            </div>
+
+                                        </div>
+                                        <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">เข้าสู่ระบบ</button>
+                                    </form>
+                                </>,
+                            },
+                        ]} />}
+
                     </div>
                 </div>
-
-                <div className="flex flex-col items-center justify-center h-[80vh] mt-10 relative z-[1] lg:hidden md:hidden ">
-                    <div className="flex flex-col items-center justify-center h-[80vh] pt-10 relative z-[1]">
-                        <div className="text-center mb-6">
-                            <h2 className="text-[30px] font-bold mb-2">ยินดีต้อนรับ!</h2>
-                            <p className="text-gray-600 text-[16px]">กรุณาใส่อีเมลและรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
-                        </div>
-                        <div className="lg:p-8 rounded-lg w-full p-1">
-                            <form action={fetchData}>
-                                <div className="mb-4">
-                                    <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
-                                    <Input type="email" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกอีเมลของคุณ" />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                    <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" />
-                                </div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="flex items-center">
-                                        <Checkbox value={remind} onChange={e => setRemind((prev: boolean) => !prev)}>จดจำรหัสผ่าน</Checkbox>
-                                    </div>
-                                    <a href="#" className="text-blue-500">ลืมรหัสผ่าน?</a>
-                                </div>
-                                <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition" >เข้าสู่ระบบ</button>
-                            </form>
-                            <div className="text-center mt-6 ">
-                                <p className="text-gray-600"> ยังไม่มีบัญชีผู้ใช้? <Link href="/register" className="text-blue-500 font-bold">ลงทะเบียน</Link></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </>
-            }
-
-
-            {type == "admin" && <>
-
-                <div className="">
-                    <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26vw] lg:block hidden"></Image>
-                    <div className="flex flex-col items-center justify-center h-[80vh] pt-10 relative z-[1]">
-                        <div className="text-center mb-6">
-                            <h2 className="text-[30px] font-bold mb-2">ยินดีต้อนรับ!</h2>
-                            <p className="text-gray-600 text-[16px]">กรุณาใส่ชื่อผู้ใช้งานและรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
-                        </div>
-                        <div className="lg:bg-white p-8 rounded-lg lg:shadow-md w-full max-w-md">
-                            <form action={fetchData}>
-                                <div className="mb-4">
-                                    <label htmlFor="username" className="block text-gray-700 mb-2">ผู้ใช้งาน</label>
-                                    <Input type="username" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกผู้ใช้งานของคุณ" />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                    <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
-                                </div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="flex items-center">
-                                        <Checkbox onChange={e => console.log('add')}>จดจำรหัสผ่าน</Checkbox>
-                                    </div>
-
-                                </div>
-                                <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">เข้าสู่ระบบ</button>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-
-
-            </>
-            }
         </>
     );
 }

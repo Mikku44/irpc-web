@@ -20,19 +20,23 @@ export default function Login() {
             "email": email,
             "password": password
         })
-        alert()
         if (validateEmail(email)) {
             const result = await postData('/forWeb/singin.php', {
                 "fullname": fullname,
-                "tel": codeCountry + tel,
+                "tel":   codeCountry + tel,
                 "email": email,
-                "password": password
+                "password": password,
+                "type":'password'
             })
             if (result?.status == "ok") {
                 success()
+                window?.location?.replace('/login')
+                return
             }
             else {
-                error("อีเมลล์นี้ถูกใช้งานเเล้ว")
+               
+                error(result?.data?.message)
+                return
             }
         }
         error("รูปแบบอีเมลไม่ถูกต้อง กรุณาตรวจสอบว่ามี “@” และโดเมน เช่น .com หรือ .co.th")
@@ -79,12 +83,12 @@ export default function Login() {
                         <form action={fetchData}>
                             <div className="mb-4">
                                 <label htmlFor="fullName" className="block text-gray-700 mb-2">ชื่อและนามสกุล</label>
-                                <Input onChange={e => setFullname(e.target.value)} className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
+                                <Input required onChange={e => setFullname(e.target.value)} className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="phone" className="block text-gray-700 mb-2">เบอร์โทรศัพท์</label>
                                 <div className="flex">
-                                    <Input onChange={e => setTel(e.target.value)} addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="66">
+                                    <Input required onChange={e => setTel(e.target.value)} placeholder="841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="66">
                                         {opt}
                                     </Select>}
                                         classNames={{ input: "w-full p-3 " }} maxLength={9} />
@@ -92,7 +96,7 @@ export default function Login() {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
-                                <Input type="email" onChange={e => setEmail(e.target.value)} className="p-3 w-full " placeholder="กรอกอีเมลของคุณ" />
+                                <Input required type="email" onChange={e => setEmail(e.target.value)} className="p-3 w-full " placeholder="กรอกอีเมลของคุณ" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
@@ -116,19 +120,19 @@ export default function Login() {
                     <form action={fetchData}>
                         <div className="mb-4">
                             <label htmlFor="fullName" className="block text-gray-700 mb-2">ชื่อและนามสกุล</label>
-                            <Input onChange={e => setFullname(e.target.value)} className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
+                            <Input required onChange={e => setFullname(e.target.value)} className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
                         </div>
                         <div className="mb-4">
                             <label htmlFor="phone" className="block text-gray-700 mb-2">เบอร์โทรศัพท์</label>
                             <div className="flex">
-                                <Input onChange={e => setTel(e.target.value)} addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="66">
+                                <Input required onChange={e => setTel(e.target.value)} placeholder="841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="66">
                                     {opt}
                                 </Select>} classNames={{ input: "w-full p-3 " }} />
                             </div>
                         </div>
                         <div className="mb-4">
                             <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
-                            <Input onChange={e => setEmail(e.target.value)} type="email" className="p-3 w-full " placeholder="กรอกอีเมลของคุณ" />
+                            <Input required onChange={e => setEmail(e.target.value)} type="email" className="p-3 w-full " placeholder="กรอกอีเมลของคุณ" />
                         </div>
                         <div className="mb-4">
                             <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>

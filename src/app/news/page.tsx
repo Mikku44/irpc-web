@@ -36,9 +36,9 @@ export default function Page() {
 
         {DashBoard?.news?.[0] &&
           <Link href={`/news/${DashBoard?.news?.[0]?.newsID}`}>
-            <div className="rounded-xl border border-[#EAECF0] bg-white shadow-md lg:max-w-[500px] md:w-[500px] w-[80vw] h- overflow-hidden">
-              <div className="h-[250px] overflow-hidden">
-                <Image src={DashBoard?.news?.[0]?.newsPicPath} alt="" width={625} height={308} className="h-[250px] w-full"></Image>
+            <div className="rounded-xl border border-[#EAECF0] bg-white shadow-md  w-[90vw]  overflow-hidden">
+              <div className="h-[560px] overflow-hidden">
+                <Image src={DashBoard?.news?.[0]?.newsPicPath} alt="" width={500} height={500} className="h-[560px] object-cover w-full"></Image>
               </div>
               <div className="flex flex-col p-4 gap-4 pt-8">
                 <div className="flex flex-col">
@@ -55,7 +55,7 @@ export default function Page() {
         }
 
 
-        <div className="lg:grid md:hidden hidden gap-5 lg:max-w-[800px]">
+        {/* <div className="lg:grid md:hidden hidden gap-5 lg:max-w-[800px]">
           {DashBoard?.news?.slice(1, 3).map((item: any, index: number) =>
             <Link href={`/news/${item?.newsID}`}>
               <div className="rounded-xl border w-[50vw] border-[#EAECF0] flex bg-white shadow-md h-[200px] overflow-hidden">
@@ -75,12 +75,12 @@ export default function Page() {
             </Link>)
           }
 
-        </div>
+        </div> */}
       </div>
 
 
       <div className="py-10 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
-        {DashBoard?.news?.slice(3).map((item: any, index: number) =>
+        {DashBoard?.news?.slice(0).map((item: any, index: number) =>
           <Link href={`/news/${item?.newsID}`}>
             <div className="rounded-xl border border-[#EAECF0] bg-white shadow-md  overflow-hidden">
               <div className="h-[250px] overflow-hidden">

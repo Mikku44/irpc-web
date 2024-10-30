@@ -21,26 +21,28 @@ export default function SegmentMenu() {
     ]
 
     async function fetchData() {
-        try {
-            const token = localStorage.getItem('token');
+
+        const role = getArrayFromLocalStorage("user_data")?.role
+        setRole(role || 'client')
+        // try {
+        //     const token = localStorage.getItem('token');
+        //     setRole(role || 'client')
+
+        //     // Make request with Authorization header
+        //     const result = await getData('/forWeb/authInfo.php', {
+        //         headers: {
+        //             'Authorization': `Bearer ${token}`,
+        //         },
+        //     });
 
 
-            // Make request with Authorization header
-            const result = await getData('/forWeb/authInfo.php', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-
-
-            if (result?.status == "ok") {
-                setRole(result?.user_data?.role)
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            const role = getArrayFromLocalStorage("user_data")?.role
-            setRole(role || 'client')
-        }
+        //     if (result?.status == "ok") {
+        //         setRole(result?.user_data?.role)
+        //     }
+        // } catch (error) {
+        //     console.error('Error fetching data:', error);
+         
+        // }
     }
 
     useEffect(() => {
