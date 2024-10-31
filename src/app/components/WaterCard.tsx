@@ -59,7 +59,7 @@ export default function WaterCard({ data, className, isFav }: any) {
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
                     <p>Flow</p>
-                    <p className="font-bold">{data?.LastUpdate?.Flow || "N/A"} m<sup>3</sup>/hr</p>
+                    <p className="font-bold">{data?.LastUpdate?.Flow || "N/A"} m<sup>3</sup>/s</p>
                 </div>
                 <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">

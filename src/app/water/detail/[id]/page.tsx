@@ -121,7 +121,7 @@ export default function Detail({ params }: { params: any }) {
 
                         <div>
                             <div className='text-[#475467]'>Flow</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow} m3/hr</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow} m<sup>3</sup>/s</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>pH</div>
