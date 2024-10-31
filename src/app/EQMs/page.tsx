@@ -65,7 +65,7 @@ useEffect(() => {
           </Link>)}
         </div>}
 
-        {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
+        {display == "List" && <div className="lg:hidden md:hidden flex flex-col items-center gap-5 justify-center">
           {[EQMs?.[currentPage]].map(item => <Link key={item?.EqmsID}  href={`/EQMs/detail/${item?.EqmsID}`}>
             <StationCard data={item}></StationCard>
           </Link>)}

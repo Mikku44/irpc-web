@@ -99,7 +99,7 @@ export default function Sound() {
           </Link>)}
         </div>}
 
-        {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
+        {display == "List" && <div className="lg:hidden md:hidden flex flex-col items-center gap-5 justify-center">
           {[sounds[currentPage]].map((item: any) => <Link key={item?.stationID} href={`sound/detail/${item?.stationID}`}>
             <SoundCard data={item}></SoundCard>
           </Link>)}

@@ -79,7 +79,7 @@ export default function flare() {
           </Link>)}
         </div>}
 
-        <div className="lg:hidden md:hidden flex justify-center py-3">
+        <div className="lg:hidden md:hidden flex flex-col items-center justify-center py-3">
           <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={flare.length} >
             {[flare[currentPage]].map((item: any) => <Link key={item?.stationID} href={`water/detail/${item?.stationID}`}>
               <Flarecard key={item?.stationID} item={item}></Flarecard>

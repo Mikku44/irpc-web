@@ -130,7 +130,7 @@ export default function Environment() {
 
             <section id="table" className="px-10 py-10">
                 <div className="flex flex-wrap gap-2 justify-between">
-                    <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพเสียง</div>
+                    <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพ CEMs</div>
                     <div className="search"> <Input onChange={e => handleSearch(e.target.value,1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans" prefix={<Search />} /></div>
                 </div>
 
