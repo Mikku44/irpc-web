@@ -66,10 +66,10 @@ export default function Page() {
 
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-        <div className="text-[36px] font-bold">ดัชนีคุณภาพน้ำ</div>
+        <div className="text-[36px] font-bold">คุณภาพน้ำ</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-          <Badges />
+          <Badges name="other"/>
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
             <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
@@ -180,7 +180,7 @@ export default function Page() {
               },
               {
                 title: <div className="text-[#475467]">PH</div>,
-                dataIndex: 'PH',
+                dataIndex: 'pH',
                 sorter: {
                   compare: (a: { PH: number; }, b: { PH: number; }) => a.PH - b.PH,
                   multiple: 3,

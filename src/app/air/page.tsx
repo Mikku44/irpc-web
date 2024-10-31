@@ -64,10 +64,10 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
 
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-        <div className="text-[36px] font-bold">ดัชนีคุณภาพอากาศ</div>
+        <div className="text-[36px] font-bold">คุณภาพอากาศ</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-          <Badges />
+          <Badges name="air"/>
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
             <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value, 0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
@@ -123,7 +123,7 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
             </Link>
           </div>}
           <div className=" w-full lg:h-auto md:h-[50vh] h-[50vh]">
-            <MapPick data={airs} setState={setSelectedPlace} unit="AQI" key="AQI" />
+            <MapPick data={airs} name="air" setState={setSelectedPlace} unit="AQI" key="AQI" />
           </div>
         </div>}
 
@@ -167,12 +167,12 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
 
               },
               {
-                title: <div >PM2.5 <span className="text-sm font-normal"> (มคก/ลบ.ม.)</span></div>,
+                title: <div >PM<sub>2.5</sub> <span className="text-sm font-normal"> (µg./m<sup>3</sup>)</span></div>,
                 dataIndex: 'PM2',
                 render: (text: string, record: any) => `${record.LastUpdate?.PM25.value}` || 'N/A',
               },
               {
-                title: <div >PM10 <span className="text-sm font-normal"> (มคก/ลบ.ม.)</span></div>,
+                title: <div > <span className="text-sm font-normal"> (µg./m<sup>3</sup>)</span></div>,
                 dataIndex: 'PM10',
                 render: (text: string, record: any) => `${record.LastUpdate?.PM10.value}` || 'N/A',
               },

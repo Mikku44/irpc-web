@@ -69,12 +69,13 @@ useEffect(() => {
           {[EQMs?.[currentPage]].map(item => <Link key={item?.EqmsID}  href={`/EQMs/detail/${item?.EqmsID}`}>
             <StationCard data={item}></StationCard>
           </Link>)}
+          <Pagination current={currentPage} onChange={setCurrentPage} pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={EQMs?.length} className="lg:hidden md:hidden flex justify-center py-3" />
         </div>}
 
 
        
 
-        <Pagination current={currentPage} onChange={setCurrentPage} pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={EQMs?.length} className="lg:hidden md:hidden flex justify-center py-3" />
+       
       </section>
 
       

@@ -1,8 +1,35 @@
 import { Badge } from "antd";
+export const parameterUnit = {
+    // --- Air
+    "PM25" : "µg./m3",
+    "PM10" : "µg./m3",
+    "O3" : "ppb",
+    "CO" : "ppm",
+    "NO2" : "ppb",
+    "SO2" : "ppb",
+    // --- Water
+    "COD" : "ppm",
+    "pH" : "",
+    "Flow" : "m3/s",
+    // --- Cems,
+    "O2" : "ppm",
+    "NOx" : "ppm",
+    "SOx" : "ppm",
+    "CO2" : "ppm",
+    "NH3" : "",
+    "H2S" : "ppm",
+    "Dust" : "µg./m3",
+    "Opacity" : "",
+    "" : "",
+    // --- Sound,
+    "Leq" : "dBA",
+    "Lmin" : "dBA",
+    "Lmax" : "dBA"
+  };
 
 const total = {
     "air" :5,
-    "sound" :0,
+    "sound" :4,
     "water" :3,
     "environment" :19,
     "flare" :0,
@@ -31,7 +58,7 @@ const SegmentList = [
         value: 'water'
     },
     {
-        label: <div className='flex gap-2 items-center justify-center text-black'>สภาพแวดล้อม  <Badge count={<div className='bg-[#F9FAFB] border-[#EAECF0] border-[1px] text-[#344054] p-1 px-2 rounded-full'>{total['environment']}</div>} ></Badge></div>,
+        label: <div className='flex gap-2 items-center justify-center text-black'>CEMs  <Badge count={<div className='bg-[#F9FAFB] border-[#EAECF0] border-[1px] text-[#344054] p-1 px-2 rounded-full'>{total['environment']}</div>} ></Badge></div>,
         value: 'environment'
     },
     {
@@ -57,7 +84,7 @@ const SegmentUserList = [
         value: 'water'
     },
     {
-        label: <div className='flex gap-2 items-center justify-center text-black'>สภาพแวดล้อม  <Badge count={<div className='bg-[#F9FAFB] border-[#EAECF0] border-[1px] text-[#344054] p-1 px-2 rounded-full'>{total['environment']}</div>} ></Badge></div>,
+        label: <div className='flex gap-2 items-center justify-center text-black'>CEMs  <Badge count={<div className='bg-[#F9FAFB] border-[#EAECF0] border-[1px] text-[#344054] p-1 px-2 rounded-full'>{total['environment']}</div>} ></Badge></div>,
         value: 'environment'
     }
 ];

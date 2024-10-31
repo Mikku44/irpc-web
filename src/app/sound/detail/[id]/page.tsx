@@ -63,7 +63,7 @@ export default function Detail({ params }: { params: any }) {
                         title: (
                             <>
 
-                                <span className='px-2'>ดัชนีคุณภาพเสียง</span>
+                                <span className='px-2'>คุณภาพเสียง</span>
                             </>
                         ),
                     },
@@ -78,7 +78,7 @@ export default function Detail({ params }: { params: any }) {
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${soundsDetail?.LastUpdate?.date!}T${soundsDetail?.LastUpdate?.time!}`))} </div>
                 </div>
                 <div className="flex flex-col items-end">
-                    <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
+                    <Badge status={soundsDetail?.LastUpdate?.effect}></Badge>
                     <div className="text-[36px] font-bold">{soundsDetail?.LastUpdate?.Leq} <span className="text-[20px] font-normal">dBA/Leq 24 ชม</span></div>
                 </div>
             </section>

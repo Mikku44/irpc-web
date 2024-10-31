@@ -21,7 +21,7 @@ export default function Detail() {
                         href: '/flare',
                         title: (
                             <>
-                                <span className='px-2'>ดัชนีคุณภาพอากาศ</span>
+                                <span className='px-2'>คุณภาพอากาศ</span>
                             </>
                         ),
                     },

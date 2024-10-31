@@ -21,7 +21,7 @@ export default function Card({ data, className,isFav }: any) {
                     {data?.image_url && <img
                         alt="Station"
                         src={`${data && data?.image_url || "/images/irpc-logo.png"}`} // Replace with your image source
-                        className="object-cover w-full h-full relative z-0"
+                        className="brightness-90 object-cover w-full h-full relative z-0"
                     />}
                     <button className='' onClick={e => {
                         e.preventDefault()
@@ -30,7 +30,7 @@ export default function Card({ data, className,isFav }: any) {
 
                     }}>
 
-                        <div onClick={e => setFav((prev:Boolean) => !prev)} className="absolute top-4 right-4 p-2 duration-150 hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
+                        <div onClick={e => setFav((prev:Boolean) => !prev)} className=" absolute top-4 right-4 p-2 duration-150 shadow-sm hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
                             <Bookmark className={`text-white size-4 text-lg ${Fav && "fill-white"}`} />
                         </div>
                     </button>
@@ -57,13 +57,13 @@ export default function Card({ data, className,isFav }: any) {
                     <Badge className=" basis-[150px]" status={data?.LastUpdate?.AQI?.color_id || "N/A"}></Badge>
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
-                    <p>PM2.5 เฉลี่ย 24 ชม</p>
-                    <p className="font-bold">{data?.LastUpdate?.PM25?.value} มคก./ลบ.ม.</p>
+                    <p>PM<sub>2.5</sub> เฉลี่ย 24 ชม</p>
+                    <p className="font-bold">{data?.LastUpdate?.PM25?.value} µg./m<sup>3</sup></p>
                 </div>
                 <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467] mt-1">
-                    <p>PM10 เฉลี่ย 24 ชม</p>
-                    <p className="font-bold">{data?.LastUpdate?.PM10?.value} มคก./ลบ.ม.</p>
+                    <p> เฉลี่ย 24 ชม</p>
+                    <p className="font-bold">{data?.LastUpdate?.PM10?.value} µg./m<sup>3</sup></p>
                 </div>
             </div>
         </AntCard>

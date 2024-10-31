@@ -81,7 +81,7 @@ export default function Detail({ params }: { params: any }) {
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${watersDetail?.LastUpdate.date!}T${watersDetail?.LastUpdate.time!}`))} </div>
                 </div>
                 <div className="flex flex-col items-end">
-                    <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
+                <Badge status={watersDetail?.LastUpdate?.effect}></Badge>
                     <div className="text-[36px] font-bold">{watersDetail?.LastUpdate.COD}<span className="text-[20px] font-normal">COD/mgI</span></div>
                 </div>
             </section>
@@ -124,20 +124,20 @@ export default function Detail({ params }: { params: any }) {
                             <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow} m3/hr</div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>PH</div>
+                            <div className='text-[#475467]'>pH</div>
                             <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.pH} </div>
                         </div>
                     </div>
 
                     <section>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ค่า Flow, PH ย้อนหลัง 24 ชั่วโมง</div>
+                            <div className="font-bold">ค่า Flow, pH ย้อนหลัง 24 ชั่วโมง</div>
                             <div className="">
                                 <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
                                     <Radio.Button value="ALL"><div className='flex gap-2 items-center'>ทั้งหมด </div></Radio.Button>
                                     <Radio.Button value="COD"><div className='flex gap-2 items-center'>COD </div></Radio.Button>
                                     <Radio.Button value="FLOW"><div className='flex gap-2 items-center'>Flow</div></Radio.Button>
-                                    <Radio.Button value="PH"><div className='flex gap-2 items-center'>PH</div></Radio.Button>
+                                    <Radio.Button value="PH"><div className='flex gap-2 items-center'>pH</div></Radio.Button>
                                 </Radio.Group>
                             </div>
                         </div>
@@ -218,7 +218,7 @@ export default function Detail({ params }: { params: any }) {
                                         key: 'Flow',
                                     },
                                     {
-                                        title: <div className="text-[#475467]">PH</div>,
+                                        title: <div className="text-[#475467]">pH</div>,
                                         dataIndex: 'pH',
                                         key: 'pH',
                                     },

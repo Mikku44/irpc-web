@@ -43,8 +43,8 @@ export default function Sound() {
 
   const fetchData = async () => {
     const result = await getData('/forWeb/getSoundLast.php')
-    setSounds(result.stations || [])
-
+    setSounds(result?.stations || [])
+    setSelectedPlace(result?.stations?.[0]);
   }
 
   useEffect(() => {
@@ -59,10 +59,10 @@ export default function Sound() {
 
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-        <div className="text-[36px] font-bold">ดัชนีคุณภาพเสียง</div>
+        <div className="text-[36px] font-bold">คุณภาพเสียง</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-          <Badges />
+          <Badges name="sound" />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
             <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
@@ -103,6 +103,7 @@ export default function Sound() {
           {[sounds[currentPage]].map((item: any) => <Link key={item?.stationID} href={`sound/detail/${item?.stationID}`}>
             <SoundCard data={item}></SoundCard>
           </Link>)}
+          <Pagination pageSize={pageSize} simple={{ readOnly: true }}  onChange={setCurrentPage} current={currentPage} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
         </div>}
 
 
@@ -113,11 +114,11 @@ export default function Sound() {
             </Link>
           </div>
           <div className="lg:basis-3/5  w-full lg:h-auto md:h-[50vh] h-[50vh]">
-            <MapPick data={sounds} setState={setSelectedPlace} unit="dBA" key="COD" />
+            <MapPick data={sounds} setState={setSelectedPlace} unit="dBA" name="sound" />
           </div>
         </div>}
 
-        <Pagination pageSize={pageSize} simple={{ readOnly: true }}  onChange={setCurrentPage} current={currentPage} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
+        
       </section>
 
       <section id="table" className="px-10 py-10">
