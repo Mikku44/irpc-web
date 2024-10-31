@@ -293,7 +293,7 @@ export default function Home() {
             </Link>}
           </div>
           <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
-            {segmentValue}
+            
             {MeasuringData && <MapPick name={segmentValue} data={MeasuringData} setState={setSelectedPlace} unit={MeasuringUnitMap[segmentValue]} />}
           </div>
         </div>}

@@ -97,7 +97,7 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
 
                     elChild1.className = `w-12 h-12 rounded-full flex justify-center items-center animate-pulse  ${colorClasses[0]} absolute top-[-4px] right-[-4px] duration-50`
                     elChild.className = `w-10 h-10 rounded-full flex justify-center items-center text-white font-bold text-[15px]  ${colorClasses[0]} relative z-10`;
-                    elChild.innerHTML = (marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.NOx_7p || marker.LastUpdate?.Leq || "-");
+                    elChild.innerHTML = (marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.flow || marker.LastUpdate?.Leq || "-");
 
 
                     el.appendChild(elChild1)
@@ -143,7 +143,7 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                     `<div style="display: grid;">
                         <div style="display: flex; justify-content: space-between;">
                             <div style="font-size: 1.25rem; font-weight:bold;">
-                                ${marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.NOx_7p || marker.LastUpdate?.Leq || "N/A"} 
+                                ${marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.flow || marker.LastUpdate?.Leq || "N/A"} 
                                 <span style="font-size: 1.125rem;font-weight:normal;">${unit}</span>
                             </div>
                             ${getColorMap(name)[marker.LastUpdate?.AQI?.color_id || marker.LastUpdate?.effect || 1]}
