@@ -137,28 +137,28 @@ export default function Detail({ params }: { params: any }) {
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
                        
                         <div>
-                            <div className='text-[#475467]'>PM<sub>2.5</sub> เฉลี่ย 24 ชม</div>
+                            <div className='text-[#475467]'>PM<sub>2.5</sub> </div>
                             <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM25 } µg./m<sup>3</sup></div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>PM<sub>10</sub> เฉลี่ย 24 ชม</div>
+                            <div className='text-[#475467]'>PM<sub>10</sub> </div>
                             <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM10 } µg./m<sup>3</sup></div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>O<sub>3</sub> เฉลี่ย 24 ชม</div>
+                            <div className='text-[#475467]'>O<sub>3</sub> </div>
                             <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.O3 } ppb</div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>CO เฉลี่ย 24 ชม</div>
+                            <div className='text-[#475467]'>CO </div>
                             <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.CO } ppm</div>
                         </div>
 
                         <div>
-                            <div className='text-[#475467]'>NO<sub>2</sub> เฉลี่ย 24 ชม</div>
+                            <div className='text-[#475467]'>NO<sub>2</sub> </div>
                             <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.NO2 } ppb</div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>SO<sub>2</sub> เฉลี่ย 24 ชม</div>
+                            <div className='text-[#475467]'>SO<sub>2</sub> </div>
                             <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.SO2 } ppb</div>
                         </div>
                     </div>

@@ -66,7 +66,7 @@ export default function Environment() {
 
                 <SegmentMenu />
                 <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-                <div className="text-[36px] font-bold">คุณภาพ CEMs</div>
+                <div className="text-[36px] font-bold">รายงาน CEMs</div>
 
                 <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
                     <Badges name='other' />
@@ -173,59 +173,59 @@ export default function Environment() {
                                 render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">O2</div>,
+                                title: <div className="text-[#475467]">O<sub>2</sub> (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'O2',
-                                render: (text: string, record: any) => record.LastUpdate?.O2 || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.O2) == 'N/A' ? "-" :  record.LastUpdate?.O2 || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">NOx</div>,
+                                title: <div className="text-[#475467]">NOx (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'NOx',
-                                render: (text: string, record: any) => record.LastUpdate?.NOx_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.NOx_7p) == 'N/A' ? "-" :  record.LastUpdate?.NOx_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">SOx</div>,
+                                title: <div className="text-[#475467]">SOx (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'SOx',
-                                render: (text: string, record: any) => record.LastUpdate?.SOx_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.SOx_7p) == 'N/A' ? "-" :  record.LastUpdate?.SOx_7p || 'N/A',
                             },
                             {
                                 title: <div className="text-[#475467]">CO (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'CO',
-                                render: (text: string, record: any) => record.LastUpdate?.CO_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.CO_7p) == 'N/A' ? "-" :  record.LastUpdate?.CO_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">CO2</div>,
+                                title: <div className="text-[#475467]">CO<sub>2</sub> (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'CO2',
-                                render: (text: string, record: any) => record.LastUpdate?.CO2_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.CO2_7p) == 'N/A' ? "-" :  record.LastUpdate?.CO2_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">NH3</div>,
+                                title: <div className="text-[#475467]">NH<sub>3</sub></div>,
                                 width: 200,
                                 dataIndex: 'NH3',
-                                render: (text: string, record: any) => record.LastUpdate?.NH3_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.NH3_7p) == 'N/A' ? "-" :  record.LastUpdate?.NH3_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">H2S</div>,
+                                title: <div className="text-[#475467]">H<sub>2</sub>S (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'H2S',
-                                render: (text: string, record: any) => record.LastUpdate?.H2S_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.H2S_7p) == 'N/A' ? "-" :  record.LastUpdate?.H2S_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">Dust (m³/hr)</div>,
+                                title: <div className="text-[#475467]">Dust (µg/m<sup>3</sup>)</div>,
                                 width: 200,
                                 dataIndex: 'Dust',
-                                render: (text: string, record: any) => record.LastUpdate?.Dust || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.Dust) == 'N/A' ? "-" :  record.LastUpdate?.Dust || 'N/A',
 
                             },
                             {
                                 title: <div className="text-[#475467]">Opacity</div>,
                                 width: 200,
                                 dataIndex: 'Opacity',
-                                render: (text: string, record: any) => record.LastUpdate?.Opacity || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.Opacity) == 'N/A' ? "-" :  record.LastUpdate?.Opacity || 'N/A',
 
                             },
 

@@ -29,7 +29,7 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                 mapRef.current = new mapboxgl.Map({
                     container: mapContainerRef.current,
                     style: 'mapbox://styles/mapbox/streets-v12',
-                    center: [100.5518, 13.8063],
+                    center: [101.3098455, 12.6605804],
                     zoom: 11
                 });
 
@@ -65,23 +65,23 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                         // Define color mappings for 'air', 'sound', and a fallback for all other cases
                         const pinColorMap: any = {
                             'air': [
-                                ["", ""],
-                                ["bg-[#2970FF]/40", 'bg-[#2970FF]/60'],
-                                ["bg-[#92d050]/40", 'bg-[#92d050]/60'],
-                                ["bg-[#ffff00]/40", 'bg-[#ffff00]/60'],
-                                ["bg-[#ffa200]/40", 'bg-[#ffa200]/60'],
-                                ["bg-[#f04646]/40", 'bg-[#f04646]/60'],
+                                ["bg-[#444444]/40", "bg-[#444444]/60"],
+                                ["bg-[#155EEF]/40", 'bg-[#155EEF]/60'],
+                                ["bg-[#70e000]/40", 'bg-[#70e000]/60'],
+                                ["bg-[#f3de2c]/40", 'bg-[#f3de2c]/60'],
+                                ["bg-[#f9a620]/40", 'bg-[#f9a620]/60'],
+                                ["bg-[#f21b3f]/40", 'bg-[#f21b3f]/60'],
                             ],
                             'sound': [
-                                ["", ""],
-                                ["bg-[#2970FF]/40", 'bg-[#2970FF]/60'],
-                                ["bg-[#ffff00]/40", 'bg-[#ffff00]/60'],
-                                ["bg-[#f04646]/40", 'bg-[#f04646]/60'],
+                                ["bg-[#444444]/40", "bg-[#444444]/60"],
+                                ["bg-[#155EEF]/40", 'bg-[#155EEF]/60'],
+                                ["bg-[#f9a620]/40", 'bg-[#f9a620]/60'],
+                                ["bg-[#f21b3f]/40", 'bg-[#f21b3f]/60'],
                             ],
                             'default': [
-                                ["", ""],
-                                ["bg-[#2970FF]/40", 'bg-[#2970FF]/60'],
-                                ["bg-[#f04646]/40", 'bg-[#f04646]/60'],
+                                ["bg-[#444444]/40", "bg-[#444444]/60"],
+                                ["bg-[#155EEF]/40", 'bg-[#155EEF]/60'],
+                                ["bg-[#f21b3f]/40", 'bg-[#f21b3f]/60'],
                             ],
                         };
 
@@ -89,15 +89,15 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                         const selectedMap = pinColorMap[name] || pinColorMap['default'];
 
                         // Return color classes based on colorId or effect
-                        return selectedMap[colorId ?? effect ?? 0] || ["bg-[--tertiary]/40", "bg-[--tertiary]/60"];
+                        return selectedMap[colorId ?? effect ?? 0] || ["bg-[#444444]/40", "bg-[#444444]/60"];
                     };
 
                     const colorClasses = getPinColor(name || 'air', marker.LastUpdate?.AQI?.color_id, marker.LastUpdate?.effect);
 
 
                     elChild1.className = `w-12 h-12 rounded-full flex justify-center items-center animate-pulse  ${colorClasses[0]} absolute top-[-4px] right-[-4px] duration-50`
-                    elChild.className = `w-10 h-10 rounded-full flex justify-center items-center text-white  ${colorClasses[0]} relative z-10`;
-                    elChild.innerHTML = (marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.NOx_7p || marker.LastUpdate?.Leq || "N/A");
+                    elChild.className = `w-10 h-10 rounded-full flex justify-center items-center text-white font-bold text-[15px]  ${colorClasses[0]} relative z-10`;
+                    elChild.innerHTML = (marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.NOx_7p || marker.LastUpdate?.Leq || "-");
 
 
                     el.appendChild(elChild1)
@@ -114,22 +114,22 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                     // Define the color maps
                     const colorMap = [
                         '',
-                        '<div style="background:#3bccff;border:1px solid #155EEF;border-radius:20px;padding:2px 10px;color:#155EEF;">ดีมาก</div>',
-                        '<div style="background:#92d050;border:1px solid #067647;border-radius:20px;padding:2px 10px;color:#067647;">ดี</div>',
-                        '<div style="background:#ffff00;border:1px solid #B54708;border-radius:20px;padding:2px 10px;color:#B54708;">ปานกลาง</div>',
-                        '<div style="background:#ffa200;border:1px solid #B93815;border-radius:20px;padding:2px 10px;color:#B93815;">เริ่มมีผลกระทบ</div>',
-                        '<div style="background:#f04646;border:1px solid #881208;border-radius:20px;padding:2px 10px;color:#881208;">มีผลกระทบ</div>'
+                        '<div style="background:#d8e4fd;border:1px solid #155EEF;border-radius:20px;padding:2px 10px;color:#155EEF;">ดีมาก</div>',
+                        '<div style="background:#dbfde9;border:1px solid #067647;border-radius:20px;padding:2px 10px;color:#067647;">ดี</div>',
+                        '<div style="background:#fbe5a2;border:1px solid #B54708;border-radius:20px;padding:2px 10px;color:#B54708;">ปานกลาง</div>',
+                        '<div style="background:#fbc692;border:1px solid #B93815;border-radius:20px;padding:2px 10px;color:#B93815;">เริ่มมีผลกระทบ</div>',
+                        '<div style="background:#fc8e8e;border:1px solid #881208;border-radius:20px;padding:2px 10px;color:#881208;">มีผลกระทบ</div>'
                     ];
                     const colorMapSound = [
                         '',
-                        '<div style="background:#3bccff;border:1px solid #155EEF;border-radius:20px;padding:2px 10px;color:#155EEF;">ปกติ</div>',
-                        '<div style="background:#ffa200;border:1px solid #B93815;border-radius:20px;padding:2px 10px;color:#B93815;">เฝ้าระวัง</div>',
-                        '<div style="background:#f04646;border:1px solid #881208;border-radius:20px;padding:2px 10px;color:#881208;">มีผลกระทบ</div>'
+                        '<div style="background:#d8e4fd;border:1px solid #155EEF;border-radius:20px;padding:2px 10px;color:#155EEF;">ปกติ</div>',
+                        '<div style="background:#fbc692;border:1px solid #B93815;border-radius:20px;padding:2px 10px;color:#B93815;">เฝ้าระวัง</div>',
+                        '<div style="background:#fc8e8e;border:1px solid #881208;border-radius:20px;padding:2px 10px;color:#881208;">มีผลกระทบ</div>'
                     ];
                     const colorOtherMap = [
                         '',
-                        '<div style="background:#3bccff;border:1px solid #155EEF;border-radius:20px;padding:2px 10px;color:#155EEF;">ปกติ</div>',
-                        '<div style="background:#f04646;border:1px solid #881208;border-radius:20px;padding:2px 10px;color:#881208;">มีผลกระทบ</div>'
+                        '<div style="background:#d8e4fd;border:1px solid #155EEF;border-radius:20px;padding:2px 10px;color:#155EEF;">ปกติ</div>',
+                        '<div style="background:#fc8e8e;border:1px solid #881208;border-radius:20px;padding:2px 10px;color:#881208;">มีผลกระทบ</div>'
                     ];
 
                     // Function to get the color map based on name
@@ -140,27 +140,27 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                     };
 
                     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-                        `<div style="display: grid;">
-        <div style="display: flex; justify-content: space-between;">
-            <div style="font-size: 1.25rem; font-weight:bold;">
-                ${marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.NOx_7p ||marker.LastUpdate?.Leq || "N/A"} 
-                <span style="font-size: 1.125rem;font-weight:normal;">${unit}</span>
-            </div>
-            ${getColorMap(name)[marker.LastUpdate?.AQI?.color_id || marker.LastUpdate?.effect || 1]}
-        </div>
-        <div style="height:2px;margin:10px;background:#EAECF0;border-radius:10px;"></div>
-        <div style="display: grid;justify-items:center;">
-            <div style="font-size: 1.125rem; font-weight: bold;">${marker?.nameTH}</div>
-            <div style="color: #6b7280;text-align: center;">
-                อัปเดตล่าสุด : ${marker?.LastUpdate?.date && DateFormator(new Date(`${marker?.LastUpdate.date}T${marker?.LastUpdate.time}`))}
-            </div>
-        </div>
-    </div>`
+                    `<div style="display: grid;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="font-size: 1.25rem; font-weight:bold;">
+                                ${marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.NOx_7p || marker.LastUpdate?.Leq || "N/A"} 
+                                <span style="font-size: 1.125rem;font-weight:normal;">${unit}</span>
+                            </div>
+                            ${getColorMap(name)[marker.LastUpdate?.AQI?.color_id || marker.LastUpdate?.effect || 1]}
+                        </div>
+                        <div style="height:2px;margin:10px;background:#EAECF0;border-radius:10px;"></div>
+                        <div style="display: grid;justify-items:center;">
+                            <div style="font-size: 1.125rem; font-weight: bold;">${marker?.nameTH}</div>
+                            <div style="color: #6b7280;text-align: center;">
+                                อัปเดตล่าสุด : ${marker?.LastUpdate?.date && DateFormator(new Date(`${marker?.LastUpdate.date}T${marker?.LastUpdate.time}`))}
+                            </div>
+                        </div>
+                    </div>`
                     );
 
-
+                    const position: any = marker.LastUpdated?.long ? [parseFloat(marker.LastUpdated?.long), parseFloat(marker.LastUpdated?.lat)] : [101.3098455 + Math.random() * 0.05, 12.6605804 + Math.random() * 0.05];
                     new mapboxgl.Marker(el)
-                        .setLngLat([100.5018 + Math.random() * 0.1, 13.7563 + Math.random() * 0.1])
+                        .setLngLat(position)
                         .setPopup(popup)
                         .addTo(mapRef.current)
                 }

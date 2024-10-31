@@ -64,7 +64,7 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
 
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-        <div className="text-[36px] font-bold">คุณภาพอากาศ</div>
+        <div className="text-[36px] font-bold">รายงานคุณภาพอากาศ</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
           <Badges name="air"/>
@@ -161,20 +161,20 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
                 dataIndex: 'nameTH',
               },
               {
-                title: 'AQI',
+                title: <div >AQI<span className="text-sm font-normal"> (AQI)</span></div>,
                 dataIndex: 'AQI',
                 render: (text: string, record: any) => `${record.LastUpdate?.AQI.aqi}` || 'N/A',
 
               },
               {
-                title: <div >PM<sub>2.5</sub> <span className="text-sm font-normal"> (µg./m<sup>3</sup>)</span></div>,
+                title: <div >PM<sub>2.5</sub> <span className="text-sm font-normal"> (µg/m<sup>3</sup>)</span></div>,
                 dataIndex: 'PM2',
-                render: (text: string, record: any) => `${record.LastUpdate?.PM25.value}` || 'N/A',
+                render: (text: string, record: any) => `${(record.LastUpdate?.PM25.value) == "N/A" ? '-' : record.LastUpdate?.PM25.value}` || 'N/A',
               },
               {
-                title: <div > <span className="text-sm font-normal"> (µg./m<sup>3</sup>)</span></div>,
+                title: <div >PM<sub>10</sub> <span className="text-sm font-normal"> (µg/m<sup>3</sup>)</span></div>,
                 dataIndex: 'PM10',
-                render: (text: string, record: any) => `${record.LastUpdate?.PM10.value}` || 'N/A',
+                render: (text: string, record: any) => `${(record.LastUpdate?.PM10.value) == "N/A" ? '-' : record.LastUpdate?.PM10.value}` || 'N/A',
               },
               // {
               //   title: <div >อุณหภูมิ<span className="text-sm font-normal"> (°C)</span></div>,

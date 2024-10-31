@@ -35,8 +35,8 @@ export default function EnvironmentCard({ data,className,isFav }: any) {
                     <div className="bg-black/20 backdrop-blur-md border-t-[1px] border-white/30 absolute flex w-full justify-between bottom-0 px-4 py-6 items-center z-1">
 
                         <div className=" text-white ">
-                            <span className="text-4xl font-bold">{data?.LastUpdate?.NOx_7p || "N/A"}</span>
-                            <span className="text-lg pl-2">NOx</span>
+                            <span className="text-4xl font-bold">{data?.LastUpdate?.flow || "-"}</span>
+                            <span className="text-lg pl-2">m<sup>3</sup>/s</span>
                         </div>
                         {/* <div className=" text-white">
                             <p className="text-sm">ความเร็วลม</p>
@@ -53,20 +53,22 @@ export default function EnvironmentCard({ data,className,isFav }: any) {
                     {/* <span className="text-red-500 bg-red-100 px-2 py-1 rounded-full">มีผลกระทบ</span> */}
                     <Badge status={data?.LastUpdate?.effect} name="other"></Badge>
                 </div>
+                <div className="flex justify-between py-1 items-center text-[16px] text-[#475467] mt-1">
+                    <p>NOx</p>
+                    <p className="font-bold">{data?.LastUpdate?.NOx_7p || "-"} ppm</p>
+                </div>
+                <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
                     <p>SOx</p>
-                    <p className="font-bold">{data?.LastUpdate?.SOx_7p || "N/A"} mg/I</p>
+                    <p className="font-bold">{data?.LastUpdate?.SOx_7p || "-"} mg/I</p>
                 </div>
                 <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467] mt-1">
                     <p>CO</p>
-                    <p className="font-bold">{data?.LastUpdate?.CO_7p || "N/A"}</p>
+                    <p className="font-bold">{data?.LastUpdate?.CO_7p || "-"} ppm</p>
                 </div>
-                <div className="bg-[#EAECF0] h-[1px] w-full"></div>
-                <div className="flex justify-between py-1 items-center text-[16px] text-[#475467] mt-1">
-                    <p>NH3</p>
-                    <p className="font-bold">{data?.LastUpdate?.NH3_7p || "N/A"}</p>
-                </div>
+               
+              
             </div>
         </AntCard>
     </>

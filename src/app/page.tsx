@@ -35,7 +35,7 @@ const MeasuringUnitMap: any = {
   "air": "AQI",
   "sound": "dBA",
   "water": "ppm",
-  "environment": "NOx",
+  "environment": <div>m3/s</div>,
   "flare": "",
   "EQMs": "",
 }
@@ -155,7 +155,7 @@ export default function Home() {
                 <div className="flex gap-2">
                   <Image src="/images/speakericon.svg" alt="" width={300} height={300} className="w-10 " >
                   </Image>
-                  <p className="mt-2 text-blue-500 font-bold">คุณภาพเสียง</p>
+                  <p className="mt-2 text-blue-500 font-bold">ระดับเสียง</p>
                 </div>
                 <Link href="/sound">
                   <Image src="/images/sulu4.svg" alt="" width={300} height={300} className="w-10 " >
@@ -223,8 +223,8 @@ export default function Home() {
               <div className="w-[80%] h-[2px] bg-slate-200 ml-7"></div>
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
-                  <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.NOx_7p}</p>
-                  <p className="mt-2 text-[#475467]">NOx</p>
+                  <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.flow || "-"}</p>
+                  <p className="mt-2 text-[#475467]">m<sup>3</sup>/s</p>
                 </div>
                 <Badge status={allData?.cems?.LastUpdate?.effect} name="cems"></Badge>
               </div>

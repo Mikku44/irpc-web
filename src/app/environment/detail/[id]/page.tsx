@@ -83,7 +83,7 @@ export default function Detail({ params }: { params: any }) {
                         title: (
                             <>
 
-                                <span className='px-2'>คุณภาพCEMs</span>
+                                <span className='px-2'>คุณภาพ CEMs</span>
                             </>
                         ),
                     },
@@ -99,7 +99,7 @@ export default function Detail({ params }: { params: any }) {
                 </div>
                 <div className="flex flex-col items-end">
                 <Badge status={cemsDetail?.LastUpdate?.effect}></Badge>
-                    <div className="text-[36px] font-bold">{cemsDetail?.LastUpdate.NOx} <span className="text-[20px] font-normal">COD/mgI</span></div>
+                    <div className="text-[36px] font-bold">{cemsDetail?.LastUpdate?.flow || "-"} <span className="text-[20px] font-normal">m<sub>3</sub>/s</span></div>
                 </div>
             </section>
 
@@ -176,7 +176,7 @@ export default function Detail({ params }: { params: any }) {
 
                     <section>
                         <div className="flex justify-between py-8 gap-5 flex-wrap">
-                            <div className="font-bold">ค่า COD, Flow, Watt ย้อนหลัง 24 ชั่วโมง</div>
+                            <div className="font-bold">ระดับคุณภาพ CEMs ย้อนหลัง 24 ชั่วโมง</div>
                             <div className="">
                                 {/* <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
                                     <Radio.Button value="ALL"><div className='flex gap-2 items-center'>ทั้งหมด </div></Radio.Button>
@@ -228,7 +228,7 @@ export default function Detail({ params }: { params: any }) {
 
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ระดับคุณภาพเฉลี่ยรายชั่วโมง ({display2}, 7D) ย้อนหลัง 7 วัน</div>
+                            <div className="font-bold">ระดับคุณภาพ CEMs เฉลี่ยรายชั่วโมง ({display2}, 7D) ย้อนหลัง 7 วัน</div>
                             <Select
                                     // showSearch
                                     onChange={(e) => setDisplay2(e)}
@@ -275,7 +275,7 @@ export default function Detail({ params }: { params: any }) {
 
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ระดับคุณภาพเฉลี่ยรายชั่วโมง (CEMS, 7D) ย้อนหลัง 7 วัน</div>
+                            <div className="font-bold">ระดับคุณภาพ CEMs เฉลี่ยรายชั่วโมง (CEMS, 7D) ย้อนหลัง 7 วัน</div>
 
                         </div>
 
@@ -315,66 +315,66 @@ export default function Detail({ params }: { params: any }) {
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">O2</div>,
+                                        title: <div className="text-[#475467]">O<sub>2</sub></div>,
                                         
                                         dataIndex: 'O2',
-                                        render: (text: string, record: any) => record?.O2 || 'N/A',
+                                        render: (text: string, record: any) => (record?.O2) == 'N/A' ? '-' : record?.O2 || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">NOx</div>,
+                                        title: <div className="text-[#475467]">NOx (ppm)</div>,
                                         
                                         dataIndex: 'NOx',
-                                        render: (text: string, record: any) => record?.NOx || 'N/A',
+                                        render: (text: string, record: any) => (record?.NOx) == 'N/A' ? '-' : record?.NOx || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">SOx</div>,
+                                        title: <div className="text-[#475467]">SOx (ppm)</div>,
                                         
                                         dataIndex: 'SOx',
-                                        render: (text: string, record: any) => record?.SOx || 'N/A',
+                                        render: (text: string, record: any) => (record?.SOx) == 'N/A' ? '-' : record?.SOx || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">CO</div>,
+                                        title: <div className="text-[#475467]">CO (ppm)</div>,
                                         
                                         dataIndex: 'CO',
-                                        render: (text: string, record: any) => record?.CO || 'N/A',
+                                        render: (text: string, record: any) => (record?.CO) == 'N/A' ? '-' : record?.CO || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">CO2</div>,
+                                        title: <div className="text-[#475467]">CO<sub>2</sub> (ppm)</div>,
                                         
                                         dataIndex: 'CO2',
-                                        render: (text: string, record: any) => record?.CO2 || 'N/A',
+                                        render: (text: string, record: any) => (record?.CO2) == 'N/A' ? '-' : record?.CO2 || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">NH3</div>,
+                                        title: <div className="text-[#475467]">NH<sub>3</sub></div>,
                                         
                                         dataIndex: 'NH3',
-                                        render: (text: string, record: any) => record?.NH3 || 'N/A',
+                                        render: (text: string, record: any) => (record?.NH3) == 'N/A' ? '-' : record?.NH3 || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">H2S</div>,
+                                        title: <div className="text-[#475467]">H<sub>2</sub>S (ppm)</div>,
                                         
                                         dataIndex: 'H2S',
-                                        render: (text: string, record: any) => record?.H2S || 'N/A',
+                                        render: (text: string, record: any) => (record?.H2S) == 'N/A' ? '-' : record?.H2S || 'N/A',
 
                                     },
                                     {
-                                        title: <div className="text-[#475467]">Dust</div>,
+                                        title: <div className="text-[#475467]">Dust (µg/m3)</div>,
                                         
                                         dataIndex: 'Dust',
-                                        render: (text: string, record: any) => record?.Dust || 'N/A',
+                                        render: (text: string, record: any) => (record?.Dust) == 'N/A' ? '-' : record?.Dust || 'N/A',
 
                                     },
                                     {
                                         title: <div className="text-[#475467]">Opacity</div>,
                                         
                                         dataIndex: 'Opacity',
-                                        render: (text: string, record: any) => record?.Opacity || 'N/A',
+                                        render: (text: string, record: any) => (record?.Opacity) == 'N/A' ? '-' : record?.Opacity || 'N/A',
 
                                     },
                                     // {

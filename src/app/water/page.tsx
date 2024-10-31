@@ -66,7 +66,7 @@ export default function Page() {
 
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-        <div className="text-[36px] font-bold">คุณภาพน้ำ</div>
+        <div className="text-[36px] font-bold">รายงานคุณภาพน้ำ</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
           <Badges name="other"/>
@@ -167,7 +167,7 @@ export default function Page() {
                   compare: (a: { COD: number; }, b: { COD: number; }) => a.COD - b.COD,
                   multiple: 3,
                 },
-                render: (text: string, record: any) => record.LastUpdate?.COD || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.COD == "N/A"? '-':record.LastUpdate?.COD || '-',
               },
               {
                 title: <div className="text-[#475467]">Flow (m³/s)</div>,
@@ -176,16 +176,16 @@ export default function Page() {
                   compare: (a: { Flow: number; }, b: { Flow: number; }) => a.Flow - b.Flow,
                   multiple: 3,
                 },
-                render: (text: string, record: any) => record.LastUpdate?.Flow || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.Flow == "N/A"? '-':record.LastUpdate?.Flow || '-',
               },
               {
-                title: <div className="text-[#475467]">PH</div>,
+                title: <div className="text-[#475467]">pH</div>,
                 dataIndex: 'pH',
                 sorter: {
                   compare: (a: { PH: number; }, b: { PH: number; }) => a.PH - b.PH,
                   multiple: 3,
                 },
-                render: (text: string, record: any) => record.LastUpdate?.pH || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.pH == "N/A"? '-':record.LastUpdate?.pH || '-',
               },
               {
                 title: <div className="text-[#475467]">เวลาอัพเดต</div>,

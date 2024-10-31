@@ -54,16 +54,16 @@ export default function Card({ data, className,isFav }: any) {
             <div className="grid">
                 <div className="flex justify-between items-center mb-2">
                     <h3 className="text-[24px] font-semibold text-ellipsis line-clamp-1" >{data?.nameTH}</h3>
-                    <Badge className=" basis-[150px]" status={data?.LastUpdate?.AQI?.color_id || "N/A"}></Badge>
+                    <Badge className=" basis-[150px]" status={data?.LastUpdate?.AQI?.color_id || "-"}></Badge>
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
-                    <p>PM<sub>2.5</sub> เฉลี่ย 24 ชม</p>
-                    <p className="font-bold">{data?.LastUpdate?.PM25?.value} µg./m<sup>3</sup></p>
+                    <p>PM<sub>2.5</sub></p>
+                    <p className="font-bold">{data?.LastUpdate?.PM25?.value} µg/m<sup>3</sup></p>
                 </div>
                 <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467] mt-1">
-                    <p> เฉลี่ย 24 ชม</p>
-                    <p className="font-bold">{data?.LastUpdate?.PM10?.value} µg./m<sup>3</sup></p>
+                    <p> PM <sub>10</sub></p>
+                    <p className="font-bold">{data?.LastUpdate?.PM10?.value} µg/m<sup>3</sup></p>
                 </div>
             </div>
         </AntCard>

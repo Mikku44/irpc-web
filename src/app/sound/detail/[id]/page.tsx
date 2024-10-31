@@ -10,7 +10,7 @@ import { getData } from '@/app/ultilities/api';
 import DateFormator, { FullDateFormator } from '@/app/ultilities/DateFormater';
 import rearrangeData from '@/app/ultilities/parseFromDate';
 import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
-import { Breadcrumb, Radio } from 'antd';
+import { Breadcrumb, Radio, Skeleton } from 'antd';
 import { ChevronRight, House, MapPin, Waves } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,7 +19,8 @@ import { useEffect, useState } from 'react';
 
 export default function Detail({ params }: { params: any }) {
 
-    const [display, setDisplay] = useState<'ALL' | 'LEQ' | 'LMAX' | 'LMIN'>('ALL');
+    const [display, setDisplay] = useState<'ALL' | 'LEQ' | 'LMAX' | 'LMIN' | 'L90'>('ALL');
+    const [displayS, setDisplayS] = useState<'ALL' | 'LEQ' | 'LMAX' | 'LMIN' | 'L90'>('ALL');
     const [display2, setDisplay2] = useState<'ALL' | 'Default' | 'Noise'>('ALL');
     const [soundsDetail, setSoundsDetail] = useState<any>();
     const fetchData = async () => {
@@ -74,12 +75,13 @@ export default function Detail({ params }: { params: any }) {
             />
             <section className="flex justify-between">
                 <div>
-                    <h3 className="font-bold text-[30px]">{soundsDetail?.nameTH}</h3>
+                
+                    <h3 className="font-bold text-[30px]">{soundsDetail?.nameTH || <Skeleton.Button block  style={{ width: 160,height:20 }}/>}</h3>
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${soundsDetail?.LastUpdate?.date!}T${soundsDetail?.LastUpdate?.time!}`))} </div>
                 </div>
                 <div className="flex flex-col items-end">
                     <Badge status={soundsDetail?.LastUpdate?.effect}></Badge>
-                    <div className="text-[36px] font-bold">{soundsDetail?.LastUpdate?.Leq} <span className="text-[20px] font-normal">dBA/Leq 24 ชม</span></div>
+                    <div className="text-[36px] font-bold">{soundsDetail?.LastUpdate5min?.Leq || <Skeleton.Button block  style={{ width: 160,height:20 }}/>} <span className="text-[20px] font-normal">dBA</span></div>
                 </div>
             </section>
 
@@ -91,7 +93,7 @@ export default function Detail({ params }: { params: any }) {
                     <span className="text-[14px] text-gray-500 pb-2">ตำแหน่งที่ตั้ง</span>
                     <div className="flex items-center mb-4">
                         <MapPin></MapPin>
-                        <span className="text-[14px]">{soundsDetail?.areaTH}</span>
+                        <span className="text-[14px]">{soundsDetail?.areaTH || <Skeleton.Button block  style={{ width: 160,height:20 }}/>}</span>
                     </div>
 
                     {/* Station Name */}
@@ -103,30 +105,34 @@ export default function Detail({ params }: { params: any }) {
                     {/* Station Code */}
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">รหัสสถานี</span>
-                        <p className="text-[16px] font-semibold text-gray-900">{soundsDetail?.stationID}</p>
+                        <p className="text-[16px] font-semibold text-gray-900">{soundsDetail?.stationID || <Skeleton.Button block  style={{ width: 160,height:20 }}/>}</p>
                     </div>
 
                     {/* Latest Data */}
                     <div>
                         <span className="text-[14px] text-gray-500">ประเภทพื้นที่</span>
                         <p className="text-[16px] font-semibold text-gray-900">
-                            {soundsDetail?.stationType}
+                            {soundsDetail?.stationType || <Skeleton.Button block  style={{ width: 160,height:20 }}/>}
                         </p>
                     </div>
                 </div>
                 <div className="lg:basis-2/3">
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-5 grid-cols-2 justify-center items-center">
                         <div>
-                            <div className='text-[#475467]'>dBA/Leq 1 ชม</div>
+                            <div className='text-[#475467]'>Leq 1 ชม.</div>
                             <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.Leq}</div>
                         </div>
-                        <div>
-                            <div className='text-[#475467]'>dBA/Leq 15 นาที</div>
+                        {/* <div>
+                            <div className='text-[#475467]'>Leq 15 นาที</div>
                             <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.L10}</div>
+                        </div> */}
+                        <div>
+                            <div className='text-[#475467]'>Leq 5 นาที</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.L5}</div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>dBA/Leq 5 นาที</div>
-                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.L5}</div>
+                            <div className='text-[#475467]'>Leq 90 นาที</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.L90}</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>Lmax</div>
@@ -140,32 +146,66 @@ export default function Detail({ params }: { params: any }) {
 
                     <section>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ค่า Leq, Lmax, Lmin ย้อนหลัง 24 ชั่วโมง</div>
+                            <div className="font-bold">ระดับเสียงรบกวนย้อนหลัง 24 ชั่วโมง</div>
                             <div className="">
                                 <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
                                     <Radio.Button value="ALL"><div className='flex gap-2 items-center'>ทั้งหมด </div></Radio.Button>
                                     <Radio.Button value="LEQ"><div className='flex gap-2 items-center'>Leq</div></Radio.Button>
                                     <Radio.Button value="LMAX"><div className='flex gap-2 items-center'>Lmax</div></Radio.Button>
                                     <Radio.Button value="LMIN"><div className='flex gap-2 items-center'>Lmin</div></Radio.Button>
+                                    <Radio.Button value="L90"><div className='flex gap-2 items-center'>L90</div></Radio.Button>
                                 </Radio.Group>
                             </div>
                         </div>
                         <div className=" overflow-hidden flex justify-center">
                             {/* <DualGraph /> */}
                             {display == "ALL" && soundsDetail && <MultiLineGraph data={[
-                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.Leq, "Leq"), 'value'),
-                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.Lmin, "Lmin"), 'value'),
-                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.Lmax, "Lmax"), 'value'),
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H5min?.Leq, "Leq"), 'value'),
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H5min?.Lmin, "Lmin"), 'value'),
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H5min?.Lmax, "Lmax"), 'value'),
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H5min?.L90, "L90"), 'value'),
 
                             ]} />}
 
-                            {display == "LEQ" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.Leq, "value")}></AreaGraph>}
-                            {display == "LMAX" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.Lmax, "value")}></AreaGraph>}
-                            {display == "LMIN" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.Lmin, "value")}></AreaGraph>}
+                            {display == "LEQ" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H5min?.Leq, "value")}></AreaGraph>}
+                            {display == "LMAX" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H5min?.Lmax, "value")}></AreaGraph>}
+                            {display == "LMIN" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H5min?.Lmin, "value")}></AreaGraph>}
+                            {display == "L90" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H5min?.L90, "value")}></AreaGraph>}
                         </div>
                     </section>
 
-                    <section className='py-10'>
+                    {/* เสียงมาตรฐาน */}
+                    <section>
+                        <div className="flex justify-between py-8 flex-wrap">
+                            <div className="font-bold">ระดับเสียงมาตรฐานย้อนหลัง 24 ชั่วโมง</div>
+                            <div className="">
+                                <Radio.Group value={displayS} onChange={(e) => setDisplayS(e.target.value)}>
+                                    <Radio.Button value="ALL"><div className='flex gap-2 items-center'>ทั้งหมด </div></Radio.Button>
+                                    <Radio.Button value="LEQ"><div className='flex gap-2 items-center'>Leq</div></Radio.Button>
+                                    <Radio.Button value="LMAX"><div className='flex gap-2 items-center'>Lmax</div></Radio.Button>
+                                    <Radio.Button value="LMIN"><div className='flex gap-2 items-center'>Lmin</div></Radio.Button>
+                                    <Radio.Button value="L90"><div className='flex gap-2 items-center'>L90</div></Radio.Button>
+                                </Radio.Group>
+                            </div>
+                        </div>
+                        <div className=" overflow-hidden flex justify-center">
+                            {/* <DualGraph /> */}
+                            {displayS == "ALL" && soundsDetail && <MultiLineGraph data={[
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.Leq, "Leq"), 'value'),
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.Lmin, "Lmin"), 'value'),
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.Lmax, "Lmax"), 'value'),
+                                ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.L90, "L90"), 'value'),
+
+                            ]} />}
+
+                            {displayS == "LEQ" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.Leq, "value")}></AreaGraph>}
+                            {displayS == "LMAX" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.Lmax, "value")}></AreaGraph>}
+                            {displayS == "LMIN" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.Lmin, "value")}></AreaGraph>}
+                            {displayS == "L90" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.L90, "value")}></AreaGraph>}
+                        </div>
+                    </section>
+
+                    {/* <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
                             <div className="font-bold">เสียงพื้นฐานและเสียงรบกวน</div>
                             <div className="">
@@ -179,7 +219,7 @@ export default function Detail({ params }: { params: any }) {
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                            {/* <LineGraph /> */}
+                           
                             {display2 == "ALL" && soundsDetail && <MultiLineGraph data={[
                                 ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.L5, "L5"), 'value'),
                                 ...convertPropertyToNumber(namedArray(soundsDetail.Last24H?.L50, "L50"), 'value'),
@@ -191,7 +231,9 @@ export default function Detail({ params }: { params: any }) {
                             {display2 == "Noise" && soundsDetail && <AreaGraph data={convertPropertyToNumber(soundsDetail.Last24H?.L5, "value")} />}
 
                         </div>
-                    </section>
+                    </section> */}
+
+
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
                             <div className="font-bold">ระดับเสียงเฉลี่ยรายชั่วโมง (Leq, 7D) ย้อนหลัง 7 วัน</div>
@@ -204,7 +246,7 @@ export default function Detail({ params }: { params: any }) {
                     </section>
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ระดับเสียงเฉลี่ยรายชั่วโมง (Leq, 7D) ย้อนหลัง 7 วัน</div>
+                            <div className="font-bold">ระดับเสียงเฉลี่ยรายชั่วโมง (Leq,Lmin,Lmax,L90 7D) ย้อนหลัง 7 วัน</div>
 
                         </div>
 
@@ -231,19 +273,25 @@ export default function Detail({ params }: { params: any }) {
                                             render: (text: string, record: any) => `${DateFormator(new Date(record?.DATETIMEDATA.split(" ").join("T")))}` || 'N/A',
                                         },
                                         {
-                                            title: <div className="text-[#475467]">Leq</div>,
+                                            title: <div className="text-[#475467]">Leq <span>(dBA)</span></div>,
                                             dataIndex: 'Leq',
                                             width: 100,
                                             ellipsis: true,
                                         },
                                         {
-                                            title: <div className="text-[#475467]">Lmin</div>,
+                                            title: <div className="text-[#475467]">L90 <span>(dBA)</span></div>,
+                                            dataIndex: 'L90',
+                                            width: 100,
+                                            ellipsis: true,
+                                        },
+                                        {
+                                            title: <div className="text-[#475467]">Lmin <span>(dBA)</span></div>,
                                             dataIndex: 'Lmin',
                                             width: 100,
                                             ellipsis: true,
                                         },
                                         {
-                                            title: <div className="text-[#475467]">Lmax</div>,
+                                            title: <div className="text-[#475467]">Lmax <span>(dBA)</span></div>,
                                             dataIndex: 'Lmax',
                                             width: 100,
                                             ellipsis: true,

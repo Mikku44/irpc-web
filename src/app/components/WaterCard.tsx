@@ -58,12 +58,12 @@ export default function WaterCard({ data, className, isFav }: any) {
                     <Badge status={data?.LastUpdate?.effect} name="water"></Badge>
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
-                    <p>ค่า Flow</p>
-                    <p className="font-bold">{data?.LastUpdate?.Flow || "N/A"} m3/hr</p>
+                    <p>Flow</p>
+                    <p className="font-bold">{data?.LastUpdate?.Flow || "N/A"} m<sup>3</sup>/hr</p>
                 </div>
                 <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
-                    <p>ค่า pH</p>
+                    <p>pH</p>
                     <p className="font-bold">{data?.LastUpdate?.pH || "N/A"}</p>
                 </div>
 
