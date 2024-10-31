@@ -35,7 +35,7 @@ const MeasuringUnitMap: any = {
   "air": "AQI",
   "sound": "dBA",
   "water": "ppm",
-  "environment": <div>m3/s</div>,
+  "environment": "m³/s",
   "flare": "",
   "EQMs": "",
 }

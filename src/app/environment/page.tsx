@@ -122,7 +122,7 @@ export default function Environment() {
                         </Link>
                     </div>}
                     <div className=" w-full lg:h-auto md:h-[50vh] h-[50vh]">
-                        <MapPick data={cems} setState={setSelectedPlace} unit="NOx" key="NOx_7p" />
+                        <MapPick data={cems} setState={setSelectedPlace} unit="m³/s" key="NOx_7p" />
                     </div>
                 </div>}
 
