@@ -141,7 +141,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="w-full bg-white text-center flex justify-between py-4 lg:px-28 md:px-[10px] px-5 items-center">
+    <div className="w-full bg-white text-center flex justify-between py-4 lg:px-[5vw] md:px-10 px-8 items-center">
       <div className="flex gap-10 items-center text-lg ">
         <div className="flex gap-2 items-center">
 
@@ -151,7 +151,7 @@ export default function Navbar() {
         </div>
 
 
-        <ul className="lg:px-10 lg:flex md:hidden hidden gap-10 items-center font-medium text-[#475467]">
+        <ul className="lg:px-6 lg:flex md:hidden hidden gap-10 items-center font-medium text-[#475467]">
           <Link href="/">
             <li>หน้าแรก</li>
           </Link>

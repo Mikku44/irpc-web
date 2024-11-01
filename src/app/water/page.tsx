@@ -102,7 +102,7 @@ export default function Page() {
               if(!airsFiltered[0]) return item
               return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
             }).map((item: Water) => <Link key={item.stationID} href={`water/detail/${item.stationID}`}>
-            <WaterCard key={item.stationID} data={item}></WaterCard>
+            <WaterCard className="lg:min-w-full" key={item.stationID} data={item}></WaterCard>
           </Link>)}
         </div>}
 
@@ -110,7 +110,7 @@ export default function Page() {
 
           <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={waters.length} className="lg:hidden md:hidden flex justify-center py-3" >
             {[waters[currentPage]].map((item: Water) => <Link key={item?.stationID} href={`water/detail/${item?.stationID}`}>
-              <WaterCard key={item?.stationID} data={item}></WaterCard>
+              <WaterCard className="lg:min-w-full" key={item?.stationID} data={item}></WaterCard>
             </Link>)}
           </Pagination>
         </div>}
@@ -119,7 +119,7 @@ export default function Page() {
         {display == "Map" && <div className="flex lg:flex-row flex-col  gap-5 ">
           <div className="lg:basis-2/5 basis-full flex justify-center">
             <Link href={`water/detail/${selectedPlace?.stationID!}`}>
-              <WaterCard data={selectedPlace}></WaterCard>
+              <WaterCard className="lg:min-w-full" data={selectedPlace}></WaterCard>
             </Link>
           </div>
           <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>

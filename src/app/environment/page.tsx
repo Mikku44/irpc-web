@@ -102,14 +102,14 @@ export default function Environment() {
                         if (!airsFiltered[0]) return item
                         return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
                     }).map((item: any) => <Link href={`environment/detail/${item.stationID}`} key={item.stationID}>
-                        <EnvironmentCard data={item}></EnvironmentCard>
+                        <EnvironmentCard className="lg:min-w-full" data={item}></EnvironmentCard>
                     </Link>)}
                 </div>}
 
                 {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
                     <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={cems?.length} className="lg:hidden md:hidden flex justify-center py-3" >
                         {[cems[currentPage]].map((item: any) => <Link key={item?.stationID} href={`/environment/detail/${item?.stationID}`}>
-                            <EnvironmentCard data={item}></EnvironmentCard>
+                            <EnvironmentCard className="lg:min-w-full" data={item}></EnvironmentCard>
                         </Link>)}
                     </Pagination>
                 </div>}
@@ -118,7 +118,7 @@ export default function Environment() {
                 {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">
                     {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
                         <Link href={`environment/detail/${selectedPlace?.stationID}`}>
-                            <EnvironmentCard data={selectedPlace}></EnvironmentCard>
+                            <EnvironmentCard className="lg:min-w-full" data={selectedPlace}></EnvironmentCard>
                         </Link>
                     </div>}
                     <div className=" w-full lg:h-auto md:h-[50vh] h-[50vh]">

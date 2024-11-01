@@ -95,13 +95,13 @@ export default function Sound() {
             if (!airsFiltered[0]) return item
             return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
           }).map((item: any, index: number) => <Link key={index} href={`sound/detail/${item?.stationID}`}>
-            <SoundCard data={item}></SoundCard>
+            <SoundCard className="lg:min-w-full" data={item}></SoundCard>
           </Link>)}
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex flex-col items-center gap-5 justify-center">
           {[sounds[currentPage]].map((item: any) => <Link key={item?.stationID} href={`sound/detail/${item?.stationID}`}>
-            <SoundCard data={item}></SoundCard>
+            <SoundCard className="lg:min-w-full" data={item}></SoundCard>
           </Link>)}
           <Pagination pageSize={pageSize} simple={{ readOnly: true }}  onChange={setCurrentPage} current={currentPage} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
         </div>}
@@ -110,7 +110,7 @@ export default function Sound() {
         {/* {display == "Map" && <div className="flex lg:flex-row flex-col items-center gap-5 ">
           <div className="">
             <Link key={selectedPlace?.stationID} href={`sound/detail/${selectedPlace?.stationID}`}>
-              <SoundCard data={selectedPlace}></SoundCard>
+              <SoundCard className="lg:min-w-full" data={selectedPlace}></SoundCard>
             </Link>
           </div>
           <div className="lg:basis-1/2 w-full lg:h-auto md:h-[50vh] h-[50vh]">
@@ -122,7 +122,7 @@ export default function Sound() {
         {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">
           {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
             <Link href={`/air/detail/${selectedPlace?.stationID}`}>
-              <SoundCard data={selectedPlace}></SoundCard>
+              <SoundCard className="lg:min-w-full" data={selectedPlace}></SoundCard>
             </Link>
           </div>}
           <div className=" w-full lg:h-auto md:h-[50vh] h-[50vh]">
