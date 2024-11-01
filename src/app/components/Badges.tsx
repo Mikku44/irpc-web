@@ -1,11 +1,28 @@
 import Badge from "./Badge";
 
-export default function Badges() {
+export default function Badges({name}:{name: "air" | 'sound' | 'other'} ) {
     return <div className="badges flex gap-2 flex-wrap">
-        <Badge text="คุณภาพดีมาก" status='very'></Badge>
-        <Badge text="คุณภาพดี" status='good'></Badge>
-        <Badge text="คุณภาพปานกลาง" status='medium'></Badge>
-        <Badge text="เริ่มมีผลกระทบ" status='effect'></Badge>
-        <Badge text="มีผลกระทบ" status='effected'></Badge>
+        {name =='air' &&
+            <>
+                <Badge text="ดีมาก" status='very'></Badge>
+                <Badge text="ดี" status='good'></Badge>
+                <Badge text="ปานกลาง" status='medium'></Badge>
+                <Badge text="เริ่มมีผลกระทบ" status='effect'></Badge>
+                <Badge text="มีผลกระทบ" status='effected'></Badge>
+            </>
+        }
+        {name == 'sound' &&
+            <>
+                <Badge text="ปกติ" status='very'></Badge>
+                <Badge text="เฝ้าระวัง" status='effect'></Badge>
+                <Badge text="มีผลกระทบ" status='effected'></Badge>
+            </>
+        }
+        {name == 'other'  &&
+            <>
+                <Badge text="ปกติ" status='very'></Badge>
+                <Badge text="มีผลกระทบ" status='effected'></Badge>
+            </>
+        }
     </div>
 }

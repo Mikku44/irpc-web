@@ -24,7 +24,7 @@ import Badge from "./components/Badge";
 
 const MeasuringMap: any = {
   "air": "/forWeb/getAirLast.php",
-  "sound": "/forWeb/getAirLast.php",
+  "sound": "/forWeb/getSoundLast.php",
   "water": "/forWeb/getWaterLast.php",
   "environment": "/forWeb/getCemsLast.php",
   "flare": "/forWeb/getCemsLast.php",
@@ -34,8 +34,8 @@ const MeasuringMap: any = {
 const MeasuringUnitMap: any = {
   "air": "AQI",
   "sound": "dBA",
-  "water": "COD/mgl",
-  "environment": "NOx",
+  "water": "ppm",
+  "environment": "m³/s",
   "flare": "",
   "EQMs": "",
 }
@@ -55,14 +55,16 @@ export default function Home() {
   }
 
   const fetchAll = async () => {
-    const result = await getData('/forWeb/getAirLast.php')
-    const result1 = await getData('/forWeb/getWaterLast.php')
-    const result2 = await getData('/forWeb/getCemsLast.php')
+    const air = await getData('/forWeb/getAirLast.php')
+    const water = await getData('/forWeb/getWaterLast.php')
+    const cems = await getData('/forWeb/getCemsLast.php')
+    const sound = await getData('/forWeb/getSoundLast.php')
 
     setallData({
-      "air":result?.stations?.[0],
-      "water" : result1?.stations?.[0],
-      "cems": result2?.stations?.[0]
+      "air":air?.stations?.[0],
+      "water" : water?.stations?.[0],
+      "cems": cems?.stations?.[0],
+      "sound": sound?.stations?.[0],
     })
   }
 
@@ -153,7 +155,7 @@ export default function Home() {
                 <div className="flex gap-2">
                   <Image src="/images/speakericon.svg" alt="" width={300} height={300} className="w-10 " >
                   </Image>
-                  <p className="mt-2 text-blue-500 font-bold">คุณภาพเสียง</p>
+                  <p className="mt-2 text-blue-500 font-bold">ระดับเสียง</p>
                 </div>
                 <Link href="/sound">
                   <Image src="/images/sulu4.svg" alt="" width={300} height={300} className="w-10 " >
@@ -163,10 +165,10 @@ export default function Home() {
               <div className="w-[80%] h-[2px] bg-slate-200 ml-7"></div>
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
-                  <p className="text-2xl font-extrabold">{allData?.water?.LastUpdate?.COD}</p>
+                  <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate?.Leq}</p>
                   <p className="mt-2 text-[#475467]">dBA</p>
                 </div>
-                <Badge status="1"></Badge>
+                <Badge status={allData?.sound?.LastUpdate?.effect} name="sound"></Badge>
               </div>
               <div className="m-4">
                 <p className="font-bold">{allData?.water?.nameTH}</p>
@@ -192,10 +194,10 @@ export default function Home() {
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
                   <p className="text-2xl font-extrabold">{allData?.water?.LastUpdate?.COD}</p>
-                  <p className="mt-2 text-[#475467]">COD/mgl</p>
+                  <p className="mt-2 text-[#475467]">ppm</p>
                 </div>
                 
-                 <Badge status="1"></Badge>
+                 <Badge status={allData?.water?.LastUpdate?.effect} name="water"></Badge>
            
               </div>
               <div className="m-4">
@@ -211,7 +213,7 @@ export default function Home() {
                 <div className="flex gap-2">
                   <Image src="/images/waveicon.svg" alt="" width={300} height={300} className="w-10 " >
                   </Image>
-                  <p className="mt-2 text-blue-500 font-bold">คุณภาพการปล่อย</p>
+                  <p className="mt-2 text-blue-500 font-bold">CEMs</p>
                 </div>
                 <Link href="/environment">
                   <Image src="/images/sulu4.svg" alt="" width={300} height={300} className="w-10 " >
@@ -221,10 +223,10 @@ export default function Home() {
               <div className="w-[80%] h-[2px] bg-slate-200 ml-7"></div>
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
-                  <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.NOx_7p}</p>
-                  <p className="mt-2 text-[#475467]">NOx</p>
+                  <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.flow || "-"}</p>
+                  <p className="mt-2 text-[#475467]">m<sup>3</sup>/s</p>
                 </div>
-                <Badge status="1"></Badge>
+                <Badge status={allData?.cems?.LastUpdate?.effect} name="cems"></Badge>
               </div>
               <div className="m-4">
                 <p className="font-bold">{allData?.cems?.nameTH}</p>
@@ -268,14 +270,14 @@ export default function Home() {
           }} block />
         </div>
 
-        <Badges></Badges>
+        <Badges name={['air','sound'].includes(segmentValue) ? segmentValue as any:'other'}></Badges>
         {<div className="flex lg:flex-row flex-col py-10  gap-5 ">
           <div className="lg:basis-2/5 basis-full flex justify-center">
             {segmentValue === "air" && <Link href={`/air/detail/${selectedPlace?.stationID!}`}>
               <Card data={selectedPlace}></Card>
             </Link>}
             {segmentValue === "sound" && <Link href={`/sound/detail/${selectedPlace?.stationID!}`}>
-              <SoundCard ></SoundCard>
+              <SoundCard data={selectedPlace}></SoundCard>
             </Link>}
             {segmentValue === "water" && <Link href={`/water/detail/${selectedPlace?.stationID!}`}>
               <WaterCard data={selectedPlace}></WaterCard>
@@ -291,7 +293,8 @@ export default function Home() {
             </Link>}
           </div>
           <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
-            {MeasuringData && <MapPick data={MeasuringData} setState={setSelectedPlace} unit={MeasuringUnitMap[segmentValue]} />}
+            
+            {MeasuringData && <MapPick name={segmentValue} data={MeasuringData} setState={setSelectedPlace} unit={MeasuringUnitMap[segmentValue]} />}
           </div>
         </div>}
       </section>

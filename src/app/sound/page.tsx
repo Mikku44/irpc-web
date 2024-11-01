@@ -43,8 +43,8 @@ export default function Sound() {
 
   const fetchData = async () => {
     const result = await getData('/forWeb/getSoundLast.php')
-    setSounds(result.stations || [])
-
+    setSounds(result?.stations || [])
+    setSelectedPlace(result?.stations?.[0]);
   }
 
   useEffect(() => {
@@ -59,15 +59,16 @@ export default function Sound() {
 
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-        <div className="text-[36px] font-bold">ดัชนีคุณภาพเสียง</div>
+        <div className="text-[36px] font-bold">รายงานระดับเสียง</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-          <Badges />
+          <Badges name="sound" />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
             <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
               <Radio.Group
                 value={display}
+                 size='large'
                 onChange={(e) => setDisplay(e.target.value)}
                 className="lg:w-auto md:w-full w-full "
               >
@@ -95,34 +96,47 @@ export default function Sound() {
             if (!airsFiltered[0]) return item
             return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
           }).map((item: any, index: number) => <Link key={index} href={`sound/detail/${item?.stationID}`}>
-            <SoundCard data={item}></SoundCard>
+            <SoundCard className="lg:min-w-full" data={item}></SoundCard>
           </Link>)}
         </div>}
 
-        {display == "List" && <div className="lg:hidden md:hidden flex gap-5 justify-center">
+        {display == "List" && <div className="lg:hidden md:hidden flex flex-col items-center gap-5 justify-center">
           {[sounds[currentPage]].map((item: any) => <Link key={item?.stationID} href={`sound/detail/${item?.stationID}`}>
-            <SoundCard data={item}></SoundCard>
+            <SoundCard className="lg:min-w-full" data={item}></SoundCard>
           </Link>)}
+          <Pagination pageSize={pageSize} simple={{ readOnly: true }}  onChange={setCurrentPage} current={currentPage} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
         </div>}
 
 
-        {display == "Map" && <div className="flex  gap-5 ">
-          <div className="basis-2/5 lg:block md:hidden hidden">
+        {/* {display == "Map" && <div className="flex lg:flex-row flex-col items-center gap-5 ">
+          <div className="">
             <Link key={selectedPlace?.stationID} href={`sound/detail/${selectedPlace?.stationID}`}>
-              <SoundCard data={selectedPlace}></SoundCard>
+              <SoundCard className="lg:min-w-full" data={selectedPlace}></SoundCard>
             </Link>
           </div>
-          <div className="lg:basis-3/5  w-full lg:h-auto md:h-[50vh] h-[50vh]">
-            <MapPick data={sounds} setState={setSelectedPlace} unit="dBA" key="COD" />
+          <div className="lg:basis-1/2 w-full lg:h-auto md:h-[50vh] h-[50vh]">
+            <MapPick data={sounds} setState={setSelectedPlace} unit="dBA" name="sound" />
+          </div>
+        </div>} */}
+
+        
+        {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">
+          {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
+            <Link href={`/air/detail/${selectedPlace?.stationID}`}>
+              <SoundCard className="lg:min-w-full" data={selectedPlace}></SoundCard>
+            </Link>
+          </div>}
+          <div className=" w-full lg:h-auto md:h-[50vh] h-[50vh]">
+            <MapPick data={sounds} setState={setSelectedPlace} unit="dBA" name="sound" />
           </div>
         </div>}
 
-        <Pagination pageSize={pageSize} simple={{ readOnly: true }}  onChange={setCurrentPage} current={currentPage} total={sounds.length} className="lg:hidden md:hidden flex justify-center py-3" />
+        
       </section>
 
       <section id="table" className="px-10 py-10">
         <div className="flex flex-wrap gap-2 justify-between">
-          <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพเสียง</div>
+          <div className="text-[20px] font-bold">ตารางตรวจวัดระดับเสียง</div>
           <div className="search"> <Input onChange={e => handleSearch(e.target.value,1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}} className="text-slate-500 noto-sans" prefix={<Search />} /></div>
         </div>
 
@@ -154,45 +168,54 @@ export default function Sound() {
                 dataIndex: 'nameTH',
               },
               {
-                title: <div className="text-[#475467]">dBA/Leq 24 ชม</div>,
+                title: <div className="text-[#475467]">Leq 24 ชม.  <span className="font-normal">(dBA)</span></div>,
                 dataIndex: 'dBA24',
-                render: (text: string, record: any) => record.LastUpdate?.Leq || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.Leq || '-',
                 // sorter: {
                 //   compare: (a: { dBA24: number; }, b: { dBA24: number; }) => (a.dBA24) - (b.dBA24),
                 //   multiple: 3,
                 // },
               },
               {
-                title: <div className="text-[#475467]">dBA/Leq 1 ชม</div>,
+                title: <div className="text-[#475467]">Leq 1 ชม. <span className="font-normal">(dBA)</span></div>,
                 dataIndex: 'dBA1',
                 // sorter: {
                 //   compare: (a: { dBA1: number; }, b: { dBA1: number; }) => (a.dBA1) - (b.dBA1),
                 //   multiple: 3,
                 // },
-                render: (text: string, record: any) => record.LastUpdate?.L50 || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.L50 || '-',
               },
               {
-                title: <div className="text-[#475467]">dBA/Leq 15 นาที</div>,
+                title: <div className="text-[#475467]">Leq 15 นาที <span className="font-normal">(dBA)</span></div>,
                 dataIndex: 'dBA15',
                 // sorter: {
                 //   compare: (a: { dBA15: number; }, b: { dBA15: number; }) => (a.dBA15) - (b.dBA15),
                 //   multiple: 3,
                 // },
-                render: (text: string, record: any) => record.LastUpdate?.L10 || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.L10 || '-',
               },
               {
-                title: <div className="text-[#475467]">dBA/Leq 5 นาที</div>,
+                title: <div className="text-[#475467]">Leq 5 นาที <span className="font-normal">(dBA)</span></div>,
                 dataIndex: 'dBA5',
                 // sorter: {
                 //   compare: (a: { dBA5: number; }, b: { dBA5: number; }) => (a.dBA5) - (b.dBA5),
                 //   multiple: 3,
                 // },
-                render: (text: string, record: any) => record.LastUpdate?.L5 || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.L5 || '-',
+              },
+              {
+                title: <div className="text-[#475467]">Leq 90 นาที <span className="font-normal">(dBA)</span></div>,
+                dataIndex: 'dBA5',
+                // sorter: {
+                //   compare: (a: { dBA5: number; }, b: { dBA5: number; }) => (a.dBA5) - (b.dBA5),
+                //   multiple: 3,
+                // },
+                render: (text: string, record: any) => record.LastUpdate?.L90 || '-',
               },
               {
                 title: <div className="text-[#475467]">เวลาอัพเดต</div>,
                 dataIndex: 'updated',
-                render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || 'N/A',
+                render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || '-',
               },
             ]}
           />

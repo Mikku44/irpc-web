@@ -17,11 +17,35 @@ import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
 export default function Detail({ params }: { params: any }) {
 
     const types = [
-        'AQI', 'PM2', 'PM10', 'O3', 'CO', 'NO2', 'SO2', 'WS', 'WD'
+        'AQI', 'PM2', 'PM10', 'O3', 'CO', 'NO2', 'SO2', 
+        // 'WS', 'WD'
     ];
 
+    const typesLabel :any = {
+        'AQI' : "ดัชนีคุณภาพอากาศ AQI ",
+        'PM2' : <>ฝุ่นละออง PM<sub>2.5</sub></>,
+        'PM10' : <>ฝุ่นละออง PM<sub>10</sub></>,
+        'O3' : <>ก๊าซโอโซน O<sub>3</sub></>,
+        'CO' : "ก๊าซคาร์บอนมอนอกไซด์ CO",
+        'NO2' : <>ก๊าซไนโตรเจนไดออกไซด์ NO<sub>2</sub></>,
+        'SO2' : <>ก๊าซซัลเฟอร์ไดออกไซด์ SO<sub>2</sub></>,
+        'WS' : "WS",
+        'WD':"WD"
+    };
+    const dropdownTypesLabel :any = {
+        'AQI' : "AQI ",
+        'PM2' : <>PM<sub>2.5</sub></>,
+        'PM10' : <>PM<sub>10</sub></>,
+        'O3' : <>O<sub>3</sub></>,
+        'CO' : "CO",
+        'NO2' : <>NO<sub>2</sub></>,
+        'SO2' : <>SO<sub>2</sub></>,
+        'WS' : "WS",
+        'WD':"WD"
+    };
+
     const [display, setDisplay] = useState<'PM2' | 'PM10' | 'O3' | 'CO' | 'NO2' | 'SO2' | 'WS' | 'WD' | 'AQI'>('AQI');
-    const [display2, setDisplay2] = useState<'Tempurature' | 'Pressure' | 'RH'>('Tempurature');
+    const [display2, setDisplay2] = useState<'PM2' | 'PM10' | 'O3' | 'CO' | 'NO2' | 'SO2' | 'WS' | 'WD' | 'AQI'>('AQI');
 
     const [airsDetail, setAirsDetail] = useState<any>();
 
@@ -60,7 +84,7 @@ export default function Detail({ params }: { params: any }) {
                         title: (
                             <>
 
-                                <span className='px-2'>ดัชนีคุณภาพอากาศ</span>
+                                <span className='px-2'>คุณภาพอากาศ</span>
                             </>
                         ),
                     },
@@ -75,8 +99,8 @@ export default function Detail({ params }: { params: any }) {
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${airsDetail?.LastUpdate.date}T${airsDetail?.LastUpdate.time}`))}</div>
                 </div>
                 <div className="flex flex-col items-end">
-                    <Badge text="มีผลกระทบ" className="text-[--error] bg-[--error-50] border-1 border-[--error]"></Badge>
-                    <div className="text-[36px] font-bold">{airsDetail?.LastUpdate.O3 || "N/A"} <span className="text-[20px] font-normal">AQI</span></div>
+                    <Badge status={airsDetail?.LastUpdate?.effect}></Badge>
+                    <div className="text-[36px] font-bold">{airsDetail?.LastUpdate.AQI || "N/A"} <span className="text-[20px] font-normal">AQI</span></div>
                 </div>
             </section>
 
@@ -111,23 +135,37 @@ export default function Detail({ params }: { params: any }) {
                 </div>
                 <div className="lg:basis-2/3">
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
+                       
                         <div>
-                            <div className='text-[#475467]'>ความเร็วลม</div>
-                            <div className='inline-flex gap-2 font-extrabold'><Waves /><span>{airsDetail?.LastUpdate.WS || "N/A"} ms</span></div>
+                            <div className='text-[#475467]'>PM<sub>2.5</sub> </div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM25 } µg./m<sup>3</sup></div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>PM2.5 เฉลี่ย 24 ชม</div>
-                            <div className='inline-flex gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM25 || "N/A"} มคก/ลบ.ม.</div>
+                            <div className='text-[#475467]'>PM<sub>10</sub> </div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM10 } µg./m<sup>3</sup></div>
                         </div>
                         <div>
-                            <div className='text-[#475467]'>PM10 เฉลี่ย 24 ชม</div>
-                            <div className='inline-flex gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM10 || 'N/A'} มคก/ลบ.ม.</div>
+                            <div className='text-[#475467]'>O<sub>3</sub> </div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.O3 } ppb</div>
+                        </div>
+                        <div>
+                            <div className='text-[#475467]'>CO </div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.CO } ppm</div>
+                        </div>
+
+                        <div>
+                            <div className='text-[#475467]'>NO<sub>2</sub> </div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.NO2 } ppb</div>
+                        </div>
+                        <div>
+                            <div className='text-[#475467]'>SO<sub>2</sub> </div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.SO2 } ppb</div>
                         </div>
                     </div>
 
                     <section>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ข้อมูลตรวจวัดปริมาณฝุ่นละออง PM2.5 ย้อนหลัง 24 ชั่วโมง</div>
+                            <div className="font-bold">ข้อมูลตรวจ{typesLabel[display]} ย้อนหลัง 24 ชั่วโมง</div>
                             <div className="">
                                 {/* <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
                                     {types.map(item => <Radio.Button value={item}><div className='flex gap-2 items-center'>{item} </div></Radio.Button>)}
@@ -141,10 +179,10 @@ export default function Detail({ params }: { params: any }) {
                                     placeholder="Search to Select"
                                     optionFilterProp="label"
                                     value={display}
-                                    options={types.map(item => {
+                                    options={types.map((item:any) => {
                                         return {
                                             value: item,
-                                            label: item
+                                            label: dropdownTypesLabel[item]
                                         }
                                     })}
                                 />
@@ -167,7 +205,7 @@ export default function Detail({ params }: { params: any }) {
 
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ค่าตรวจวัดข้อมูลทางอุตุนิยมวิทยาย้อนหลัง 7 วัน</div>
+                            <div className="font-bold">ค่าตรวจวัด{typesLabel[display2]} เฉลี่ย 24 ชม. ย้อนหลัง 7 วัน</div>
                             {/* <div className="">
                                 <Radio.Group value={display2} onChange={(e) => setDisplay2(e.target.value)}>
                                     <Radio.Button value="Tempurature"><div className='flex gap-2 items-center'>Temperature </div></Radio.Button>
@@ -176,18 +214,33 @@ export default function Detail({ params }: { params: any }) {
                                 </Radio.Group>
 
                             </div> */}
+
+<Select
+                                    // showSearch
+                                    onChange={(e) => setDisplay2(e)}
+                                    style={{ width: 200 }}
+                                    placeholder="Search to Select"
+                                    optionFilterProp="label"
+                                    value={display2}
+                                    options={types.map((item:any) => {
+                                        return {
+                                            value: item,
+                                            label: dropdownTypesLabel[item]
+                                        }
+                                    })}
+                                />
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                            {display == "AQI" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.AQI, "value")} />}
-                            {display == "CO" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.CO, "value")} />}
-                            {display == "NO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.NO2, "value")} />}
-                            {display == "PM2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM25, "value")} />}
-                            {display == "PM10" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM10, "value")} />}
-                            {display == "O3" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.O3, "value")} />}
-                            {display == "SO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.SO2, "value")} />}
-                            {display == "WD" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.WD, "value")} />}
-                            {display == "WS" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.WS, "value")} />}
+                            {display2 == "AQI" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.AQI, "value")} />}
+                            {display2 == "CO" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.CO, "value")} />}
+                            {display2 == "NO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.NO2, "value")} />}
+                            {display2 == "PM2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM25, "value")} />}
+                            {display2 == "PM10" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.PM10, "value")} />}
+                            {display2 == "O3" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.O3, "value")} />}
+                            {display2 == "SO2" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.SO2, "value")} />}
+                            {display2 == "WD" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.WD, "value")} />}
+                            {display2 == "WS" && airsDetail && <ColumnGraph data={convertPropertyToNumber(airsDetail.Last7D?.WS, "value")} />}
 
                         </div>
                     </section>

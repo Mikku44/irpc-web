@@ -10,7 +10,7 @@ export default function DateFormator(date: Date): string {
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
     if (Number.isNaN(day)) return "N/A"
-    return `${day} ${month} ${year} เวลา ${hours}:${minutes} น.`;
+    return  day ? `${day} ${month} ${year} เวลา ${hours}:${minutes} น.` : '0 ธ.ค. 2024 เวลา 00:00 น.';
   };
   
   export  function FullDateFormator(date: Date): string {
@@ -31,7 +31,7 @@ export default function DateFormator(date: Date): string {
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
   
-    return `${dayOfWeek} ที่ ${day} ${month} ${year} เวลา ${hours}:${minutes} น.`;
+    return dayOfWeek ? `${dayOfWeek} ที่ ${day} ${month} ${year} เวลา ${hours}:${minutes} น.` : "วันที่....";
   }
   
   
@@ -46,7 +46,7 @@ export default function DateFormator(date: Date): string {
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
   
-    return `${day} ${month} ${hours}:${minutes}`;
+    return  day  ? `${day} ${month} ${hours}:${minutes}` : "0 Dec 00:00";
   }
   
   

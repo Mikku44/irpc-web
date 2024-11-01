@@ -80,7 +80,7 @@ export default function Page() {
 
 
       <div className="py-10 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
-        {DashBoard?.news?.slice(0).map((item: any, index: number) =>
+        {DashBoard?.news?.slice(1).map((item: any, index: number) =>
           <Link href={`/news/${item?.newsID}`}>
             <div className="rounded-xl border border-[#EAECF0] bg-white shadow-md  overflow-hidden">
               <div className="h-[250px] overflow-hidden">

@@ -1,11 +1,24 @@
 'use client'
 
+import { getData } from '@/app/ultilities/api';
 import { FullDateFormator } from '@/app/ultilities/DateFormater';
 import { Breadcrumb, Button, Checkbox, Input, Table, Tag } from 'antd';
 import { ChevronRight, House, MapPin, CirclePlay, CloudDownload, Trash2, } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function Detail() {
+    const [EQMs, setEQMs] = useState<any>();
+    const fetchData = async () => {
+        const result = await getData('/forWeb/getEqmsList.php')
+        setEQMs(result || [])
+    
+    
+    }
+    
+    useEffect(() => {
+        fetchData();
+    }, [])
 
     const dataSource = [
         { key: '1', code: 'SSDD', location: 'CEMs HRSG 61', type: 'SSDD', parameter: '-', status: 'Normal' },

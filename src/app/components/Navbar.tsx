@@ -37,7 +37,7 @@ const items: MenuProps['items'] = [
     key: '4',
     label: (
       <a target="_self" rel="noopener noreferrer" href="/environment">
-        สิ่งแวดล้อม
+        CEMs
       </a>
     ),
   },
@@ -141,7 +141,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="w-full bg-white text-center flex justify-between py-4 lg:px-28 md:px-[10px] px-5 items-center">
+    <div className="w-full bg-white text-center flex justify-between py-4 lg:px-[5vw] md:px-10 px-8 items-center">
       <div className="flex gap-10 items-center text-lg ">
         <div className="flex gap-2 items-center">
 
@@ -151,7 +151,7 @@ export default function Navbar() {
         </div>
 
 
-        <ul className="lg:px-10 lg:flex md:hidden hidden gap-10 items-center font-medium text-[#475467]">
+        <ul className="lg:px-6 lg:flex md:hidden hidden gap-10 items-center font-medium text-[#475467]">
           <Link href="/">
             <li>หน้าแรก</li>
           </Link>
@@ -160,7 +160,7 @@ export default function Navbar() {
           <Dropdown menu={{ items }} className="flex items-center gap-2 cursor-pointer">
             <a onClick={(e) => e.preventDefault()}>
 
-              ดัชนีคุณภาพ
+              การตรวจวัด
               <ChevronDown />
 
             </a>
@@ -245,25 +245,25 @@ export default function Navbar() {
 
           <Link href="/air">
             <Button type="text" className="flex items-center justify-start gap-2 w-full text-start cursor-pointer">
-              ดัชนีคุณภาพอากาศ
+              คุณภาพอากาศ
             </Button>
           </Link>
 
           <Link href="/sound">
             <Button type="text" className="flex items-center justify-start gap-2 w-full text-start cursor-pointer">
-              ดัชนีคุณภาพเสียง
+              คุณภาพเสียง
             </Button>
           </Link>
 
           <Link href="/water">
             <Button type="text" className="flex items-center justify-start gap-2 w-full text-start cursor-pointer">
-              ดัชนีคุณภาพน้ำ
+              คุณภาพน้ำ
             </Button>
           </Link>
 
           <Link href="/environment">
             <Button type="text" className="flex items-center justify-start gap-2 w-full text-start cursor-pointer">
-              ดัชนีคุณภาพสิ่งแวดล้อม
+              คุณภาพCEMs
             </Button>
           </Link>
 

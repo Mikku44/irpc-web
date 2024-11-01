@@ -14,6 +14,7 @@ import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
 import { getData } from '../ultilities/api';
 import Pagination from '../components/Pagination';
+import Badges from '../components/Badges';
 
 export default function flare() {
 
@@ -44,12 +45,14 @@ export default function flare() {
         <div className="text-[18px] text-[--primary] font-bold">ประจำวันจันทร์ ที่ 19 มิถุนายน เวลา 09:05 น.</div>
         <div className="text-[36px] font-bold">สถานีแฟลร์ทั้งหมด</div>
 
-        <div className="flex justify-end pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
+        <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
+          <Badges name='other' />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
-            <div className="search lg:w-auto md:w-full w-full"> <Input size="middle" placeholder="ค้นหา" className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
+            <div className="search lg:w-auto md:w-full w-full"> <Input size="middle"  style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  placeholder="ค้นหา" className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
               <Radio.Group
                 value={display}
+                 size='large'
                 onChange={(e) => setDisplay(e.target.value)}
                 className="lg:w-auto md:w-full w-full "
               >
@@ -77,7 +80,7 @@ export default function flare() {
           </Link>)}
         </div>}
 
-        <div className="lg:hidden md:hidden flex justify-center py-3">
+        <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center py-3">
           <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={flare.length} >
             {[flare[currentPage]].map((item: any) => <Link key={item?.stationID} href={`water/detail/${item?.stationID}`}>
               <Flarecard key={item?.stationID} item={item}></Flarecard>
@@ -92,7 +95,7 @@ export default function flare() {
             </Link>
           </div>
           <div className="lg:basis-3/5 w-full lg:h-auto md:h-[50vh] h-[50vh]">
-            <MapPick data={flare} setState={setSelectedPlace} unit="mg/L" key="COD"/>
+            <MapPick data={flare} setState={setSelectedPlace} unit="mg/L" key="COD" />
           </div>
         </div>}
       </section>

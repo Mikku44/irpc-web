@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image"
 import Link from "next/link";
-import { Checkbox, Input, message, Tabs } from 'antd';
+import { Checkbox, Input, message, Spin, Tabs } from 'antd';
 import { postData } from "../ultilities/api";
 import { useEffect, useState } from "react";
 ;
@@ -118,12 +118,15 @@ export default function Login() {
 
 
                 <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26vw] lg:block md:block hidden"></Image>
-                <div className="flex flex-col items-center justify-center h-[80vh] pt-10 relative z-[1]">
+                <div className="flex flex-col items-center justify-center h-[80vh] pt-10 md:pt-20 relative z-[1]">
                     <div className="text-center mb-6">
-                        <h2 className="text-[30px] font-bold mb-2">ยินดีต้อนรับ! {type}</h2>
+                        <h2 className="text-[30px] font-bold mb-2">ยินดีต้อนรับ!</h2>
                         <p className="text-gray-600 text-[16px]">กรุณาใส่อีเมลและรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
                     </div>
                     <div className="lg:bg-white md:bg-white p-8 rounded-lg lg:shadow-md md:shadow-md w-full  max-w-md">
+                        {!type && <div className="flex justify-center">
+                            <Spin></Spin>
+                        </div>}
                         {type != null && <Tabs defaultActiveKey={type} onChange={value => setType(value)} centered items={[
                             {
                                 key: 'user',

@@ -66,15 +66,16 @@ export default function Page() {
 
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-        <div className="text-[36px] font-bold">ดัชนีคุณภาพน้ำ</div>
+        <div className="text-[36px] font-bold">รายงานคุณภาพน้ำ</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-          <Badges />
+          <Badges name="other"/>
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
             <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
               <Radio.Group
                 value={display}
+                 size='large'
                 onChange={(e) => setDisplay(e.target.value)}
                 className="lg:w-auto md:w-full w-full "
               >
@@ -102,7 +103,7 @@ export default function Page() {
               if(!airsFiltered[0]) return item
               return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
             }).map((item: Water) => <Link key={item.stationID} href={`water/detail/${item.stationID}`}>
-            <WaterCard key={item.stationID} data={item}></WaterCard>
+            <WaterCard className="lg:min-w-full" key={item.stationID} data={item}></WaterCard>
           </Link>)}
         </div>}
 
@@ -110,7 +111,7 @@ export default function Page() {
 
           <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={waters.length} className="lg:hidden md:hidden flex justify-center py-3" >
             {[waters[currentPage]].map((item: Water) => <Link key={item?.stationID} href={`water/detail/${item?.stationID}`}>
-              <WaterCard key={item?.stationID} data={item}></WaterCard>
+              <WaterCard className="lg:min-w-full" key={item?.stationID} data={item}></WaterCard>
             </Link>)}
           </Pagination>
         </div>}
@@ -119,7 +120,7 @@ export default function Page() {
         {display == "Map" && <div className="flex lg:flex-row flex-col  gap-5 ">
           <div className="lg:basis-2/5 basis-full flex justify-center">
             <Link href={`water/detail/${selectedPlace?.stationID!}`}>
-              <WaterCard data={selectedPlace}></WaterCard>
+              <WaterCard className="lg:min-w-full" data={selectedPlace}></WaterCard>
             </Link>
           </div>
           <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
@@ -167,7 +168,7 @@ export default function Page() {
                   compare: (a: { COD: number; }, b: { COD: number; }) => a.COD - b.COD,
                   multiple: 3,
                 },
-                render: (text: string, record: any) => record.LastUpdate?.COD || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.COD == "N/A"? '-':record.LastUpdate?.COD || '-',
               },
               {
                 title: <div className="text-[#475467]">Flow (m³/s)</div>,
@@ -176,16 +177,16 @@ export default function Page() {
                   compare: (a: { Flow: number; }, b: { Flow: number; }) => a.Flow - b.Flow,
                   multiple: 3,
                 },
-                render: (text: string, record: any) => record.LastUpdate?.Flow || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.Flow == "N/A"? '-':record.LastUpdate?.Flow || '-',
               },
               {
-                title: <div className="text-[#475467]">PH</div>,
-                dataIndex: 'PH',
+                title: <div className="text-[#475467]">pH</div>,
+                dataIndex: 'pH',
                 sorter: {
                   compare: (a: { PH: number; }, b: { PH: number; }) => a.PH - b.PH,
                   multiple: 3,
                 },
-                render: (text: string, record: any) => record.LastUpdate?.pH || 'N/A',
+                render: (text: string, record: any) => record.LastUpdate?.pH == "N/A"? '-':record.LastUpdate?.pH || '-',
               },
               {
                 title: <div className="text-[#475467]">เวลาอัพเดต</div>,

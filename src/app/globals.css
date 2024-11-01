@@ -17,7 +17,19 @@
   --orange:#B93815;
   --orange-50:#FEF6EE;
   --error:#ef4444;
-  --error-50:#FEF3F2;
+  --error-50:#881208;
+
+
+  --very-good:#d8e4fd;
+  --good : #dbfde9;
+  --medium : #fbe5a2;
+  --effect:#fbc692;
+  --effected:#fc8e8e;
+  /* --very-good:#3bccff;
+  --good : #92d050;
+  --medium : #ffff00;
+  --effect:#ffa200;
+  --effected:#f04646; */
 
   --tertiary:#475467;
 

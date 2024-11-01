@@ -66,19 +66,21 @@ export default function Environment() {
 
                 <SegmentMenu />
                 <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-                <div className="text-[36px] font-bold">ดัชนีคุณภาพแวดล้อม</div>
+                <div className="text-[36px] font-bold">รายงาน CEMs</div>
 
                 <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-                    <Badges />
+                    <Badges name='other' />
                     <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
                         <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
                         <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
                             <Radio.Group
                                 value={display}
+                                 size='large'
                                 onChange={(e) => setDisplay(e.target.value)}
                                 className="lg:w-auto md:w-full w-full "
                             >
-                                <Radio.Button value="List" className="w-1/2">
+                                <Radio.Button
+                                 value="List" className="w-1/2">
                                     <div className='flex gap-2 items-center justify-center w-full'>
                                         <Grid2X2 className='w-[34px]' />รายการ
                                     </div>
@@ -102,14 +104,14 @@ export default function Environment() {
                         if (!airsFiltered[0]) return item
                         return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
                     }).map((item: any) => <Link href={`environment/detail/${item.stationID}`} key={item.stationID}>
-                        <EnvironmentCard data={item}></EnvironmentCard>
+                        <EnvironmentCard className="lg:min-w-full" data={item}></EnvironmentCard>
                     </Link>)}
                 </div>}
 
                 {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
                     <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={cems?.length} className="lg:hidden md:hidden flex justify-center py-3" >
                         {[cems[currentPage]].map((item: any) => <Link key={item?.stationID} href={`/environment/detail/${item?.stationID}`}>
-                            <EnvironmentCard data={item}></EnvironmentCard>
+                            <EnvironmentCard className="lg:min-w-full" data={item}></EnvironmentCard>
                         </Link>)}
                     </Pagination>
                 </div>}
@@ -118,11 +120,11 @@ export default function Environment() {
                 {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">
                     {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
                         <Link href={`environment/detail/${selectedPlace?.stationID}`}>
-                            <EnvironmentCard data={selectedPlace}></EnvironmentCard>
+                            <EnvironmentCard className="lg:min-w-full" data={selectedPlace}></EnvironmentCard>
                         </Link>
                     </div>}
                     <div className=" w-full lg:h-auto md:h-[50vh] h-[50vh]">
-                        <MapPick data={cems} setState={setSelectedPlace} unit="NOx" key="NOx_7p" />
+                        <MapPick data={cems} setState={setSelectedPlace} unit="m³/s" key="NOx_7p" />
                     </div>
                 </div>}
 
@@ -130,7 +132,7 @@ export default function Environment() {
 
             <section id="table" className="px-10 py-10">
                 <div className="flex flex-wrap gap-2 justify-between">
-                    <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพเสียง</div>
+                    <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพ CEMs</div>
                     <div className="search"> <Input onChange={e => handleSearch(e.target.value,1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans" prefix={<Search />} /></div>
                 </div>
 
@@ -173,59 +175,59 @@ export default function Environment() {
                                 render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">O2</div>,
+                                title: <div className="text-[#475467]">O<sub>2</sub> (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'O2',
-                                render: (text: string, record: any) => record.LastUpdate?.O2 || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.O2) == 'N/A' ? "-" :  record.LastUpdate?.O2 || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">NOx</div>,
+                                title: <div className="text-[#475467]">NOx (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'NOx',
-                                render: (text: string, record: any) => record.LastUpdate?.NOx_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.NOx_7p) == 'N/A' ? "-" :  record.LastUpdate?.NOx_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">SOx</div>,
+                                title: <div className="text-[#475467]">SOx (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'SOx',
-                                render: (text: string, record: any) => record.LastUpdate?.SOx_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.SOx_7p) == 'N/A' ? "-" :  record.LastUpdate?.SOx_7p || 'N/A',
                             },
                             {
                                 title: <div className="text-[#475467]">CO (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'CO',
-                                render: (text: string, record: any) => record.LastUpdate?.CO_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.CO_7p) == 'N/A' ? "-" :  record.LastUpdate?.CO_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">CO2</div>,
+                                title: <div className="text-[#475467]">CO<sub>2</sub> (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'CO2',
-                                render: (text: string, record: any) => record.LastUpdate?.CO2_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.CO2_7p) == 'N/A' ? "-" :  record.LastUpdate?.CO2_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">NH3</div>,
+                                title: <div className="text-[#475467]">NH<sub>3</sub></div>,
                                 width: 200,
                                 dataIndex: 'NH3',
-                                render: (text: string, record: any) => record.LastUpdate?.NH3_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.NH3_7p) == 'N/A' ? "-" :  record.LastUpdate?.NH3_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">H2S</div>,
+                                title: <div className="text-[#475467]">H<sub>2</sub>S (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'H2S',
-                                render: (text: string, record: any) => record.LastUpdate?.H2S_7p || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.H2S_7p) == 'N/A' ? "-" :  record.LastUpdate?.H2S_7p || 'N/A',
                             },
                             {
-                                title: <div className="text-[#475467]">Dust (m³/hr)</div>,
+                                title: <div className="text-[#475467]">Dust (µg/m<sup>3</sup>)</div>,
                                 width: 200,
                                 dataIndex: 'Dust',
-                                render: (text: string, record: any) => record.LastUpdate?.Dust || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.Dust) == 'N/A' ? "-" :  record.LastUpdate?.Dust || 'N/A',
 
                             },
                             {
                                 title: <div className="text-[#475467]">Opacity</div>,
                                 width: 200,
                                 dataIndex: 'Opacity',
-                                render: (text: string, record: any) => record.LastUpdate?.Opacity || 'N/A',
+                                render: (text: string, record: any) =>( record.LastUpdate?.Opacity) == 'N/A' ? "-" :  record.LastUpdate?.Opacity || 'N/A',
 
                             },
 
