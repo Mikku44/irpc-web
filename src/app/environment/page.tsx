@@ -75,10 +75,12 @@ export default function Environment() {
                         <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
                             <Radio.Group
                                 value={display}
+                                 size='large'
                                 onChange={(e) => setDisplay(e.target.value)}
                                 className="lg:w-auto md:w-full w-full "
                             >
-                                <Radio.Button value="List" className="w-1/2">
+                                <Radio.Button
+                                 value="List" className="w-1/2">
                                     <div className='flex gap-2 items-center justify-center w-full'>
                                         <Grid2X2 className='w-[34px]' />รายการ
                                     </div>

@@ -52,6 +52,7 @@ export default function flare() {
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
               <Radio.Group
                 value={display}
+                 size='large'
                 onChange={(e) => setDisplay(e.target.value)}
                 className="lg:w-auto md:w-full w-full "
               >
