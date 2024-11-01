@@ -54,7 +54,7 @@ export default function Card({ data, className,isFav }: any) {
             <div className="grid">
                 <div className="flex justify-between items-center mb-2">
                     <h3 className="text-[24px] font-semibold text-ellipsis line-clamp-1" >{data?.nameTH}</h3>
-                    <Badge className=" basis-[150px]" status={data?.LastUpdate?.AQI?.color_id || "-"}></Badge>
+                    <Badge className=" " status={data?.LastUpdate?.AQI?.color_id || "-"}></Badge>
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
                     <p>PM<sub>2.5</sub></p>
