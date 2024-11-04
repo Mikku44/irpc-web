@@ -14,7 +14,7 @@ export function convertPropertyToNumber(data :any, propertyName:string) {
         // Handle cases where conversion is not possible (e.g., "N/A")
         if (isNaN(numericValue)) {
           // Handle "N/A" or other non-numeric values as needed (e.g., set to null)
-          numericValue = 0;
+          numericValue = null;
         }
   
         // Update the property value in the current item

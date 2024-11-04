@@ -6,6 +6,9 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Flex, message } from "antd";
 import type { GetProp, UploadProps } from "antd";
 import Link from "next/link";
+import { getArrayFromLocalStorage } from "../ultilities/localStorageManager";
+import { getLocation } from "../ultilities/Geolocation";
+import { postData } from "../ultilities/api";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -27,17 +30,23 @@ const beforeUpload = (file: FileType) => {
   return isJpgOrPng && isLt2M;
 };
 
-const { Option } = Select;
-const selectBefore = (
-  <Select defaultValue="66">
-    <Option value="66">66</Option>
-    <Option value="67">65</Option>
-  </Select>
-);
-export default function Login() {
+
+
+
+
+
+
+export default function Page() {
 
   const [loading, setLoading] = useState(false);
+  const [type, setType] = useState<string>('0');
+
   const [imageUrl, setImageUrl] = useState<string>();
+  const [images, setImages] = useState<any>();
+  const [Info, setInfo] = useState("");
+  const [Comment, setComment] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
+
 
   const handleChange: UploadProps["onChange"] = (info) => {
     if (info.file.status === "uploading") {
@@ -50,6 +59,8 @@ export default function Login() {
         setLoading(false);
         setImageUrl(url);
       });
+
+      setImages(info.file.originFileObj as File)
     }
   };
   const uploadButton = (
@@ -59,8 +70,73 @@ export default function Login() {
     </button>
   );
 
+
+  const onSubmit = async () => {
+    const userData = getArrayFromLocalStorage('user_data')
+    const location : any = await getLocation();
+
+    const data: any = {
+      userUUID: userData?.user_id || "",
+      userName: userData?.fullname || "",
+      userTel: userData?.tel || "",
+      userAddress: userData?.address || "",
+      userLatLng: location?.LatLng || "",
+      complainType: parseInt(type),
+      complainTopic: Info,
+      complainDetail: Comment,
+      image: images || null
+    }
+
+
+    console.log(data);
+
+
+    const formData = new FormData();
+
+    for (var key in data) {
+      formData.append(key, data[key]);
+    }
+
+    console.log("________ Form Data ________")
+
+    const entries : any = formData.entries();
+    for (let entry of entries) {
+      const key = entry[0];
+      const val = entry[1];
+      console.log(key," : ", val);
+    }
+    console.log("__________ END ____________")
+
+
+    await createData(formData);
+  }
+
+  const createData = async (formData:FormData) => {
+    const result = await postData('/forWeb/postComplain.php',formData,true);
+    console.log(result);
+    if(result?.status == "error"){
+      error(result?.message); 
+    }
+  }
+
+
+  const error = (msg?: any) => {
+    messageApi.open({
+        type: 'error',
+        content: msg || 'เกิดปัญหาบางอย่าง โปรดลองใหม่ภายหลังหรือติดต่อเจ้าหน้าที่ช่องทางอื่น',
+    });
+};
+
+const success = (msg?: any) => {
+    messageApi.open({
+        type: 'success',
+        content: msg || 'ส่งข้อมูลให้เจ้าหน้าที่เรียบร้อยแล้ว',
+    });
+};
+
   return (
     <>
+      {contextHolder}
       <div className="">
         {/* <Image
           src="/images/Contentbackground.svg"
@@ -75,8 +151,8 @@ export default function Login() {
             <p className="text-gray-600 text-[16px]">กรอกข้อมูล</p>
           </div>
           <div className="p-8 rounded-lg w-full max-w-md">
-            <form>
-              <div className="mb-4">
+            <form action={onSubmit}>
+              {/* <div className="mb-4">
                 <label htmlFor="fullName" className="block text-gray-700 mb-2">
                   ชื่อและนามสกุล
                 </label>
@@ -95,15 +171,20 @@ export default function Login() {
                     classNames={{ input: "w-full p-3 " }}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="mb-4">
                 <label htmlFor="phone" className="block text-gray-700 mb-2">
                   ประเทภการร้องเรียน
                 </label>
-                <Select className="w-full h-11" placeholder="เลือกประเภท">
-                  <Select.Option value="sample1">แนะนำ,ติชม</Select.Option>
-                  <Select.Option value="sample2">ร้องเรียน</Select.Option>
-                  <Select.Option value="sample3">
+                <Select value={type} onChange={e => {
+                  setType(e);
+                  setInfo('');
+                  setComment('');
+                  setImageUrl('');
+                }} className="w-full h-11" placeholder="เลือกประเภท">
+                  <Select.Option value="0">แนะนำ,ติชม</Select.Option>
+                  <Select.Option value="1">ร้องเรียน</Select.Option>
+                  <Select.Option value="2">
                     เจ้าหน้าที่ติดต่อกลับ
                   </Select.Option>
                 </Select>
@@ -113,17 +194,29 @@ export default function Login() {
                   ข้อมูลเพิ่มเติม
                 </label>
                 <textarea
+                  onChange={e => setInfo(e.target.value)}
                   placeholder="กรอกข้อมูล"
                   className="p-1 border-2 rounded-lg textarea textarea-bordered textarea-xl w-full h-[80px]  "
                 ></textarea>
               </div>
-              <div className="flex mb-4">
+              {type == "0" &&
+                <div className="mb-4">
+                  <label htmlFor="phone" className="block text-gray-700 mb-2">
+                    ความคิดเห็น
+                  </label>
+                  <textarea
+                    onChange={e => setComment(e.target.value)}
+                    placeholder="ความคิดเห็น"
+                    className="p-1 border-2 rounded-lg textarea textarea-bordered textarea-xl w-full h-[80px]  "
+                  ></textarea>
+                </div>
+              }
+              {type == "1" && <div className="flex mb-4">
                 <Upload
                   name="avatar"
                   listType="picture-card"
                   className="avatar-uploader w-full"
                   showUploadList={false}
-                  action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                   beforeUpload={beforeUpload}
                   onChange={handleChange}
                 >
@@ -134,7 +227,7 @@ export default function Login() {
                       style={{ width: "100%" }}
                     />
                   ) : (
-                    uploadButton 
+                    uploadButton
                   )}
                 </Upload>
                 <Upload
@@ -142,7 +235,6 @@ export default function Login() {
                   listType="picture-card"
                   className="avatar-uploader w-full"
                   showUploadList={false}
-                  action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                   beforeUpload={beforeUpload}
                   onChange={handleChange}
                 >
@@ -153,7 +245,7 @@ export default function Login() {
                       style={{ width: "100%" }}
                     />
                   ) : (
-                    uploadButton 
+                    uploadButton
                   )}
                 </Upload>
                 <Upload
@@ -161,7 +253,6 @@ export default function Login() {
                   listType="picture-card"
                   className="avatar-uploader w-full"
                   showUploadList={false}
-                  action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                   beforeUpload={beforeUpload}
                   onChange={handleChange}
                 >
@@ -172,16 +263,16 @@ export default function Login() {
                       style={{ width: "100%" }}
                     />
                   ) : (
-                    uploadButton 
+                    uploadButton
                   )}
                 </Upload>
-              </div>
-                  {/* <p>จำกัดแค่สามรูป</p> */}
+              </div>}
+              {/* <p>จำกัดแค่สามรูป</p> */}
               <button
                 type="submit"
                 className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
               >
-                ส่งข้อมูล
+                ส่งข้อมูลให้เจ้าหน้าที่
               </button>
             </form>
           </div>

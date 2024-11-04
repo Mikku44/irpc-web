@@ -59,7 +59,7 @@ export default function Sound() {
 
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-        <div className="text-[36px] font-bold">รายงานระดับเสียง</div>
+        <div className="text-[36px] font-bold">รายงานระดับเสียงรบกวน</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
           <Badges name="sound" />

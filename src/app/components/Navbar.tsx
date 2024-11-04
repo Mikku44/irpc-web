@@ -126,15 +126,11 @@ export default function Navbar() {
   useEffect(() => {
     const tempUser = getArrayFromLocalStorage("user_data")
     setUserData(tempUser)
-    console.log(tempUser)
+    // console.log(tempUser)
 
   }, [])
 
-  useEffect(() => {
 
-    console.log("USER : ", userData)
-
-  }, [userData])
 
   const onClose = () => {
     setOpen(false);

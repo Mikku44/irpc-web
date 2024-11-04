@@ -7,6 +7,9 @@ import DateFormator from '../ultilities/DateFormater';
 
 
 export default function MapPick({ data, setState, key, unit, name }: any) {
+    if(!name){
+        name = 'other'
+    }
     // Explicitly type the map container ref
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null); // Type for Mapbox map
@@ -74,19 +77,19 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                             ],
                             'sound': [
                                 ["bg-[#444444]/40", "bg-[#444444]/60"],
-                                ["bg-[#155EEF]/40", 'bg-[#155EEF]/60'],
-                                ["bg-[#f9a620]/40", 'bg-[#f9a620]/60'],
+                                ["bg-[#70e000]/40", 'bg-[#70e000]/60'],
+                                ["bg-[#f3de2c]/40", 'bg-[#f3de2c]/60'],
                                 ["bg-[#f21b3f]/40", 'bg-[#f21b3f]/60'],
                             ],
                             'default': [
                                 ["bg-[#444444]/40", "bg-[#444444]/60"],
-                                ["bg-[#155EEF]/40", 'bg-[#155EEF]/60'],
+                                ["bg-[#70e000]/40", 'bg-[#70e000]/60'],
                                 ["bg-[#f21b3f]/40", 'bg-[#f21b3f]/60'],
                             ],
                         };
 
                         // Use 'air' or 'sound' specific colors; otherwise, use 'default'
-                        const selectedMap = pinColorMap[name] || pinColorMap['default'];
+                        const selectedMap = (pinColorMap[name || 'default']) || pinColorMap['default'];
 
                         // Return color classes based on colorId or effect
                         return selectedMap[colorId ?? effect ?? 0] || ["bg-[#444444]/40", "bg-[#444444]/60"];
@@ -97,7 +100,7 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
 
                     elChild1.className = `w-12 h-12 rounded-full flex justify-center items-center animate-pulse  ${colorClasses[0]} absolute top-[-4px] right-[-4px] duration-50`
                     elChild.className = `w-10 h-10 rounded-full flex justify-center items-center text-white font-bold text-[15px]  ${colorClasses[0]} relative z-10`;
-                    elChild.innerHTML = (marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.flow || marker.LastUpdate?.Leq || "-");
+                    elChild.innerHTML = (marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.Flow || marker.LastUpdate5min?.Leq || "-") ;
 
 
                     el.appendChild(elChild1)
@@ -122,13 +125,13 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                     ];
                     const colorMapSound = [
                         '',
-                        '<div style="background:#d8e4fd;border:1px solid #155EEF;border-radius:20px;padding:2px 10px;color:#155EEF;">ปกติ</div>',
-                        '<div style="background:#fbc692;border:1px solid #B93815;border-radius:20px;padding:2px 10px;color:#B93815;">เฝ้าระวัง</div>',
+                        '<div style="background:#dbfde9;border:1px solid #067647;border-radius:20px;padding:2px 10px;color:#067647;">ปกติ</div>',
+                        '<div style="background:#fbe5a2;border:1px solid #B54708;border-radius:20px;padding:2px 10px;color:#B54708;">เฝ้าระวัง</div>',
                         '<div style="background:#fc8e8e;border:1px solid #881208;border-radius:20px;padding:2px 10px;color:#881208;">มีผลกระทบ</div>'
                     ];
                     const colorOtherMap = [
                         '',
-                        '<div style="background:#d8e4fd;border:1px solid #155EEF;border-radius:20px;padding:2px 10px;color:#155EEF;">ปกติ</div>',
+                        '<div style="background:#dbfde9;border:1px solid #067647;border-radius:20px;padding:2px 10px;color:#067647;">ปกติ</div>',
                         '<div style="background:#fc8e8e;border:1px solid #881208;border-radius:20px;padding:2px 10px;color:#881208;">มีผลกระทบ</div>'
                     ];
 
@@ -143,7 +146,7 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                     `<div style="display: grid;">
                         <div style="display: flex; justify-content: space-between;">
                             <div style="font-size: 1.25rem; font-weight:bold;">
-                                ${marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.flow || marker.LastUpdate?.Leq || "N/A"} 
+                                ${marker.LastUpdate?.AQI?.aqi || marker.LastUpdate?.COD || marker.LastUpdate?.Flow || marker.LastUpdate5min?.Leq || "N/A"} 
                                 <span style="font-size: 1.125rem;font-weight:normal;">${unit}</span>
                             </div>
                             ${getColorMap(name)[marker.LastUpdate?.AQI?.color_id || marker.LastUpdate?.effect || 1]}

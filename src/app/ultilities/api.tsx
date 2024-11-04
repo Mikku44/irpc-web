@@ -26,12 +26,12 @@ export async function getData(extPath: string, config: any = {}) {
         throw error; // Re-throw for further handling if needed
     }
 }
-export async function postData(extPath: string, formData: any) {
+export async function postData(extPath: string, formData: any,isMultipart?: boolean) {
     console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`);
     try {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`, formData, {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': isMultipart ? 'multipart/form-data' : 'application/json',
             },
         });
 

@@ -21,6 +21,7 @@ import rearrangeData from '@/app/ultilities/parseFromDate';
 export default function Detail({ params }: { params: any }) {
 
     const [display, setDisplay] = useState<'ALL' | 'COD' | 'FLOW' | 'PH'>('ALL');
+    const [display2, setDisplay2] = useState<'ALL' | 'COD' | 'FLOW' | 'PH'>('ALL');
     const [watersDetail, setWatersDetail] = useState<any>();
 
     const fetchData = async () => {
@@ -45,7 +46,7 @@ export default function Detail({ params }: { params: any }) {
 
     return <>
         <div className="h-[240px] overflow-hidden w-full flex justify-center">
-           <Image width={1023} height={300}
+            <Image width={1023} height={300}
                 src={`${watersDetail?.image_url || "/images/cover-image.png"}`}
                 className="w-full h-full object-cover bg-black"
                 alt={''}
@@ -81,7 +82,7 @@ export default function Detail({ params }: { params: any }) {
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${watersDetail?.LastUpdate.date!}T${watersDetail?.LastUpdate.time!}`))} </div>
                 </div>
                 <div className="flex flex-col items-end">
-                <Badge status={watersDetail?.LastUpdate?.effect}></Badge>
+                    <Badge status={watersDetail?.LastUpdate?.effect}></Badge>
                     <div className="text-[36px] font-bold">{watersDetail?.LastUpdate.COD}<span className="text-[20px] font-normal">COD/mgI</span></div>
                 </div>
             </section>
@@ -121,7 +122,7 @@ export default function Detail({ params }: { params: any }) {
 
                         <div>
                             <div className='text-[#475467]'>Flow</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow} m<sup>3</sup>/s</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow} m³/s</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>pH</div>
@@ -131,7 +132,7 @@ export default function Detail({ params }: { params: any }) {
 
                     <section>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ค่า Flow, pH ย้อนหลัง 24 ชั่วโมง</div>
+                            <div className="font-bold">ค่า COD, Flow, pH ย้อนหลัง 24 ชั่วโมง</div>
                             <div className="">
                                 <Radio.Group value={display} onChange={(e) => setDisplay(e.target.value)}>
                                     <Radio.Button value="ALL"><div className='flex gap-2 items-center'>ทั้งหมด </div></Radio.Button>
@@ -157,22 +158,27 @@ export default function Detail({ params }: { params: any }) {
 
                     <section className='py-10'>
                         <div className="flex justify-between py-8 flex-wrap">
-                            <div className="font-bold">ระดับคุณภาพเฉลี่ยรายชั่วโมง (COD, 24hr) ย้อนหลัง 7 วัน</div>
-
+                            <div className="font-bold">ระดับคุณภาพเฉลี่ยรายชั่วโมง ({display2}, 24hr) ย้อนหลัง 7 วัน</div>
+                            <Radio.Group value={display2} onChange={(e) => setDisplay2(e.target.value)}>
+                                <Radio.Button value="ALL"><div className='flex gap-2 items-center'>ทั้งหมด </div></Radio.Button>
+                                <Radio.Button value="COD"><div className='flex gap-2 items-center'>COD </div></Radio.Button>
+                                <Radio.Button value="FLOW"><div className='flex gap-2 items-center'>Flow</div></Radio.Button>
+                                <Radio.Button value="PH"><div className='flex gap-2 items-center'>pH</div></Radio.Button>
+                            </Radio.Group>
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">
-                            {display == "ALL" && watersDetail && <MultiColumnGraph data={ 
+                            {display2 == "ALL" && watersDetail && <MultiColumnGraph data={
                                 watersDetail?.Last7D &&
                                 [
-                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.COD, "COD"),'value'),
-                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.pH, "pH"),'value'),
-                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.Flow, "Flow"),'value')
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.COD, "COD"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.pH, "pH"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(watersDetail.Last7D?.Flow, "Flow"), 'value')
                                 ]
                             } />}
-                            {display == "COD" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.COD,'value')} />}
-                            {display == "PH" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.pH,'value')} />}
-                            {display == "FLOW" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.Flow,'value')} />}
+                            {display2 == "COD" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.COD, 'value')} />}
+                            {display2 == "PH" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.pH, 'value')} />}
+                            {display2 == "FLOW" && watersDetail && <ColumnGraph data={convertPropertyToNumber(watersDetail.Last7D?.Flow, 'value')} />}
 
                         </div>
                     </section>
@@ -188,17 +194,17 @@ export default function Detail({ params }: { params: any }) {
                             <Table
                                 className="w-full"
                                 data={
-                                //     [
-                                //     {
-                                //         key: '1',
-                                //         updated: '11 มิ.ย. 66 เวลา 09:00 น.',
-                                //         COD: 51.3,
-                                //         flow: 63.6,
-                                //         PH: 66.2,
-                                //     },
-                                // ]
-                                rearrangeData(watersDetail?.Last24H)
-                            }
+                                    //     [
+                                    //     {
+                                    //         key: '1',
+                                    //         updated: '11 มิ.ย. 66 เวลา 09:00 น.',
+                                    //         COD: 51.3,
+                                    //         flow: 63.6,
+                                    //         PH: 66.2,
+                                    //     },
+                                    // ]
+                                    rearrangeData(watersDetail?.Last24H)
+                                }
 
                                 columns={[
                                     {
@@ -211,16 +217,19 @@ export default function Detail({ params }: { params: any }) {
                                         title: <div className="text-[#475467]">COD (mg/l)</div>,
                                         dataIndex: 'COD',
                                         key: 'COD',
+                                        render: (text: string, record: any) => record?.COD == "N/A" ? "-" : record?.COD 
                                     },
                                     {
                                         title: <div className="text-[#475467]">Flow (m³)</div>,
                                         dataIndex: 'Flow',
                                         key: 'Flow',
+                                        render: (text: string, record: any) => record?.Flow == "N/A" ? "-" : record?.Flow 
                                     },
                                     {
                                         title: <div className="text-[#475467]">pH</div>,
                                         dataIndex: 'pH',
                                         key: 'pH',
+                                        render: (text: string, record: any) => record?.pH == "N/A" ? "-" : record?.pH 
                                     },
                                 ]}
                             />

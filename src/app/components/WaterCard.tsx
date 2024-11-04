@@ -40,7 +40,7 @@ export default function WaterCard({ data, className, isFav }: any) {
 
                         <div className=" text-white ">
                             <span className="text-4xl font-bold">{data?.LastUpdate?.COD || "N/A"}</span>
-                            <span className="text-lg pl-2">ppm</span>
+                            <span className="text-lg pl-2">ppm / COD</span>
                         </div>
                         {/* <div className=" text-white">
                             <p className="text-sm">ความเร็วลม</p>

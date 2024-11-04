@@ -33,6 +33,7 @@ export default function Login() {
                         role: userData.role,
                         user_id: userData.user_id,
                         email: userData.email,
+                        tel:userData.tel
                     }
                     )
                     saveArrayToLocalStorage("token", result.token)
@@ -60,6 +61,7 @@ export default function Login() {
                     role: userData.role,
                     user_id: userData.user_id,
                     email: userData.email,
+                    tel:userData.tel
                 }
                 )
                 saveArrayToLocalStorage("token", result.token)
@@ -124,7 +126,7 @@ export default function Login() {
                         <p className="text-gray-600 text-[16px]">กรุณาใส่อีเมลและรหัสผ่านเพื่อเข้าใช้งานระบบ</p>
                     </div>
                     <div className="lg:bg-white md:bg-white p-8 rounded-lg lg:shadow-md md:shadow-md w-full  max-w-md">
-                        {!type && <div className="flex justify-center">
+                        {type == null && <div className="flex justify-center">
                             <Spin></Spin>
                         </div>}
                         {type != null && <Tabs defaultActiveKey={type} onChange={value => setType(value)} centered items={[
