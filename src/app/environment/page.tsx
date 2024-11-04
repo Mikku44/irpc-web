@@ -175,6 +175,12 @@ export default function Environment() {
                                 render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || 'N/A',
                             },
                             {
+                                title: <div className="text-[#475467]">Flow (m<sup>3</sup>/s)</div>,
+                                width: 200,
+                                dataIndex: 'Flow',
+                                render: (text: string, record: any) =>( record.LastUpdate?.Flow) == 'N/A' ? "-" :  record.LastUpdate?.Flow || 'N/A',
+                            },
+                            {
                                 title: <div className="text-[#475467]">O<sub>2</sub> (ppm)</div>,
                                 width: 200,
                                 dataIndex: 'O2',

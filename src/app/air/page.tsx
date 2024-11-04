@@ -162,7 +162,7 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
                 dataIndex: 'nameTH',
               },
               {
-                title: <div >AQI<span className="text-sm font-normal"> (AQI)</span></div>,
+                title: <div >AQI<span className="text-sm font-normal"></span></div>,
                 dataIndex: 'AQI',
                 render: (text: string, record: any) => `${record.LastUpdate?.AQI.aqi}` || 'N/A',
 

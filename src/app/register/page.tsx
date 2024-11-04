@@ -7,23 +7,23 @@ import { useState } from "react";
 
 const { Option } = Select;
 const opt = <>
-    <Option value="66">66</Option>
-    <Option value="65">65</Option>
+    <Option value="+66">+66</Option>
+
 </>
 
 export default function Login() {
 
     const fetchData = async () => {
-        console.log({
-            "fullname": fullname,
-            "tel": codeCountry + tel,
-            "email": email,
-            "password": password
-        })
+        // console.log({
+        //     "fullname": fullname,
+        //     "tel": codeCountry + tel,
+        //     "email": email,
+        //     "password": password
+        // })
         if (validateEmail(email)) {
             const result = await postData('/forWeb/singin.php', {
                 "fullname": fullname,
-                "tel":   codeCountry + tel,
+                "tel":   tel.startsWith("0") ? tel : codeCountry + tel,
                 "email": email,
                 "password": password,
                 "type":'password'
@@ -35,7 +35,7 @@ export default function Login() {
             }
             else {
                
-                error(result?.data?.message)
+                error(result?.data?.message || 'มีปัญหาทางเทคนิค โปรดติดต่อผู้ดูแลระบบ')
                 return
             }
         }
@@ -63,7 +63,7 @@ export default function Login() {
     };
 
     const [fullname, setFullname] = useState("")
-    const [codeCountry, setCodecountry] = useState("66")
+    const [codeCountry, setCodecountry] = useState("+66")
     const [tel, setTel] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -88,7 +88,7 @@ export default function Login() {
                             <div className="mb-4">
                                 <label htmlFor="phone" className="block text-gray-700 mb-2">เบอร์โทรศัพท์</label>
                                 <div className="flex">
-                                    <Input required onChange={e => setTel(e.target.value)} placeholder="841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="66">
+                                    <Input required onChange={e => setTel(e.target.value)} placeholder="841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="+66">
                                         {opt}
                                     </Select>}
                                         classNames={{ input: "w-full p-3 " }} maxLength={9} />

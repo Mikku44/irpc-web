@@ -25,13 +25,13 @@ const typeIndex: any =
     ]
 const typeSoundIndex: any =
     [
-        "bg-[--very-good] text-[--primary] border-[--primary]",
+        "bg-[--good] text-[--success] border-[--success]",
         "bg-[--medium] text-[--yellow] border-[--yellow]",
         "bg-[--effected] text-[--error-50] border-[--error-50]"
     ]
 const typeOtherIndex: any =
     [
-        "bg-[--very-good] text-[--primary] border-[--primary]",
+        "bg-[--good] text-[--success] border-[--success]",
         "bg-[--effected] text-[--error-50] border-[--error-50]"
     ]
 

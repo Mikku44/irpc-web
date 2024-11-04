@@ -17,31 +17,31 @@ import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
 export default function Detail({ params }: { params: any }) {
 
     const types = [
-        'AQI', 'PM2', 'PM10', 'O3', 'CO', 'NO2', 'SO2', 
+        'AQI', 'PM2', 'PM10', 'O3', 'CO', 'NO2', 'SO2',
         // 'WS', 'WD'
     ];
 
-    const typesLabel :any = {
-        'AQI' : "ดัชนีคุณภาพอากาศ AQI ",
-        'PM2' : <>ฝุ่นละออง PM<sub>2.5</sub></>,
-        'PM10' : <>ฝุ่นละออง PM<sub>10</sub></>,
-        'O3' : <>ก๊าซโอโซน O<sub>3</sub></>,
-        'CO' : "ก๊าซคาร์บอนมอนอกไซด์ CO",
-        'NO2' : <>ก๊าซไนโตรเจนไดออกไซด์ NO<sub>2</sub></>,
-        'SO2' : <>ก๊าซซัลเฟอร์ไดออกไซด์ SO<sub>2</sub></>,
-        'WS' : "WS",
-        'WD':"WD"
+    const typesLabel: any = {
+        'AQI': "ดัชนีคุณภาพอากาศ AQI ",
+        'PM2': <>ฝุ่นละออง PM<sub>2.5</sub></>,
+        'PM10': <>ฝุ่นละออง PM<sub>10</sub></>,
+        'O3': <>ก๊าซโอโซน O<sub>3</sub></>,
+        'CO': "ก๊าซคาร์บอนมอนอกไซด์ CO",
+        'NO2': <>ก๊าซไนโตรเจนไดออกไซด์ NO<sub>2</sub></>,
+        'SO2': <>ก๊าซซัลเฟอร์ไดออกไซด์ SO<sub>2</sub></>,
+        'WS': "WS",
+        'WD': "WD"
     };
-    const dropdownTypesLabel :any = {
-        'AQI' : "AQI ",
-        'PM2' : <>PM<sub>2.5</sub></>,
-        'PM10' : <>PM<sub>10</sub></>,
-        'O3' : <>O<sub>3</sub></>,
-        'CO' : "CO",
-        'NO2' : <>NO<sub>2</sub></>,
-        'SO2' : <>SO<sub>2</sub></>,
-        'WS' : "WS",
-        'WD':"WD"
+    const dropdownTypesLabel: any = {
+        'AQI': "AQI ",
+        'PM2': <>PM<sub>2.5</sub></>,
+        'PM10': <>PM<sub>10</sub></>,
+        'O3': <>O<sub>3</sub></>,
+        'CO': "CO",
+        'NO2': <>NO<sub>2</sub></>,
+        'SO2': <>SO<sub>2</sub></>,
+        'WS': "WS",
+        'WD': "WD"
     };
 
     const [display, setDisplay] = useState<'PM2' | 'PM10' | 'O3' | 'CO' | 'NO2' | 'SO2' | 'WS' | 'WD' | 'AQI'>('AQI');
@@ -135,31 +135,31 @@ export default function Detail({ params }: { params: any }) {
                 </div>
                 <div className="lg:basis-2/3">
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
-                       
+
                         <div>
                             <div className='text-[#475467]'>PM<sub>2.5</sub> </div>
-                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM25 } µg./m<sup>3</sup></div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM25} µg./m<sup>3</sup></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>PM<sub>10</sub> </div>
-                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM10 } µg./m<sup>3</sup></div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM10} µg./m<sup>3</sup></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>O<sub>3</sub> </div>
-                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.O3 } ppb</div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.O3} ppb</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>CO </div>
-                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.CO } ppm</div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.CO} ppm</div>
                         </div>
 
                         <div>
                             <div className='text-[#475467]'>NO<sub>2</sub> </div>
-                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.NO2 } ppb</div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.NO2} ppb</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>SO<sub>2</sub> </div>
-                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.SO2 } ppb</div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.SO2} ppb</div>
                         </div>
                     </div>
 
@@ -179,7 +179,7 @@ export default function Detail({ params }: { params: any }) {
                                     placeholder="Search to Select"
                                     optionFilterProp="label"
                                     value={display}
-                                    options={types.map((item:any) => {
+                                    options={types.map((item: any) => {
                                         return {
                                             value: item,
                                             label: dropdownTypesLabel[item]
@@ -215,20 +215,20 @@ export default function Detail({ params }: { params: any }) {
 
                             </div> */}
 
-<Select
-                                    // showSearch
-                                    onChange={(e) => setDisplay2(e)}
-                                    style={{ width: 200 }}
-                                    placeholder="Search to Select"
-                                    optionFilterProp="label"
-                                    value={display2}
-                                    options={types.map((item:any) => {
-                                        return {
-                                            value: item,
-                                            label: dropdownTypesLabel[item]
-                                        }
-                                    })}
-                                />
+                            <Select
+                                // showSearch
+                                onChange={(e) => setDisplay2(e)}
+                                style={{ width: 200 }}
+                                placeholder="Search to Select"
+                                optionFilterProp="label"
+                                value={display2}
+                                options={types.map((item: any) => {
+                                    return {
+                                        value: item,
+                                        label: dropdownTypesLabel[item]
+                                    }
+                                })}
+                            />
                         </div>
 
                         <div className=" overflow-hidden flex justify-center">

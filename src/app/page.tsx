@@ -49,6 +49,8 @@ export default function Home() {
 
   const [allData, setallData] = useState<any>();
 
+  const [visible, setVisible] = useState(false);
+
   const fetchData = async () => {
     const result = await getData('/forWeb/getDashbord.php')
     setDashBoard(result || {})
@@ -61,8 +63,8 @@ export default function Home() {
     const sound = await getData('/forWeb/getSoundLast.php')
 
     setallData({
-      "air":air?.stations?.[0],
-      "water" : water?.stations?.[0],
+      "air": air?.stations?.[0],
+      "water": water?.stations?.[0],
       "cems": cems?.stations?.[0],
       "sound": sound?.stations?.[0],
     })
@@ -73,12 +75,15 @@ export default function Home() {
     if (segmentValue == 'EQMs') {
       // console.log(result)
       setMeasuringData(result)
-    }else{
+    } else {
       setMeasuringData(result.stations || {})
     }
 
   }
 
+  const previewImage = () => {
+    setVisible(true);
+  }
 
 
   useEffect(() => {
@@ -166,7 +171,7 @@ export default function Home() {
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
                   <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate?.Leq}</p>
-                  <p className="mt-2 text-[#475467]">dBA</p>
+                  <p className="mt-2 text-[#475467]">dBA / เสียงรบกวน</p>
                 </div>
                 <Badge status={allData?.sound?.LastUpdate?.effect} name="sound"></Badge>
               </div>
@@ -194,11 +199,11 @@ export default function Home() {
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
                   <p className="text-2xl font-extrabold">{allData?.water?.LastUpdate?.COD}</p>
-                  <p className="mt-2 text-[#475467]">ppm</p>
+                  <p className="mt-2 text-[#475467]">ppm / COD</p>
                 </div>
-                
-                 <Badge status={allData?.water?.LastUpdate?.effect} name="water"></Badge>
-           
+
+                <Badge status={allData?.water?.LastUpdate?.effect} name="water"></Badge>
+
               </div>
               <div className="m-4">
                 <p className="font-bold">{allData?.water?.nameTH}</p>
@@ -223,8 +228,8 @@ export default function Home() {
               <div className="w-[80%] h-[2px] bg-slate-200 ml-7"></div>
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
-                  <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.flow || "-"}</p>
-                  <p className="mt-2 text-[#475467]">m<sup>3</sup>/s</p>
+                  <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.Flow || "-"}</p>
+                  <p className="mt-2 text-[#475467]">m<sup>3</sup>/s / Flow</p>
                 </div>
                 <Badge status={allData?.cems?.LastUpdate?.effect} name="cems"></Badge>
               </div>
@@ -239,7 +244,7 @@ export default function Home() {
           </div>
         </div>
         <div className="lg:hidden md:flex flex  justify-center text-[--primary] mt-10">
-          <Link href="#" className="flex gap-2  ">ดูทั้งหมด <ChevronRight></ChevronRight></Link>
+          <Link href="/air" className="flex gap-2  ">ดูทั้งหมด <ChevronRight></ChevronRight></Link>
         </div>
       </div>
       <div className="bg-white h-[200px] w-full lg:block md:block hidden"></div>
@@ -270,7 +275,7 @@ export default function Home() {
           }} block />
         </div>
 
-        <Badges name={['air','sound'].includes(segmentValue) ? segmentValue as any:'other'}></Badges>
+        <Badges name={['air', 'sound'].includes(segmentValue) ? segmentValue as any : 'other'}></Badges>
         {<div className="flex lg:flex-row flex-col py-10  gap-5 ">
           <div className="lg:basis-2/5 basis-full flex justify-center">
             {segmentValue === "air" && <Link href={`/air/detail/${selectedPlace?.stationID!}`}>
@@ -293,7 +298,7 @@ export default function Home() {
             </Link>}
           </div>
           <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
-            
+
             {MeasuringData && <MapPick name={segmentValue} data={MeasuringData} setState={setSelectedPlace} unit={MeasuringUnitMap[segmentValue]} />}
           </div>
         </div>}
@@ -359,17 +364,26 @@ export default function Home() {
         <div className="flex flex-col sm:basis-1/2">
           <h2 className="text-xl font-extrabold text-black mb-2">รายงานประจำวัน</h2>
           <p className="text-gray-600">ข้อมูลเชิงลึกและผลการดำเนินงานในแต่ละวัน</p>
+          <div className="text-[--primary] mt-2">
+            <Link href="/report/all" className="flex gap-2  "><Button>ดูทั้งหมด</Button></Link>
+          </div>
         </div>
 
         <div className="flex items-center flex-wrap lg:gap-10 md:gap-5 gap-2 lg:py-0 py-5 sm:basis-1/2">
           <div className="flex items-center mb-4">
-            <ImageAnt src={DashBoard?.report?.[0]?.reportFile || "/images/irpc-logo.png"} width={202} alt="report preview" className="w-auto h-16 object-contain" />
+            <ImageAnt preview={{
+              visible,
+              src: DashBoard?.report?.[0]?.reportFile || "/images/irpc-logo.png",
+              onVisibleChange: (value) => {
+                setVisible(value);
+              },
+            }} src={DashBoard?.report?.[0]?.reportFile || "/images/irpc-logo.png"} width={202} alt="report preview" className="w-auto h-16 object-contain" />
           </div>
           {/* Right Section */}
           <div className="flex flex-col">
             <p className=" text-[20px] font-bold">{DashBoard?.report?.[0]?.dateThai}</p>
             <p className=" text-[16px] text-gray-500 ">ข้อมูลเชิงลึกและผลการดำเนินงานในแต่ละวัน</p>
-            <a href="/report/all" className="text-[--primary] font-bold hover:underline flex gap-2">
+            <a onClick={previewImage} className="text-[--primary] font-bold hover:underline flex gap-2 cursor-pointer">
               ดูรายงาน <ArrowRight></ArrowRight>
             </a>
           </div>

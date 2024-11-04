@@ -13,14 +13,14 @@ export default function Badges({name}:{name: "air" | 'sound' | 'other'} ) {
         }
         {name == 'sound' &&
             <>
-                <Badge text="ปกติ" status='very'></Badge>
-                <Badge text="เฝ้าระวัง" status='effect'></Badge>
+                <Badge text="ปกติ" status='good'></Badge>
+                <Badge text="เฝ้าระวัง" status='medium'></Badge>
                 <Badge text="มีผลกระทบ" status='effected'></Badge>
             </>
         }
         {name == 'other'  &&
             <>
-                <Badge text="ปกติ" status='very'></Badge>
+                <Badge text="ปกติ" status='good'></Badge>
                 <Badge text="มีผลกระทบ" status='effected'></Badge>
             </>
         }
