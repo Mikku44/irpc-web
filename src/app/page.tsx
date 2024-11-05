@@ -150,7 +150,9 @@ export default function Home() {
               <div className="m-4">
                 <p className="font-bold">{allData?.air.nameTH}</p>
                 <div className="flex font-light text-[#475467]">
-                  <p>อัพเดทล่าสุด:</p>
+                  <p className="flex gap-2 relative items-center ">
+                    {isOnline((new Date(`${allData?.air.LastUpdate?.date}T${allData?.air.LastUpdate?.time}`)))}
+                    อัพเดทล่าสุด:</p>
                   <p>{ShortDateFormator(new Date(`${allData?.air.LastUpdate?.date}T${allData?.air.LastUpdate?.time}`))}</p>
                 </div>
               </div>
@@ -176,10 +178,12 @@ export default function Home() {
                 <Badge status={allData?.sound?.LastUpdate?.effect} name="sound"></Badge>
               </div>
               <div className="m-4">
-                <p className="font-bold">{allData?.water?.nameTH}</p>
+                <p className="font-bold">{allData?.sound?.nameTH}</p>
                 <div className="flex font-light text-[#475467]">
-                  <p>อัพเดทล่าสุด:</p>
-                  <p>{ShortDateFormator(new Date(`${allData?.water.LastUpdate?.date}T${allData?.water.LastUpdate?.time}`))}</p>
+                  <p className="flex gap-2 relative items-center ">
+                    {isOnline((new Date(`${allData?.sound.LastUpdate?.date}T${allData?.sound.LastUpdate?.time}`)))}
+                    อัพเดทล่าสุด:</p>
+                  <p>{ShortDateFormator(new Date(`${allData?.sound.LastUpdate?.date}T${allData?.sound.LastUpdate?.time}`))}</p>
                 </div>
               </div>
             </div>
@@ -208,7 +212,9 @@ export default function Home() {
               <div className="m-4">
                 <p className="font-bold">{allData?.water?.nameTH}</p>
                 <div className="flex font-light text-[#475467]">
-                  <p>อัพเดทล่าสุด:</p>
+                  <p className="flex gap-2 relative items-center ">
+                    {isOnline((new Date(`${allData?.water.LastUpdate?.date}T${allData?.water.LastUpdate?.time}`)))}
+                    อัพเดทล่าสุด:</p>
                   <p>{ShortDateFormator(new Date(`${allData?.water.LastUpdate?.date}T${allData?.water.LastUpdate?.time}`))}</p>
                 </div>
               </div>
@@ -236,7 +242,9 @@ export default function Home() {
               <div className="m-4">
                 <p className="font-bold">{allData?.cems?.nameTH}</p>
                 <div className="flex font-light text-[#475467]">
-                  <p>อัพเดทล่าสุด:</p>
+                  <p className="flex gap-2 relative items-center ">
+                    {isOnline((new Date(`${allData?.cems.LastUpdate?.date}T${allData?.cems.LastUpdate?.time}`)))}
+                    อัพเดทล่าสุด:</p>
                   <p>{ShortDateFormator(new Date(`${allData?.cems?.LastUpdate?.date}T${allData?.cems?.LastUpdate?.time}`))}</p>
                 </div>
               </div>
@@ -394,4 +402,32 @@ export default function Home() {
       <Footer></Footer>
     </>
   );
+}
+
+
+function isOnline(LastUpdate: Date) {
+  const now = (new Date());
+  const online = (
+    now.getFullYear() === LastUpdate.getFullYear() &&
+    now.getMonth() === LastUpdate.getMonth() &&
+    now.getDate() === LastUpdate.getDate() &&
+    now.getHours() === LastUpdate.getHours()
+  );
+
+
+  if (online) {
+    return <>
+      <div className="size-3 rounded-full bg-[#70e000] opacity-70 animate-ping"></div>
+      <div className="size-2 absolute left-[2px] rounded-full bg-[--success] opacity-70 "></div>
+    </>
+  }
+  else {
+    return <>
+      {/* <div className="size-3 rounded-full bg-[#bfbfbf] opacity-70 "></div> */}
+      <div className="size-2 rounded-full bg-[#bfbfbf] opacity-70 "></div>
+    </>
+  }
+
+
+
 }

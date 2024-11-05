@@ -105,7 +105,7 @@ export default function Page() {
       <Paginations
         pageSize={6}
         items={[
-          ...DashBoard?.news.slice(1)
+          DashBoard?.news && DashBoard?.news.slice(1)
         ]}
         emptyTxt="ไม่มีข่าวสารเพิ่มเติม"
         classNames={{

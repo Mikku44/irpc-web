@@ -45,9 +45,9 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                 // for (const marker of data || geojson.features) {
                 var setCentered = false;
                 for (const marker of data) {
-                    if (marker.LastUpdated?.lat && !setCentered) {
+                    if (marker?.lat && !setCentered) {
                         setCentered = true;
-                        mapRef.current.setCenter([parseFloat(marker.LastUpdated?.long), parseFloat(marker.LastUpdated?.lat)])
+                        mapRef.current.setCenter([parseFloat(marker?.long), parseFloat(marker?.lat)])
                     }
 
 
@@ -160,8 +160,9 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
                         </div>
                     </div>`
                     );
-
-                    const position: any = marker.LastUpdated?.long ? [parseFloat(marker.LastUpdated?.long), parseFloat(marker.LastUpdated?.lat)] : [101.3098455 + Math.random() * 0.05, 12.6605804 + Math.random() * 0.05];
+                    const position: any = marker?.long ? [parseFloat(marker?.long), parseFloat(marker?.lat)] : [101.3098455 + Math.random() * 0.05, 12.6605804 + Math.random() * 0.05];
+                    // const dataPos = [parseFloat(marker?.long), parseFloat(marker?.lat)];
+                    // console.log("THIS IS location : ",{isSame :(dataPos[0] == position[0]),DB:dataPos,CurrentPos : position})
                     new mapboxgl.Marker(el)
                         .setLngLat(position)
                         .setPopup(popup)
@@ -182,7 +183,7 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
         };
     }, [data]);
 
-    return (
+    return data && (
         <div className="w-full h-full rounded-xl bg-slate-100 overflow-hidden">
             {/* Map container */}
             <div ref={mapContainerRef} id="map" style={{ height: '100%' }} />

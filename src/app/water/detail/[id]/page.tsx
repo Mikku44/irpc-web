@@ -82,7 +82,7 @@ export default function Detail({ params }: { params: any }) {
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${watersDetail?.LastUpdate.date!}T${watersDetail?.LastUpdate.time!}`))} </div>
                 </div>
                 <div className="flex flex-col items-end">
-                    <Badge status={watersDetail?.LastUpdate?.effect}></Badge>
+                    <Badge status={watersDetail?.LastUpdate?.effect} name="water"></Badge>
                     <div className="text-[36px] font-bold">{watersDetail?.LastUpdate.COD}<span className="text-[20px] font-normal">COD/mgI</span></div>
                 </div>
             </section>

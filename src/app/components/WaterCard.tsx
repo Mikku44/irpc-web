@@ -6,6 +6,7 @@ import { Water } from '../models/models';
 import { useEffect, useState } from 'react';
 import { favouriteAction } from '../ultilities/localStorageManager';
 import Badge from './Badge';
+import { ShortDateFormator } from '../ultilities/DateFormater';
 
 export default function WaterCard({ data, className, isFav }: any) {
     const [Fav, setFav] = useState(isFav);
@@ -66,7 +67,12 @@ export default function WaterCard({ data, className, isFav }: any) {
                     <p>pH</p>
                     <p className="font-bold">{data?.LastUpdate?.pH || "N/A"}</p>
                 </div>
+                <div className="flex font-light text-[#475467]">
+                    <p className="flex gap-2 relative items-center ">
 
+                        อัพเดทล่าสุด: </p>
+                    <p> &nbsp; {ShortDateFormator(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}</p>
+                </div>
             </div>
         </AntCard>
     </>

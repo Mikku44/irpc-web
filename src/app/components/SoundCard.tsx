@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { favouriteAction } from '../ultilities/localStorageManager';
 import { useState } from 'react';
 import Badge from './Badge';
+import { ShortDateFormator } from '../ultilities/DateFormater';
 
 export default function SoundCard({ className, data, isFav }: any) {
     const [Fav, setFav] = useState(isFav);
@@ -68,6 +69,12 @@ export default function SoundCard({ className, data, isFav }: any) {
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
                     <p>Leq 5 นาที</p>
                     <p className="font-bold">{data?.LastUpdate?.L5 || "N/A"} dBA</p>
+                </div>
+                <div className="flex font-light text-[#475467]">
+                  <p className="flex gap-2 relative items-center ">
+                    
+                    อัพเดทล่าสุด: </p>
+                  <p> &nbsp; {ShortDateFormator(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}</p>
                 </div>
             </div>
         </AntCard>

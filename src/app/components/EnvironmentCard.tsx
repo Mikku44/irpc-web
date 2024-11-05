@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { favouriteAction } from '../ultilities/localStorageManager';
 import { useState } from 'react';
 import Badge from './Badge';
+import { ShortDateFormator } from '../ultilities/DateFormater';
 
-export default function EnvironmentCard({ data,className,isFav }: any) {
+export default function EnvironmentCard({ data, className, isFav }: any) {
 
     const [Fav, setFav] = useState(isFav);
 
@@ -20,14 +21,14 @@ export default function EnvironmentCard({ data,className,isFav }: any) {
                         src={`${data?.image_url}`} // Replace with your image source
                         className="brightness-90 object-cover w-full h-full relative z-0"
                     />
-                     <button className='' onClick={e => {
+                    <button className='' onClick={e => {
                         e.preventDefault()
-                        favouriteAction(data,"env");
+                        favouriteAction(data, "env");
 
 
                     }}>
 
-                        <div onClick={e => setFav((prev:Boolean) => !prev)} className=" absolute top-4 right-4 p-2 duration-150 shadow-sm hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
+                        <div onClick={e => setFav((prev: Boolean) => !prev)} className=" absolute top-4 right-4 p-2 duration-150 shadow-sm hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
                             <Bookmark className={`text-white size-4 text-lg ${Fav && "fill-white"}`} />
                         </div>
                     </button>
@@ -67,8 +68,13 @@ export default function EnvironmentCard({ data,className,isFav }: any) {
                     <p>CO</p>
                     <p className="font-bold">{data?.LastUpdate?.CO_7p || "-"} ppm</p>
                 </div>
-               
-              
+                <div className="flex font-light text-[#475467]">
+                    <p className="flex gap-2 relative items-center ">
+
+                        อัพเดทล่าสุด: </p>
+                    <p> &nbsp; {ShortDateFormator(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}</p>
+                </div>
+
             </div>
         </AntCard>
     </>

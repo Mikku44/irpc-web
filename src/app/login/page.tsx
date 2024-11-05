@@ -116,9 +116,6 @@ export default function Login() {
         <>
             {contextHolder}
             
-
-
-
                 <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26vw] lg:block md:block hidden"></Image>
                 <div className="flex flex-col items-center justify-center h-[80vh] pt-10 md:pt-20 relative z-[1]">
                     <div className="text-center mb-6">
@@ -168,7 +165,7 @@ export default function Login() {
                                         </div>
                                         <div className="mb-4">
                                             <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                            <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
+                                            <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน"  />
                                         </div>
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex items-center">

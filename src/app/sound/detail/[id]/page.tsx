@@ -80,7 +80,7 @@ export default function Detail({ params }: { params: any }) {
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${soundsDetail?.LastUpdate?.date!}T${soundsDetail?.LastUpdate?.time!}`))} </div>
                 </div>
                 <div className="flex flex-col items-end">
-                    <Badge status={soundsDetail?.LastUpdate?.effect}></Badge>
+                    <Badge status={soundsDetail?.LastUpdate?.effect} name="sound"></Badge>
                     <div className="text-[36px] font-bold">{soundsDetail?.LastUpdate5min?.Leq || <Skeleton.Button block  style={{ width: 160,height:20 }}/>} <span className="text-[20px] font-normal">dBA</span></div>
                 </div>
             </section>

@@ -105,7 +105,7 @@ export default function Detail({ params }: { params: any }) {
             </section>
 
             <div className="w-full bg-slate-200 h-[1px]  rounded-xl my-10"></div>
-            <section className="flex flex-wrap">
+            <section className="flex lg:flex-nowrap flex-wrap">
                 <div className="lg:basis-1/3 py-5">
                     {/* Location */}
                     <div className="flex items-center mb-4">
