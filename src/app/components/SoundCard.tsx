@@ -2,13 +2,20 @@ import { Avatar, Card as AntCard } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import { AArrowDown, Bookmark } from 'lucide-react';
 import Image from 'next/image';
-import { favouriteAction } from '../ultilities/localStorageManager';
-import { useState } from 'react';
+import { favouriteAction, getArrayFromLocalStorage } from '../ultilities/localStorageManager';
+import { useEffect, useState } from 'react';
 import Badge from './Badge';
 import { ShortDateFormator } from '../ultilities/DateFormater';
+import { isOnline } from '../page';
 
 export default function SoundCard({ className, data, isFav }: any) {
     const [Fav, setFav] = useState(isFav);
+
+    useEffect(() => {
+        const FavData = getArrayFromLocalStorage('favData')
+        const isFav = FavData.find((item:any) => item?.stationID == data?.stationID)
+        setFav(isFav ? true : false)
+    }, [Fav]);
     return <>
         <AntCard
             className={`lg:min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px] ${className}`}
@@ -16,6 +23,7 @@ export default function SoundCard({ className, data, isFav }: any) {
                 <div className="relative h-[280px]">
                     <img
                         alt="Station"
+                        draggable={false}
                         src={data?.image_url || "https://www.menosfios.com/wp-content/uploads/2022/10/sFoto-estacao-Bento.JPG.jpg"}// Replace with your image source
                         className="brightness-90 object-cover w-full h-full relative z-0 "
                     />
@@ -63,7 +71,7 @@ export default function SoundCard({ className, data, isFav }: any) {
                     <p>Leq 1 ชม.</p>
                     <p className="font-bold">{data?.LastUpdate?.L50 || "N/A"} dBA</p>
                 </div>
-                
+
 
                 <div className="bg-[#EAECF0] h-[1px] w-full"></div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
@@ -71,10 +79,10 @@ export default function SoundCard({ className, data, isFav }: any) {
                     <p className="font-bold">{data?.LastUpdate?.L5 || "N/A"} dBA</p>
                 </div>
                 <div className="flex font-light text-[#475467]">
-                  <p className="flex gap-2 relative items-center ">
-                    
-                    อัพเดทล่าสุด: </p>
-                  <p> &nbsp; {ShortDateFormator(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}</p>
+                    <p className="flex gap-2 relative items-center ">
+                        {isOnline(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}
+                        อัพเดทล่าสุด: </p>
+                    <p> &nbsp; {ShortDateFormator(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}</p>
                 </div>
             </div>
         </AntCard>

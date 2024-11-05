@@ -1,15 +1,21 @@
-import { Avatar, Card as AntCard } from 'antd';
-import Meta from 'antd/es/card/Meta';
-import { AArrowDown, Bookmark } from 'lucide-react';
-import Image from 'next/image';
-import { favouriteAction } from '../ultilities/localStorageManager';
-import { useState } from 'react';
+import { Card as AntCard } from 'antd';
+
+import {  Bookmark } from 'lucide-react';
+
+import { favouriteAction, getArrayFromLocalStorage } from '../ultilities/localStorageManager';
+import { useEffect, useState } from 'react';
 import Badge from './Badge';
 import { ShortDateFormator } from '../ultilities/DateFormater';
+import { isOnline } from '../page';
 
 export default function EnvironmentCard({ data, className, isFav }: any) {
 
     const [Fav, setFav] = useState(isFav);
+    useEffect(() => {
+        const FavData = getArrayFromLocalStorage('favData')
+        const isFav = FavData.find((item:any) => item?.stationID == data?.stationID)
+        setFav(isFav ? true : false)
+    }, [Fav]);
 
     return <>
         <AntCard
@@ -17,6 +23,7 @@ export default function EnvironmentCard({ data, className, isFav }: any) {
             cover={
                 <div className="relative h-[280px]">
                     <img
+                        draggable={false}
                         alt="Station"
                         src={`${data?.image_url}`} // Replace with your image source
                         className="brightness-90 object-cover w-full h-full relative z-0"
@@ -70,7 +77,7 @@ export default function EnvironmentCard({ data, className, isFav }: any) {
                 </div>
                 <div className="flex font-light text-[#475467]">
                     <p className="flex gap-2 relative items-center ">
-
+                        {isOnline(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}
                         อัพเดทล่าสุด: </p>
                     <p> &nbsp; {ShortDateFormator(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}</p>
                 </div>

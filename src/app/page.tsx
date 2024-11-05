@@ -405,7 +405,7 @@ export default function Home() {
 }
 
 
-function isOnline(LastUpdate: Date) {
+export function isOnline(LastUpdate: Date) {
   const now = (new Date());
   const online = (
     now.getFullYear() === LastUpdate.getFullYear() &&
