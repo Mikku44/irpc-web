@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { favouriteAction, getArrayFromLocalStorage } from '../ultilities/localStorageManager';
 import Badge from './Badge';
 import { ShortDateFormator } from '../ultilities/DateFormater';
-import { isOnline } from '../page';
+import { isOnline } from './OnlineDot';
 
 export default function WaterCard({ data, className, isFav }: any) {
     const [Fav, setFav] = useState(isFav);

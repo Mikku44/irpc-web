@@ -6,7 +6,7 @@ import { favouriteAction, getArrayFromLocalStorage } from '../ultilities/localSt
 import { useEffect, useState } from 'react';
 import Badge from './Badge';
 import { ShortDateFormator } from '../ultilities/DateFormater';
-import { isOnline } from '../page';
+import { isOnline } from './OnlineDot';
 
 export default function SoundCard({ className, data, isFav }: any) {
     const [Fav, setFav] = useState(isFav);

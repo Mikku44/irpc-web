@@ -6,7 +6,7 @@ import Badge from './Badge';
 import { favouriteAction, getArrayFromLocalStorage} from '../ultilities/localStorageManager';
 import { useEffect, useState } from 'react';
 import { ShortDateFormator } from '../ultilities/DateFormater';
-import { isOnline } from '../page';
+import { isOnline } from './OnlineDot';
 
 export default function Card({ data, className, isFav }: any) {
     const [Fav, setFav] = useState(isFav);
