@@ -64,7 +64,8 @@ export default function WaterCard({ data, className,isFav,showFav}: any) {
                 <div className="flex justify-between items-center mb-2">
                     <h3 className="text-[24px] font-semibold">{data && data?.nameTH}</h3>
                     {/* <span className="text-red-500 bg-red-100 px-2 py-1 rounded-full">มีผลกระทบ</span> */}
-                    <Badge status={data?.LastUpdate?.effect} name="water"></Badge>
+                    {data?.LastUpdate?.COD != "N/A" && <Badge status={data?.LastUpdate?.effect}  name="water"></Badge> }
+                    {data?.LastUpdate?.COD == "N/A" && <Badge status={'0'}  name="water"></Badge> }
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
                     <p>Flow</p>

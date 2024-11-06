@@ -64,7 +64,9 @@ export default function SoundCard({ className, data,isFav,showFav}: any) {
                     <h3 className="text-[24px] font-semibold">{data?.nameTH || "Unnamed"}</h3>
                     {/* <span className="text-red-500 bg-red-100 px-2 py-1 rounded-full">มีผลกระทบ</span> */}
 
-                    <Badge status={data?.LastUpdate?.effect} name="sound"></Badge>
+                   
+                    {data?.LastUpdate5min?.Leq != "N/A" && <Badge status={data?.LastUpdate?.effect}  name="sound"></Badge> }
+                    {data?.LastUpdate5min?.Leq == "N/A" && <Badge status={'0'}  name="sound"></Badge> }
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
                     <p>Leq 24 ชม.</p>
