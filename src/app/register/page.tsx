@@ -88,7 +88,7 @@ export default function Login() {
                             <div className="mb-4">
                                 <label htmlFor="phone" className="block text-gray-700 mb-2">เบอร์โทรศัพท์</label>
                                 <div className="flex">
-                                    <Input required onChange={e => setTel(e.target.value)} placeholder="841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="+66">
+                                    <Input required onChange={e => setTel(e.target.value)} placeholder="(0)841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="+66">
                                         {opt}
                                     </Select>}
                                         classNames={{ input: "w-full p-3 " }} maxLength={9} />
@@ -125,7 +125,7 @@ export default function Login() {
                         <div className="mb-4">
                             <label htmlFor="phone" className="block text-gray-700 mb-2">เบอร์โทรศัพท์</label>
                             <div className="flex">
-                                <Input required onChange={e => setTel(e.target.value)} placeholder="841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="66">
+                                <Input required onChange={e => setTel(e.target.value)} placeholder="(0)841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="+66">
                                     {opt}
                                 </Select>} classNames={{ input: "w-full p-3 " }} />
                             </div>

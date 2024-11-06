@@ -24,6 +24,10 @@ export default function Login() {
                     "password": password,
                     "role": "client"
                 })
+
+                if(!result) {
+                    return error("เกิดปัญหาทางเทคนิค โปรดแจ้งผู้ดูแลระบบ")
+                }
                 // console.log(result);
                 if (result?.status === "ok") {
                     success();
@@ -45,6 +49,8 @@ export default function Login() {
 
                     return window.location.replace("/")
                 }
+
+                
                 return error("อีเมล์หรือรหัสผ่านไม่ถูกต้อง")
             }
         } else if (type === "admin") {
