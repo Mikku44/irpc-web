@@ -238,7 +238,9 @@ export default function Home() {
                   <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.Flow || "-"}</p>
                   <p className="mt-2 text-[#475467]">m<sup>3</sup>/s / Flow</p>
                 </div>
-                <Badge status={allData?.cems?.LastUpdate?.effect} name="cems"></Badge>
+                {/* <Badge status={allData?.cems?.LastUpdate?.effect} name="cems"></Badge> */}
+                {allData?.cems?.LastUpdate?.Flow != "N/A" && <Badge status={allData?.cems?.LastUpdate?.effect}  name="other"></Badge> }
+                {allData?.cems?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}  name="other"></Badge> }
               </div>
               <div className="m-4">
                 <p className="font-bold">{allData?.cems?.nameTH}</p>
