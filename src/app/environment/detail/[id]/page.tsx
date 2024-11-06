@@ -19,7 +19,7 @@ import MultiLineGraph from '@/app/components/MultiLineGraph';
 export default function Detail({ params }: { params: any }) {
 
     const RadioList = [
-        "ALL",'O2' , 'NOx' , 'SOx', 'CO' , 'CO2' , 'NH3' , 'H2S' , 'Dust' , 'Opacity',
+        "ALL",'O2' , 'NOx' , 'SOx', 'CO' , 'CO2' , 'NH3' , 'H2S' , 'Dust' , 'Opacity', 'Flow'
     ]
     const RadioListLabel :any = {
         'O2' :<>O<sub>2</sub></>,
@@ -31,11 +31,12 @@ export default function Detail({ params }: { params: any }) {
         'H2S' :<>H<sub>2</sub>S</>,
         'Dust' :'Dust',
         'Opacity' : 'Opacity',
+        'Flow' :'Flow',
         "ALL":'ALL'
     }
 
-    const [display, setDisplay] = useState<'ALL' | 'O2' | 'NOx' | 'SOx'| 'CO' | 'CO2' | 'NH3' | 'H2S' | 'Dust' | 'Opacity'>('ALL');
-    const [display2, setDisplay2] = useState<'ALL' | 'O2' | 'NOx' | 'SOx'| 'CO' | 'CO2' | 'NH3' | 'H2S' | 'Dust' | 'Opacity'>('ALL');
+    const [display, setDisplay] = useState<'ALL' | 'O2' | 'NOx' | 'SOx'| 'CO' | 'CO2' | 'NH3' | 'H2S' | 'Dust' | 'Opacity'  | 'Flow'>('ALL');
+    const [display2, setDisplay2] = useState<'ALL' | 'O2' | 'NOx' | 'SOx'| 'CO' | 'CO2' | 'NH3' | 'H2S' | 'Dust' | 'Opacity'  | 'Flow'>('ALL');
 
     const [cemsDetail, setCemsDetail] = useState<any>();
 
@@ -101,7 +102,7 @@ export default function Detail({ params }: { params: any }) {
                 {/* <Badge status={cemsDetail?.LastUpdate?.effect} name="cems"></Badge> */}
                 {cemsDetail?.LastUpdate?.Flow != "N/A" && <Badge status={cemsDetail?.LastUpdate?.effect}  name="other"></Badge> }
                 {cemsDetail?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}  name="other"></Badge> }
-                    <div className="text-[36px] font-bold">{cemsDetail?.LastUpdate?.flow || "-"} <span className="text-[20px] font-normal">m<sub>3</sub>/s</span></div>
+                    <div className="text-[36px] font-bold">{cemsDetail?.LastUpdate?.flow || "-"} <span className="text-[20px] font-normal">m<sup>3</sup>/s</span></div>
                 </div>
             </section>
 
@@ -173,6 +174,10 @@ export default function Detail({ params }: { params: any }) {
                             <div className='text-[#475467]'>Opacity</div>
                             <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Opacity}</span></div>
                         </div>
+                        <div>
+                            <div className='text-[#475467]'>Flow</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Flow}</span></div>
+                        </div>
                        
                     </div>
 
@@ -214,6 +219,7 @@ export default function Detail({ params }: { params: any }) {
                                     ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.H2S, "H2S"), 'value'),
                                     ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Dust, "Dust"), 'value'),
                                     ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Opacity, "Opacity"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.Opacity, "Flow"), 'value'),
                                 ]
                             } />}
                             {display == "O2" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.O2, "value")} />}
@@ -225,11 +231,12 @@ export default function Detail({ params }: { params: any }) {
                             {display == "NOx" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.NOx, "value")} />}
                             {display == "Opacity" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.Opacity, "value")} />}
                             {display == "SOx" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.SOx, "value")} />}
+                            {display == "Flow" && cemsDetail && <AreaGraph data={convertPropertyToNumber(cemsDetail.Last24H?.Flow, "value")} />}
                         </div>
                     </section>
 
                     <section className='py-10'>
-                        <div className="flex justify-between py-8 flex-wrap">
+                        <div className="flex justify-between py-8 gap-5 flex-wrap">
                             <div className="font-bold">ระดับคุณภาพ CEMs เฉลี่ยรายชั่วโมง ({display2}, 7D) ย้อนหลัง 7 วัน</div>
                             <Select
                                     // showSearch
@@ -260,6 +267,7 @@ export default function Detail({ params }: { params: any }) {
                                     ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.H2S, "H2S"), 'value'),
                                     ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.Dust, "Dust"), 'value'),
                                     ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.Opacity, "Opacity"), 'value'),
+                                    ...convertPropertyToNumber(namedArray(cemsDetail.Last7D?.Flow, "Flow"), 'value'),
                                 ]
                             } />}
                             {display2 == "CO" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.CO, 'value')} />}
@@ -271,6 +279,7 @@ export default function Detail({ params }: { params: any }) {
                             {display2 == "O2" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.O2, 'value')} />}
                             {display2 == "Opacity" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.Opacity, 'value')} />}
                             {display2 == "SOx" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.SOx, 'value')} />}
+                            {display2 == "Flow" && cemsDetail && <ColumnGraph data={convertPropertyToNumber(cemsDetail.Last7D?.Flow, 'value')} />}
                         </div>
                     </section>
 
