@@ -98,7 +98,9 @@ export default function Detail({ params }: { params: any }) {
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${cemsDetail?.LastUpdate.date}T${cemsDetail?.LastUpdate.time}`))}</div>
                 </div>
                 <div className="flex flex-col items-end">
-                <Badge status={cemsDetail?.LastUpdate?.effect} name="cems"></Badge>
+                {/* <Badge status={cemsDetail?.LastUpdate?.effect} name="cems"></Badge> */}
+                {cemsDetail?.LastUpdate?.Flow != "N/A" && <Badge status={cemsDetail?.LastUpdate?.effect}  name="other"></Badge> }
+                {cemsDetail?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}  name="other"></Badge> }
                     <div className="text-[36px] font-bold">{cemsDetail?.LastUpdate?.flow || "-"} <span className="text-[20px] font-normal">m<sub>3</sub>/s</span></div>
                 </div>
             </section>
