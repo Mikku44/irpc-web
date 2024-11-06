@@ -65,7 +65,8 @@ export default function EnvironmentCard({ data, className,isFav,showFav}: any) {
                 <div className="flex justify-between items-center mb-2">
                     <h3 className="text-[24px] font-semibold">{data?.nameTH}</h3>
                     {/* <span className="text-red-500 bg-red-100 px-2 py-1 rounded-full">มีผลกระทบ</span> */}
-                    <Badge status={data?.LastUpdate?.effect} name="other"></Badge>
+                    {data?.LastUpdate?.Flow != "N/A" && <Badge status={data?.LastUpdate?.effect}  name="other"></Badge> }
+                    {data?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}  name="other"></Badge> }
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467] mt-1">
                     <p>NOx</p>
@@ -83,7 +84,7 @@ export default function EnvironmentCard({ data, className,isFav,showFav}: any) {
                 </div>
                 <div className="flex font-light text-[#475467]">
                     <p className="flex gap-2 relative items-center ">
-                        {isOnline(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}
+                        {isOnline(data?.LastUpdate?.Flow == "N/A" ? new Date(data?.LastUpdate?.date) : new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}
                         อัพเดทล่าสุด: </p>
                     <p> &nbsp; {ShortDateFormator(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}</p>
                 </div>

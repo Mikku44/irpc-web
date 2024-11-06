@@ -76,6 +76,7 @@ const Badge: React.FC<BadgeProps> = ({ text = '', className = '', status, name =
     }
     else 
         return (
+            
             <div
                 className={`rounded-full  px-5 h-7 py-2 text-[12px] border border-1 flex items-center justify-center ${status && parseInt(status) ? typeOtherIndex[parseInt(status) - 1] : type[status!]} ${className} `}
             >
