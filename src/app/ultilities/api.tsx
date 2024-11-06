@@ -37,6 +37,7 @@ export async function postData(extPath: string, formData: any,isMultipart?: bool
 
         return response?.data; 
     } catch (error:any) {
-        return error.response; // Returns the response in case of an error
+        // console.log(error)
+        return error; // Returns the response in case of an error
     }
 }

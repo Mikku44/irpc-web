@@ -49,7 +49,7 @@ export default function EnvironmentCard({ data, className,isFav,showFav}: any) {
                     <div className="bg-black/20 backdrop-blur-md border-t-[1px] border-white/30 absolute flex w-full justify-between bottom-0 px-4 py-6 items-center z-1">
 
                         <div className=" text-white ">
-                            <span className="text-4xl font-bold">{data?.LastUpdate?.Flow || "-"}</span>
+                            <span className="text-4xl font-bold">{data?.LastUpdate?.Flow == "N/A" ? "-" : data?.LastUpdate?.Flow || "-"}</span>
                             <span className="text-lg pl-2">m<sup>3</sup>/s / Flow</span>
                         </div>
                         {/* <div className=" text-white">

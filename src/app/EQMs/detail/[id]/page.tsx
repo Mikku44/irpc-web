@@ -7,75 +7,49 @@ import { ChevronRight, House, MapPin, CirclePlay, CloudDownload, Trash2, } from 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-export default function Detail() {
+export default function Detail({ params }: any) {
     const [EQMs, setEQMs] = useState<any>();
+    const [hasChange, sethasChange] = useState(false);
     const fetchData = async () => {
         const result = await getData('/forWeb/getEqmsList.php')
-        setEQMs(result || [])
-    
-    
+        setEQMs(result?.find((item: any) => item?.EqmsID == params.id) || {})
+
+
     }
-    
+
+    const updateField = (path: (string | number)[], newValue: any) => {
+        setEQMs((prevEQMs: any) => {
+            const updatedEQMs = { ...prevEQMs };
+
+            // Traverse the path to get to the target field
+            let current = updatedEQMs;
+            for (let i = 0; i < path.length - 1; i++) {
+                const key = path[i];
+
+                // If the key doesn't exist, create it as an empty object or array based on next key
+                if (current[key] === undefined) {
+                    current[key] = typeof path[i + 1] === 'number' ? [] : {};
+                }
+                current = current[key];
+            }
+
+            // Set the new value at the target field
+            current[path[path.length - 1]] = newValue;
+            sethasChange(true)
+            return updatedEQMs;
+        });
+    };
+
+    const color: any = {
+        'green': 'bg-[--succes-50] border-[--success] text-[--success]',
+        'red': 'bg-[--effected] border-[--error-50] text-[--error-50]',
+        'other': ''
+    }
     useEffect(() => {
         fetchData();
     }, [])
 
-    const dataSource = [
-        { key: '1', code: 'SSDD', location: 'CEMs HRSG 61', type: 'SSDD', parameter: '-', status: 'Normal' },
-        { key: '2', code: '', location: 'CEMs HRSG 21', type: '', parameter: '-', status: 'Normal' },
-        { key: '3', code: '', location: 'CEMs Auxiliary Boiler', type: '', parameter: '-', status: 'Normal' },
-        { key: '4', code: '', location: 'WWT1&2 จุดที่1', type: '', parameter: '-', status: 'Normal' },
-        { key: '5', code: '', location: 'WWT3 จุดที่1', type: '', parameter: '-', status: 'Normal' },
-        { key: '6', code: '', location: 'CEMs HRSG 61', type: '', parameter: '-', status: 'Normal' },
-    ];
-
-    const columns = [
-        {
-            title: 'รหัสสถานี',
-            dataIndex: 'code',
-            key: 'code',
-        },
-        {
-            title: 'ชื่อสถานี',
-            dataIndex: 'location',
-            key: 'location',
-        },
-        {
-            title: 'ประเภทการตรวจวัด',
-            dataIndex: 'type',
-            key: 'type',
-        },
-        {
-            title: 'พารามิเตอร์',
-            dataIndex: 'parameter',
-            key: 'parameter',
-        },
-        {
-            title: 'สถานะออกจากระบบ',
-            dataIndex: 'status',
-            key: 'status',
-            render: (status:any) => (
-                <Tag className='rounded-[30px]'  color={status === 'Normal' ? 'green' : 'volcano'}>
-                    {status}
-                </Tag>
-            ),
-        },
-        {
-            title: 'ตรวจสอบสถานะล่าสุด',
-            key: 'checkStatus',
-            render: () => (
-                <span>
-                    <Checkbox checked>Normal</Checkbox>
-                    <Checkbox>Malfunction</Checkbox>
-                </span>
-            ),
-        },
-        {
-            title: 'Remark',
-            key: 'remark',
-            render: () => <Input placeholder="Enter remark" />,
-        },
-    ];
+    const { TextArea } = Input;
 
     return <>
 
@@ -98,23 +72,91 @@ export default function Detail() {
                         ),
                     },
                     {
-                        title: <div className='rounded-md bg-slate-200 px-2 font-bold'>SSDD</div>,
+                        title: <div className='rounded-md bg-slate-200 px-2 font-bold'>{EQMs?.EqmsType}</div>,
                     },
                 ]}
             />
-            <section className="flex justify-between py-5">
+            <section className="flex justify-between flex-wrap gap-5 py-5">
                 <div>
-                    <h3 className="font-bold text-[30px]">Daily Status</h3>
-                    <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date())}</div>
+                    <h3 className="font-bold text-[30px]">{EQMs?.StationNameEn || "-"}</h3>
+                    <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(EQMs?.Updated_At?.split(' ').join("T")))}</div>
+
+
+                </div>
+                
+               {hasChange && <Button className='bg-[--primary] text-white'>Save Change</Button>}
+            </section>
+
+           
+            <div className="w-full overflow-x-auto rounded-xl overflow-hidden shadow-md">
+                <div className="bg-gray-100 border-b grid grid-cols-8 gap-2">
+                    <div className="p-3 text-[14px] font-semibold border-r grid text-center items-center">รหัสสถานี</div>
+                    <div className="p-3 text-[14px] font-semibold border-r grid text-center items-center">ชื่อสถานี</div>
+                    <div className="p-3 text-[14px] font-semibold border-r grid text-center items-center">ประเภทการตรวจวัด</div>
+                    <div className="p-3 text-[14px] font-semibold border-r grid text-center items-center">พารามิเตอร์</div>
+                    <div className="p-3 text-[14px] font-semibold border-r grid text-center items-center">ค่าที่ตรวจวัด</div>
+                    <div className="p-3 text-[14px] font-semibold border-r grid text-center items-center">สถานะออกจากระบบ</div>
+                    <div className="p-3 text-[14px] font-semibold border-r grid text-center items-center">ตรวจสอบสถานะล่าสุด</div>
+                    <div className="p-3 text-[14px] font-semibold grid text-center items-center">Remark</div>
+                </div>
+                <div className=" grid grid-cols-8 gap-2 text-sm text-gray-600" >
+                    <div className="p-3 border-r ">{EQMs?.StationID}</div>
+
+                    <div className="grid p-3 border-r ">
+                        {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
+                            <td key={item?.param} className="">{item?.param}</td>
+                        ))}
+                    </div>
+
+                    <div className="p-3 border-r ">{EQMs?.EqmsType}</div>
+
+                    <div className="grid p-3 border-r">
+                        {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
+                            <td key={item?.param} className="">{item?.param}</td>
+                        ))}
+                    </div>
+
+                    <div className="grid p-3 border-r">
+                        {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
+                            <td key={item?.param} className=" text-center">
+                                {item?.value || "-"}
+                            </td>
+                        ))}
+                    </div>
+
+                    <div className="grid p-3 border-r">
+                        {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
+                            <td key={item?.param} className=" ">
+                                <div className={`rounded-full  w-fit flex gap-1 items-center  border px-4 py-1 ${color[item?.color || 'other']}`}>
+                                    <div className={`size-2 rounded-full ${item?.status == 1 ? "bg-[--success]" : "bg-[--error-50]"}`}></div>
+                                    {item?.status == 1 ? "ปกติ" : "มีผลกระทบ"}</div>
+                            </td>
+                        ))}
+                    </div>
+
+                    <div className="p-3 border-r overflow-x-auto hide-scroll grid">
+                        {EQMs && EQMs?.StatusParam?.map((item: any, index: number) => (
+                            <td key={item?.param} className="p-3  flex gap-2">
+                                <Checkbox onClick={e => {
+                                    updateField(['StatusParam', index, 'status'], 1);
+                                    updateField(['StatusParam', index, 'color'], 'green');
+
+                                }} checked={item?.status == 1 ? true : false}>Normal</Checkbox>
+                                <Checkbox onClick={e => {
+                                    updateField(['StatusParam', index, 'status'], 2);
+                                    updateField(['StatusParam', index, 'color'], 'red');
+
+                                }} checked={item?.status == 2 ? true : false}>Malfunction</Checkbox>
+                            </td>
+                        ))}
+
+                    </div>
+
+                    <div className="p-3 border-r"><TextArea value={EQMs?.remark} placeholder="หมายเหตุ" className="h-full" /></div>
+
                 </div>
 
-            </section>
-
-            <div className="w-full bg-slate-200 h-[1px] rounded-xl my-10"></div>
-            <section className="">
-
-                <Table dataSource={dataSource} columns={columns} pagination={false} className='w-full' />
-            </section>
+            </div>
 
         </div>
     </>

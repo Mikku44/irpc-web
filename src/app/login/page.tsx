@@ -59,6 +59,7 @@ export default function Login() {
                 "password": password,
                 "role": "admin"
             })
+           
             if (result?.status === "ok") {
                 success();
                 const userData = result.user_data
@@ -78,10 +79,13 @@ export default function Login() {
                 }
 
                 return window.location.replace("/")
+            }else {
+              
+                return error(result.message)
             }
 
         }
-        error()
+        error("มีปัญหาทางเทคนิค โปรดแจ้งผู้ดูแลระบบ")
     }
 
     const [remind, setRemind] = useState(false);

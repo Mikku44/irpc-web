@@ -109,7 +109,7 @@ const loginedDropdown: MenuProps['items'] = [
       }
       }>
 
-        ออกจากระบบ
+        <div className="text-center">ออกจากระบบ</div>
       </a>
     ),
   },
