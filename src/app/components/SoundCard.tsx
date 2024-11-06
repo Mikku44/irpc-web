@@ -8,13 +8,18 @@ import Badge from './Badge';
 import { ShortDateFormator } from '../ultilities/DateFormater';
 import { isOnline } from './OnlineDot';
 
-export default function SoundCard({ className, data, isFav }: any) {
+export default function SoundCard({ className, data,isFav,showFav}: any) {
     const [Fav, setFav] = useState(isFav);
 
-    useEffect(() => {
-        const FavData = getArrayFromLocalStorage('favData')
+
+    async function check(){
+        const FavData : any = await getArrayFromLocalStorage('favData')
         const isFav = FavData.find((item:any) => item?.stationID == data?.stationID)
         setFav(isFav ? true : false)
+    }
+    useEffect(() => {
+        check()
+      
     }, [Fav]);
     return <>
         <AntCard
@@ -27,7 +32,7 @@ export default function SoundCard({ className, data, isFav }: any) {
                         src={data?.image_url || "https://www.menosfios.com/wp-content/uploads/2022/10/sFoto-estacao-Bento.JPG.jpg"}// Replace with your image source
                         className="brightness-90 object-cover w-full h-full relative z-0 "
                     />
-                    <button className='' onClick={e => {
+                    {showFav !== false && <button className='' onClick={e => {
                         e.preventDefault()
                         favouriteAction(data, "sound");
 
@@ -37,7 +42,7 @@ export default function SoundCard({ className, data, isFav }: any) {
                         <div onClick={e => setFav((prev: Boolean) => !prev)} className=" absolute top-4 right-4 p-2 duration-150 shadow-sm hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
                             <Bookmark className={`text-white size-4 text-lg ${Fav && "fill-white"}`} />
                         </div>
-                    </button>
+                    </button>}
 
                     <div className="bg-black/20 backdrop-blur-md border-t-[1px] border-white/30 absolute flex w-full justify-between bottom-0 px-4 py-6 items-center z-1">
 

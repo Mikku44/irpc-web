@@ -288,22 +288,22 @@ export default function Home() {
         {<div className="flex lg:flex-row flex-col py-10  gap-5 ">
           <div className="lg:basis-2/5 basis-full flex justify-center">
             {segmentValue === "air" && <Link href={`/air/detail/${selectedPlace?.stationID!}`}>
-              <Card data={selectedPlace}></Card>
+              <Card data={selectedPlace} showFav={false}></Card>
             </Link>}
             {segmentValue === "sound" && <Link href={`/sound/detail/${selectedPlace?.stationID!}`}>
-              <SoundCard data={selectedPlace}></SoundCard>
+              <SoundCard data={selectedPlace} showFav={false}></SoundCard>
             </Link>}
             {segmentValue === "water" && <Link href={`/water/detail/${selectedPlace?.stationID!}`}>
-              <WaterCard data={selectedPlace}></WaterCard>
+              <WaterCard data={selectedPlace} showFav={false}></WaterCard>
             </Link>}
             {segmentValue === "environment" && <Link href={`/environment/detail/${selectedPlace?.stationID!}`}>
-              <EnvironmentCard data={selectedPlace}></EnvironmentCard>
+              <EnvironmentCard data={selectedPlace} showFav={false}></EnvironmentCard>
             </Link>}
             {segmentValue === "flare" && <Link href={`/flare/detail/${selectedPlace?.stationID!}`}>
               <Flarecard item={selectedPlace}></Flarecard>
             </Link>}
             {segmentValue === "EQMs" && <Link href={`/EQMs/`}>
-              <StationCard data={selectedPlace} className="w-[400px]"> </StationCard>
+              <StationCard data={selectedPlace} showFav={false} className="w-[400px]"> </StationCard>
             </Link>}
           </div>
           <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>

@@ -23,8 +23,8 @@ export const isObjectEqual = (obj1: object, obj2: object): boolean => {
 };
 
 
-export function favouriteAction(data:any,type:'air'| 'sound' | 'flare' | 'water' | 'env' | 'flare' | 'eqms') {
-  const tempData = getArrayFromLocalStorage("favData")
+export async function favouriteAction(data:any,type:'air'| 'sound' | 'flare' | 'water' | 'env' | 'flare' | 'eqms') {
+  const tempData = await getArrayFromLocalStorage("favData")
   if (isObjectInArray(tempData || [], data)) {
     // Remove 'data' if it already exists in 'tempData'
     saveArrayToLocalStorage("favData", tempData ? tempData.filter((item: any) => !isObjectEqual(item, data)) : []);
