@@ -112,6 +112,10 @@ body {
   touch-action: none;
 }
 
+.ant-card{
+  border-radius: 1.5rem !important;
+}
+
 .item-drag {
   align-items: center;
   display: flex;

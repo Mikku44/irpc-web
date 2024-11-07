@@ -1,4 +1,6 @@
+'use client'
 import { Badge } from "antd";
+import { getArrayFromLocalStorage } from "./ultilities/localStorageManager";
 export const parameterUnit = {
     // --- Air
     "PM25" : "µg./m3",
@@ -27,13 +29,19 @@ export const parameterUnit = {
     "Lmax" : "dBA"
   };
 
+  function getTotal(defValue:number,name:string){
+    let total = getArrayFromLocalStorage(name) || defValue || 0;
+
+    return total
+  }
+
 const total = {
-    "air" :5,
-    "sound" :4,
-    "water" :3,
-    "environment" :19,
-    "flare" :0,
-    "EQMs" : 31,
+    "air" :getTotal(5,'air'),
+    "sound" :getTotal(4,'sound'),
+    "water" :getTotal(3,'water'),
+    "environment" :getTotal(19,'environment'),
+    "flare" :getTotal(0,'flare'),
+    "EQMs" : getTotal(31,'EQMs'),
 }
 
 const privatePath = [
@@ -69,6 +77,10 @@ const SegmentList = [
         label: <div className='flex gap-2 items-center justify-center text-black'>EQMs  <Badge count={<div className='bg-[#F9FAFB] border-[#EAECF0] border-[1px] text-[#344054] p-1 px-2 rounded-full'>{total['EQMs']}</div>} ></Badge></div>,
         value: 'EQMs'
     },
+    {
+        label: <div className='flex gap-2 items-center justify-center text-black'>Dashboard </div>,
+        value: 'Dashboard'
+    },
 ];
 const SegmentUserList = [
     {
@@ -86,7 +98,11 @@ const SegmentUserList = [
     {
         label: <div className='flex gap-2 items-center justify-center text-black'>CEMs  <Badge count={<div className='bg-[#F9FAFB] border-[#EAECF0] border-[1px] text-[#344054] p-1 px-2 rounded-full'>{total['environment']}</div>} ></Badge></div>,
         value: 'environment'
-    }
+    },
+    {
+        label: <div className='flex gap-2 items-center justify-center text-black'>Dashboard </div>,
+        value: 'Dashboard'
+    },
 ];
 
 export { SegmentList ,SegmentUserList,privatePath};

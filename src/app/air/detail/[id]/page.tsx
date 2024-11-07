@@ -108,7 +108,7 @@ export default function Detail({ params }: { params: any }) {
 
             <div className="w-full bg-slate-200 h-[1px]  rounded-xl my-10"></div>
             <section className="flex lg:flex-nowrap flex-wrap">
-                <div className="lg:basis-1/3 py-5">
+                <div className="lg:basis-1/3 py-5 space-y-5">
                     {/* Location */}
                     <div className="flex items-center mb-4">
                         <MapPin></MapPin>
@@ -134,6 +134,8 @@ export default function Detail({ params }: { params: any }) {
                             {FullDateFormator(new Date(`${airsDetail?.LastUpdate.date}T${airsDetail?.LastUpdate.time}`))}
                         </p>
                     </div>
+
+                    
                 </div>
                 <div className="lg:basis-2/3">
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">

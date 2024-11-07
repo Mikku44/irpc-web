@@ -16,6 +16,7 @@ import Badges from '../components/Badges';
 
 import Pagination from '../components/Pagination';
 import { getData } from '../ultilities/api';
+import { saveArrayToLocalStorage } from '../ultilities/localStorageManager';
 
 
 
@@ -41,6 +42,7 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
   const fetchData = async () => {
     const result = await getData('/forWeb/getAirLast.php')
     setAirs(result.stations || [])
+    result.station && console.log("TOTAL AIR : ",result.station.length)
   }
 
 
@@ -110,7 +112,7 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
 
         {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
           <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={airs?.length} className="lg:hidden md:hidden flex justify-center py-3" >
-            {[airs[currentPage]].map((item: any) => <Link key={item?.stationID} href={`/air/detail/${item?.stationID}`}>
+            {[airs[currentPage]].map((item: any,index:number) => <Link key={index} href={`/air/detail/${item?.stationID}`}>
               <Card className="lg:min-w-full" data={item}></Card>
             </Link>)}
           </Pagination>
@@ -150,9 +152,9 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
             //   updated: DateFormator(new Date())
             // },]
 
-            airs.filter((item: any) => {
-              if (!airsFiltered[1]) return item
-              return item?.nameTH?.toLowerCase().includes(airsFiltered[1].toLowerCase())
+            airs.filter((item: any,index:number) => {
+              if (!airsFiltered[1]) return {key:index.toString(),...item}
+              return {key:index.toString(),...item?.nameTH?.toLowerCase().includes(airsFiltered[1].toLowerCase())}
             })
           }
 

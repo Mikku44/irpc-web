@@ -154,7 +154,7 @@ export default function Navbar() {
         // alert("Please login before")
         await warning();
         // await delay(1000);
-        router.push("/login")
+        // router.push("/login")
       }
     }
   }

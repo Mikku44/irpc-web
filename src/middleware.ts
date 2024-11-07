@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 import { getArrayFromLocalStorage } from './app/ultilities/localStorageManager';
 
 // Define private paths
-const privatePaths = ['/flare', '/profile', '/settings'];
+const privatePaths = ["private"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
