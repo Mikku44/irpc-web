@@ -17,7 +17,8 @@ export default function SegmentMenu() {
         "sound",
         "environment",
         "flare",
-        "EQMs"
+        "EQMs",
+        "Dashboard"
     ]
 
     async function fetchData() {
