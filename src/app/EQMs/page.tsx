@@ -49,7 +49,7 @@ useEffect(() => {
         <div className="flex justify-between">
           <div className="text-[36px] font-bold">สถานีทั้งหมด</div>
           <div className="text-[16px] font-bold flex gap-2">
-            <Button ><RefreshCw className='size-[14px]' /> อัปเดต</Button>
+            <Button onClick={e => window?.location.reload()}><RefreshCw className='size-[14px]' /> อัปเดต</Button>
             <form action="https://irpc-air.com/UpdateV2/eqms/createImage.php" ><Button  type='primary' htmlType="submit" ><Download className='size-[14px]' />ดาวน์โหลด</Button></form>
           </div>
         </div>

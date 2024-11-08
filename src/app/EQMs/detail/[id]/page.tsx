@@ -83,12 +83,12 @@ export default function Detail({ params }: any) {
 
 
                 </div>
-                
-               {hasChange && <Button className='bg-[--primary] text-white'>Save Change</Button>}
+
+                {hasChange && <Button className='bg-[--primary] text-white'>Save Change</Button>}
             </section>
 
-           
-            <div className="w-full overflow-x-auto rounded-xl overflow-hidden shadow-md">
+
+            <div className="w-full lg:grid  hidden overflow-x-auto rounded-xl overflow-hidden shadow-md">
                 <div className="bg-gray-100 border-b grid grid-cols-8 gap-2">
                     <div className="p-3 text-[14px] font-semibold border-r grid text-center items-center">รหัสสถานี</div>
                     <div className="p-3 text-[14px] font-semibold border-r grid text-center items-center">ชื่อสถานี</div>
@@ -126,7 +126,7 @@ export default function Detail({ params }: any) {
 
                     <div className="grid p-3 border-r">
                         {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
-                            <td key={item?.param} className=" ">
+                            <td key={item?.param} className="line-clamp-1 text-ellipsis">
                                 <div className={`rounded-full  w-fit flex gap-1 items-center  border px-4 py-1 ${color[item?.color || 'other']}`}>
                                     <div className={`size-2 rounded-full ${item?.status == 1 ? "bg-[--success]" : "bg-[--error-50]"}`}></div>
                                     {item?.status == 1 ? "ปกติ" : "มีผลกระทบ"}</div>
@@ -156,6 +156,55 @@ export default function Detail({ params }: any) {
 
                 </div>
 
+            </div>
+
+
+            <div className="lg:hidden gap-3 grid">
+                {EQMs && EQMs?.StatusParam.map((item: any, index: number) =>
+                    <div className="rounded-2xl border-2   border-[#EAECF0] p-5 relative">
+                        <div className="pb-2">
+                            <div className="font-bold">ชื่อสถานี</div>
+                            <div className="text-[#475467]">{EQMs?.StationNameEn || "-"}</div>
+                        </div>
+                        <div className="pb-2">
+                            <div className="font-bold">ประเภทการตรวจวัด</div>
+                            <div className="text-[#475467]">{EQMs?.EqmsType || "-"}</div>
+                        </div>
+                        <div className="pb-2">
+                            <div className="font-bold">พารามิเตอร์</div>
+                            <div className="text-[#475467]">{item?.param || "-"}</div>
+                        </div>
+                        <div className="pb-2">
+                            <div className="font-bold">ค่าที่ตรวจวัด</div>
+                            <div className="text-[#475467]">{item?.value || "-"}</div>
+                        </div>
+                        <div className="pb-2">
+                            <div className="font-bold">ตรวจสอบสถานะล่าสุด</div>
+                            <div className="py-1 flex gap-2">
+                                <Checkbox onClick={e => {
+                                    updateField(['StatusParam', index, 'status'], 1);
+                                    updateField(['StatusParam', index, 'color'], 'green');
+
+                                }} checked={item?.status == 1 ? true : false}>Normal</Checkbox>
+                                <Checkbox onClick={e => {
+                                    updateField(['StatusParam', index, 'status'], 2);
+                                    updateField(['StatusParam', index, 'color'], 'red');
+
+                                }} checked={item?.status == 2 ? true : false}>Malfunction</Checkbox>
+                            </div>
+                        </div>
+
+                        <div className="grid absolute top-0 right-0 p-3">
+
+                            <div className=" ">
+                                <div className={`rounded-full  w-fit flex gap-1 items-center  border px-4 py-1 text-sm ${color[item?.color || "other"]}`}>
+                                    <div className={`size-2 rounded-full ${item?.status == 1 ? "bg-[--success]" : "bg-[--error-50]"}`}></div>
+                                    {item?.status == 1 ? "ปกติ" : "มีผลกระทบ"}</div>
+                            </div>
+
+                        </div>
+                    </div>
+                )}
             </div>
 
         </div>
