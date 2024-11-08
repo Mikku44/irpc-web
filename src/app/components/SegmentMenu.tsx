@@ -17,7 +17,8 @@ export default function SegmentMenu() {
         "sound",
         "environment",
         "flare",
-        "EQMs"
+        "EQMs",
+        "Dashboard"
     ]
 
     async function fetchData() {
@@ -62,12 +63,12 @@ export default function SegmentMenu() {
     const router = useRouter();
 
     useEffect(() => {
-        const segment = window.location.href.split('/').pop()
-        if (role) {
-            if (role != 'ADMIN') {
-                segment && privatePath.includes(segment) && window.location.replace('/')
-            }
-        }
+        // const segment = window.location.href.split('/').pop()
+        // if (role) {
+        //     if (role != 'ADMIN') {
+        //         segment && privatePath.includes(segment) && window.location.replace('/')
+        //     }
+        // }
     }, [role])
 
 

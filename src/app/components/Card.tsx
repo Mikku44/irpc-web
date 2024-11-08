@@ -1,39 +1,46 @@
 'use client'
-import { Avatar, Card as AntCard } from 'antd';
-import Meta from 'antd/es/card/Meta';
-import { AArrowDown, Bookmark } from 'lucide-react';
+import {  Card as AntCard } from 'antd';
+import {Bookmark } from 'lucide-react';
 import Image from 'next/image';
 import Badge from './Badge';
-import { favouriteAction, getArrayFromLocalStorage, isObjectEqual, isObjectInArray, saveArrayToLocalStorage } from '../ultilities/localStorageManager';
+import { favouriteAction, getArrayFromLocalStorage} from '../ultilities/localStorageManager';
 import { useEffect, useState } from 'react';
+import { ShortDateFormator } from '../ultilities/DateFormater';
+import { isOnline } from './OnlineDot';
 
-export default function Card({ data, className,isFav }: any) {
+export default function Card({ data, className,isFav,showFav}: any) {
     const [Fav, setFav] = useState(isFav);
 
+    async function check(){
+        const FavData  :any = await getArrayFromLocalStorage('favData')
+        const isFav = FavData.find((item:any) => item?.stationID == data?.stationID)
+        setFav(isFav ? true : false)
+    }
     useEffect(() => {
-           
+        check()
+      
     }, [Fav]);
     return <>
         <AntCard
             className={`lg:min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px] ${className}`}
             cover={
                 <div className="relative h-[280px]">
-                    {data?.image_url && <img
+                    {data?.image_url && <img draggable={false}
                         alt="Station"
                         src={`${data && data?.image_url || "/images/irpc-logo.png"}`} // Replace with your image source
                         className="brightness-90 object-cover w-full h-full relative z-0"
                     />}
-                    <button className='' onClick={e => {
+                   {showFav !== false && <button className='' onClick={e => {
                         e.preventDefault()
-                        favouriteAction(data,"air");
+                        favouriteAction(data, "air");
 
 
                     }}>
 
-                        <div onClick={e => setFav((prev:Boolean) => !prev)} className=" absolute top-4 right-4 p-2 duration-150 shadow-sm hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
+                        <div onClick={e => setFav((prev: Boolean) => !prev)} className=" absolute top-4 right-4 p-2 duration-150 shadow-sm hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
                             <Bookmark className={`text-white size-4 text-lg ${Fav && "fill-white"}`} />
                         </div>
-                    </button>
+                    </button>}
 
                     <div className="bg-black/20 backdrop-blur-md border-t-[1px] border-white/30 absolute flex w-full justify-between bottom-0 px-4 py-6 items-center z-1">
 
@@ -51,7 +58,7 @@ export default function Card({ data, className,isFav }: any) {
                 </div>
             }
         >
-            <div className="grid">
+            <div className="grid justify-items-evenly">
                 <div className="flex justify-between items-center mb-2">
                     <h3 className="text-[24px] font-semibold text-ellipsis line-clamp-1" >{data?.nameTH}</h3>
                     <Badge className=" " status={data?.LastUpdate?.AQI?.color_id || "-"}></Badge>
@@ -65,6 +72,13 @@ export default function Card({ data, className,isFav }: any) {
                     <p> PM <sub>10</sub></p>
                     <p className="font-bold">{data?.LastUpdate?.PM10?.value} µg/m<sup>3</sup></p>
                 </div>
+                <div className="flex font-light text-[#475467]">
+                    <p className="flex gap-2 relative items-center ">
+                        {isOnline(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}
+                        อัพเดทล่าสุด: </p>
+                    <p> &nbsp; {ShortDateFormator(new Date(`${data?.LastUpdate?.date}T${data?.LastUpdate?.time}`))}</p>
+                </div>
+
             </div>
         </AntCard>
     </>

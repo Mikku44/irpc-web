@@ -4,3 +4,12 @@ export default function extractKeys(data: any): string[] {
    return []
     
   }
+
+  export const namedArray = (data: any, name: string) => {
+   if (!data) return []
+   const result = data.map((item: any) => ({
+       name,
+       ...item,
+   }));
+   return result
+}

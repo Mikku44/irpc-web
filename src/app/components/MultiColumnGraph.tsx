@@ -22,8 +22,8 @@ export default function MultiColumnGraph({ data }: any) {
             if (containerRef.current) {
                 chartRef.current = new Column(containerRef.current, {
                     data: data?.length > 0 ? data : [],
-                    isStack:false,
-                    seriesField:  keys.length > 0 ? keys[0] : 'name',
+                    isStack: true,
+                    seriesField: keys.length > 0 ? keys[0] : 'name',
                     xField: keys.length > 0 ? keys[1] : 'timePeriod',
                     yField: keys.length > 0 ? keys[2] : 'value',
                     xAxis: {
@@ -37,7 +37,7 @@ export default function MultiColumnGraph({ data }: any) {
                                 }
                             }
                         },
-                        range: [0, 1],
+                        // range: [0, 1],
 
                     },
                     yAxis: {
@@ -49,9 +49,14 @@ export default function MultiColumnGraph({ data }: any) {
 
                     columnStyle: {
                         radius: [5, 5, 0, 0],
-                      },
-                  
-                  
+                    },
+                    interactions: [{ type: 'active-region', enable: false }],
+                    connectedArea: {
+                        style: (oldStyle, element) => {
+                            return { fill: 'rgba(0,0,0,0.10)', stroke: oldStyle.fill, lineWidth: 0.5 };
+                        },
+                    },
+
                 });
                 chartRef.current.render();
             }
@@ -66,7 +71,7 @@ export default function MultiColumnGraph({ data }: any) {
         };
     }, []);
 
-    return <div id="chart" ref={containerRef} style={{ height: 400, width: '100%' }} />;
+    return <div id="chart" ref={containerRef} style={{ height: 400, width: '100%'}} />;
 }
 
 

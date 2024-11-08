@@ -20,6 +20,7 @@ import { getData } from "./ultilities/api";
 import { getArrayFromLocalStorage } from "./ultilities/localStorageManager";
 import Favourite from "./components/Favourite";
 import Badge from "./components/Badge";
+import { isOnline } from "./components/OnlineDot";
 
 
 const MeasuringMap: any = {
@@ -150,7 +151,9 @@ export default function Home() {
               <div className="m-4">
                 <p className="font-bold">{allData?.air.nameTH}</p>
                 <div className="flex font-light text-[#475467]">
-                  <p>อัพเดทล่าสุด:</p>
+                  <p className="flex gap-2 relative items-center ">
+                    {isOnline((new Date(`${allData?.air.LastUpdate?.date}T${allData?.air.LastUpdate?.time}`)))}
+                    อัพเดทล่าสุด:</p>
                   <p>{ShortDateFormator(new Date(`${allData?.air.LastUpdate?.date}T${allData?.air.LastUpdate?.time}`))}</p>
                 </div>
               </div>
@@ -176,10 +179,12 @@ export default function Home() {
                 <Badge status={allData?.sound?.LastUpdate?.effect} name="sound"></Badge>
               </div>
               <div className="m-4">
-                <p className="font-bold">{allData?.water?.nameTH}</p>
+                <p className="font-bold">{allData?.sound?.nameTH}</p>
                 <div className="flex font-light text-[#475467]">
-                  <p>อัพเดทล่าสุด:</p>
-                  <p>{ShortDateFormator(new Date(`${allData?.water.LastUpdate?.date}T${allData?.water.LastUpdate?.time}`))}</p>
+                  <p className="flex gap-2 relative items-center ">
+                    {isOnline((new Date(`${allData?.sound.LastUpdate?.date}T${allData?.sound.LastUpdate?.time}`)))}
+                    อัพเดทล่าสุด:</p>
+                  <p>{ShortDateFormator(new Date(`${allData?.sound.LastUpdate?.date}T${allData?.sound.LastUpdate?.time}`))}</p>
                 </div>
               </div>
             </div>
@@ -208,7 +213,9 @@ export default function Home() {
               <div className="m-4">
                 <p className="font-bold">{allData?.water?.nameTH}</p>
                 <div className="flex font-light text-[#475467]">
-                  <p>อัพเดทล่าสุด:</p>
+                  <p className="flex gap-2 relative items-center ">
+                    {isOnline((new Date(`${allData?.water.LastUpdate?.date}T${allData?.water.LastUpdate?.time}`)))}
+                    อัพเดทล่าสุด:</p>
                   <p>{ShortDateFormator(new Date(`${allData?.water.LastUpdate?.date}T${allData?.water.LastUpdate?.time}`))}</p>
                 </div>
               </div>
@@ -231,12 +238,16 @@ export default function Home() {
                   <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.Flow || "-"}</p>
                   <p className="mt-2 text-[#475467]">m<sup>3</sup>/s / Flow</p>
                 </div>
-                <Badge status={allData?.cems?.LastUpdate?.effect} name="cems"></Badge>
+                {/* <Badge status={allData?.cems?.LastUpdate?.effect} name="cems"></Badge> */}
+                {allData?.cems?.LastUpdate?.Flow != "N/A" && <Badge status={allData?.cems?.LastUpdate?.effect}  name="other"></Badge> }
+                {allData?.cems?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}  name="other"></Badge> }
               </div>
               <div className="m-4">
                 <p className="font-bold">{allData?.cems?.nameTH}</p>
                 <div className="flex font-light text-[#475467]">
-                  <p>อัพเดทล่าสุด:</p>
+                  <p className="flex gap-2 relative items-center ">
+                    {isOnline((new Date(`${allData?.cems.LastUpdate?.date}T${allData?.cems.LastUpdate?.time}`)))}
+                    อัพเดทล่าสุด:</p>
                   <p>{ShortDateFormator(new Date(`${allData?.cems?.LastUpdate?.date}T${allData?.cems?.LastUpdate?.time}`))}</p>
                 </div>
               </div>
@@ -279,22 +290,22 @@ export default function Home() {
         {<div className="flex lg:flex-row flex-col py-10  gap-5 ">
           <div className="lg:basis-2/5 basis-full flex justify-center">
             {segmentValue === "air" && <Link href={`/air/detail/${selectedPlace?.stationID!}`}>
-              <Card data={selectedPlace}></Card>
+              <Card data={selectedPlace} showFav={false}></Card>
             </Link>}
             {segmentValue === "sound" && <Link href={`/sound/detail/${selectedPlace?.stationID!}`}>
-              <SoundCard data={selectedPlace}></SoundCard>
+              <SoundCard data={selectedPlace} showFav={false}></SoundCard>
             </Link>}
             {segmentValue === "water" && <Link href={`/water/detail/${selectedPlace?.stationID!}`}>
-              <WaterCard data={selectedPlace}></WaterCard>
+              <WaterCard data={selectedPlace} showFav={false}></WaterCard>
             </Link>}
             {segmentValue === "environment" && <Link href={`/environment/detail/${selectedPlace?.stationID!}`}>
-              <EnvironmentCard data={selectedPlace}></EnvironmentCard>
+              <EnvironmentCard data={selectedPlace} showFav={false}></EnvironmentCard>
             </Link>}
             {segmentValue === "flare" && <Link href={`/flare/detail/${selectedPlace?.stationID!}`}>
               <Flarecard item={selectedPlace}></Flarecard>
             </Link>}
             {segmentValue === "EQMs" && <Link href={`/EQMs/`}>
-              <StationCard data={selectedPlace} className="w-[400px]"> </StationCard>
+              <StationCard data={selectedPlace} showFav={false} className="w-[400px]"> </StationCard>
             </Link>}
           </div>
           <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
@@ -395,3 +406,5 @@ export default function Home() {
     </>
   );
 }
+
+

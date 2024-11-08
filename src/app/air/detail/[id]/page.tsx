@@ -99,14 +99,16 @@ export default function Detail({ params }: { params: any }) {
                     <div className="text-mute text-[16px]">ประจำ{FullDateFormator(new Date(`${airsDetail?.LastUpdate.date}T${airsDetail?.LastUpdate.time}`))}</div>
                 </div>
                 <div className="flex flex-col items-end">
-                    <Badge status={airsDetail?.LastUpdate?.effect}></Badge>
+                    {/* <Badge status={airsDetail?.LastUpdate?.effect}></Badge> */}
+                    {airsDetail?.LastUpdate?.Flow != "N/A" && <Badge status={airsDetail?.LastUpdate?.effect}></Badge> }
+                    {airsDetail?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}></Badge> }
                     <div className="text-[36px] font-bold">{airsDetail?.LastUpdate.AQI || "N/A"} <span className="text-[20px] font-normal">AQI</span></div>
                 </div>
             </section>
 
             <div className="w-full bg-slate-200 h-[1px]  rounded-xl my-10"></div>
-            <section className="flex flex-wrap">
-                <div className="lg:basis-1/3 py-5">
+            <section className="flex lg:flex-nowrap flex-wrap">
+                <div className="lg:basis-1/3 py-5 space-y-5">
                     {/* Location */}
                     <div className="flex items-center mb-4">
                         <MapPin></MapPin>
@@ -132,6 +134,8 @@ export default function Detail({ params }: { params: any }) {
                             {FullDateFormator(new Date(`${airsDetail?.LastUpdate.date}T${airsDetail?.LastUpdate.time}`))}
                         </p>
                     </div>
+
+                    
                 </div>
                 <div className="lg:basis-2/3">
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">

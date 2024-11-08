@@ -1,11 +1,13 @@
 'use client'
-import { Drawer, Dropdown, MenuProps, Space } from "antd";
+import { Drawer, Dropdown, MenuProps, message, Space } from "antd";
 import Button from "antd/es/button/button";
 import { ChevronDown, Menu, PhoneCall, Send, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getArrayFromLocalStorage } from "../ultilities/localStorageManager";
+import { useRouter } from "next/navigation";
+import { delay } from "../ultilities/delay";
 
 
 const items: MenuProps['items'] = [
@@ -107,7 +109,7 @@ const loginedDropdown: MenuProps['items'] = [
       }
       }>
 
-        ออกจากระบบ
+        <div className="text-center">ออกจากระบบ</div>
       </a>
     ),
   },
@@ -122,14 +124,40 @@ export default function Navbar() {
 
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState<any>();
+  const router = useRouter()
+
+  const [messageApi, contextHolder] = message.useMessage();
+
 
   useEffect(() => {
-    const tempUser = getArrayFromLocalStorage("user_data")
-    setUserData(tempUser)
+    isLogined();
     // console.log(tempUser)
 
   }, [])
 
+  const warning = () => {
+    messageApi.open({
+      type: 'warning',
+      content: 'กรุณาเข้าสู่ระบบก่อนใช้งาน',
+    });
+  };
+
+
+  async function isLogined() {
+    const tempUser = getArrayFromLocalStorage("user_data")
+    
+    setUserData(tempUser)
+    const privatePaths = ['flare', 'report'];
+    const pathname = window.location.href.split('/').pop() || ''
+    if(privatePaths.includes(pathname)){
+      if (!tempUser) {
+        // alert("Please login before")
+        await warning();
+        // await delay(1000);
+        router.push("/login")
+      }
+    }
+  }
 
 
   const onClose = () => {
@@ -138,6 +166,7 @@ export default function Navbar() {
 
   return (
     <div className="w-full bg-white text-center flex justify-between py-4 lg:px-[5vw] md:px-10 px-8 items-center">
+      {contextHolder}
       <div className="flex gap-10 items-center text-lg ">
         <div className="flex gap-2 items-center">
 
@@ -295,7 +324,7 @@ export default function Navbar() {
             //     <ChevronDown className="size-5"></ChevronDown>
             //   </Button>
             // </Dropdown>
-            <a className="flex gap-2 px-2 cursor-pointer opacity-80 text-[15px] " color="danger" rel="noopener noreferrer" onClick={() => {
+            <Button className="flex gap-2 justify-center bg-[--error] px-2 cursor-pointer opacity-80 text-[15px] " color="danger"  onClick={() => {
 
               localStorage.removeItem("token")
               localStorage.removeItem("user_data")
@@ -304,8 +333,8 @@ export default function Navbar() {
             }
             }>
 
-              ออกจากระบบ
-            </a>
+              <div className="text-center text-[--error]">ออกจากระบบ</div>
+            </Button>
           }
         </div>
       </Drawer>

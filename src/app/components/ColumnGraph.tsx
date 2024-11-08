@@ -37,7 +37,7 @@ export default function ColumnGraph({ data }: any) {
                 }
               }
             },
-            range: [0, 1],
+            // range: [0, 1],
 
           },
           yAxis: {

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Input, Select, Upload } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Flex, message } from "antd";
 import type { GetProp, UploadProps } from "antd";
@@ -116,6 +116,8 @@ export default function Page() {
     console.log(result);
     if(result?.status == "error"){
       error(result?.message); 
+    }else{
+      success();
     }
   }
 
@@ -133,6 +135,8 @@ const success = (msg?: any) => {
         content: msg || 'ส่งข้อมูลให้เจ้าหน้าที่เรียบร้อยแล้ว',
     });
 };
+
+
 
   return (
     <>

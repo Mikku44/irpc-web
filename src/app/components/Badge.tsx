@@ -59,7 +59,7 @@ const Badge: React.FC<BadgeProps> = ({ text = '', className = '', status, name =
             <div
                 className={`rounded-full  px-5 h-7 py-2 text-[12px] border border-1 flex items-center justify-center ${status && parseInt(status) ? typeIndex[parseInt(status) - 1] : type[status!]} ${className} `}
             >
-                {text || status && parseInt(status) && textStatus[parseInt(status) - 1]  || "ไม่มีการตรวจวัด"}
+                {text || status && parseInt(status) && textStatus[parseInt(status) - 1]  || "ไม่มีข้อมูล"}
     
             </div>
         );
@@ -69,17 +69,18 @@ const Badge: React.FC<BadgeProps> = ({ text = '', className = '', status, name =
             <div
                 className={`rounded-full  px-5 h-7 py-2 text-[12px] border border-1 flex items-center justify-center ${status && parseInt(status) ? typeSoundIndex[parseInt(status) - 1] : type[status!]} ${className} `}
             >
-                {text || status && parseInt(status) && textSoundStatus[parseInt(status) - 1] || "ไม่มีการตรวจวัด"}
+                {text || status && parseInt(status) && textSoundStatus[parseInt(status) - 1] || "ไม่มีข้อมูล"}
     
             </div>
         );
     }
     else 
         return (
+            
             <div
                 className={`rounded-full  px-5 h-7 py-2 text-[12px] border border-1 flex items-center justify-center ${status && parseInt(status) ? typeOtherIndex[parseInt(status) - 1] : type[status!]} ${className} `}
             >
-                {text || status && parseInt(status) && textOtherStatus[parseInt(status) - 1] || "ไม่มีการตรวจวัด"}
+                {text || status && parseInt(status) && textOtherStatus[parseInt(status) - 1] || "ไม่มีข้อมูล"}
     
             </div>
         );

@@ -24,6 +24,10 @@ export default function Login() {
                     "password": password,
                     "role": "client"
                 })
+
+                if(!result) {
+                    return error("เกิดปัญหาทางเทคนิค โปรดแจ้งผู้ดูแลระบบ")
+                }
                 // console.log(result);
                 if (result?.status === "ok") {
                     success();
@@ -45,6 +49,8 @@ export default function Login() {
 
                     return window.location.replace("/")
                 }
+
+                
                 return error("อีเมล์หรือรหัสผ่านไม่ถูกต้อง")
             }
         } else if (type === "admin") {
@@ -53,6 +59,7 @@ export default function Login() {
                 "password": password,
                 "role": "admin"
             })
+           
             if (result?.status === "ok") {
                 success();
                 const userData = result.user_data
@@ -72,10 +79,13 @@ export default function Login() {
                 }
 
                 return window.location.replace("/")
+            }else {
+              
+                return error(result.message)
             }
 
         }
-        error()
+        error("มีปัญหาทางเทคนิค โปรดแจ้งผู้ดูแลระบบ")
     }
 
     const [remind, setRemind] = useState(false);
@@ -116,9 +126,6 @@ export default function Login() {
         <>
             {contextHolder}
             
-
-
-
                 <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26vw] lg:block md:block hidden"></Image>
                 <div className="flex flex-col items-center justify-center h-[80vh] pt-10 md:pt-20 relative z-[1]">
                     <div className="text-center mb-6">
@@ -138,11 +145,11 @@ export default function Login() {
                                     <form action={fetchData}>
                                         <div className="mb-4">
                                             <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
-                                            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกอีเมลของคุณ" />
+                                            <Input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกอีเมลของคุณ" />
                                         </div>
                                         <div className="mb-4">
                                             <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                            <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
+                                            <Input.Password required value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
                                         </div>
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex items-center">
@@ -164,11 +171,11 @@ export default function Login() {
                                     <form action={fetchData}>
                                         <div className="mb-4">
                                             <label htmlFor="username" className="block text-gray-700 mb-2">ชื่อผู้ใช้งาน</label>
-                                            <Input type="username" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกผู้ใช้งานของคุณ" />
+                                            <Input required type="username" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกผู้ใช้งานของคุณ" />
                                         </div>
                                         <div className="mb-4">
                                             <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                            <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
+                                            <Input.Password required value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน"  />
                                         </div>
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex items-center">
