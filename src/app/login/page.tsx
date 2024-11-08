@@ -145,11 +145,11 @@ export default function Login() {
                                     <form action={fetchData}>
                                         <div className="mb-4">
                                             <label htmlFor="email" className="block text-gray-700 mb-2">อีเมล</label>
-                                            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกอีเมลของคุณ" />
+                                            <Input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกอีเมลของคุณ" />
                                         </div>
                                         <div className="mb-4">
                                             <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                            <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
+                                            <Input.Password required value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน" minLength={8} />
                                         </div>
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex items-center">
@@ -171,11 +171,11 @@ export default function Login() {
                                     <form action={fetchData}>
                                         <div className="mb-4">
                                             <label htmlFor="username" className="block text-gray-700 mb-2">ชื่อผู้ใช้งาน</label>
-                                            <Input type="username" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกผู้ใช้งานของคุณ" />
+                                            <Input required type="username" value={email} onChange={e => setEmail(e.target.value)} className="p-3" placeholder="กรอกผู้ใช้งานของคุณ" />
                                         </div>
                                         <div className="mb-4">
                                             <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                            <Input.Password value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน"  />
+                                            <Input.Password required value={password} onChange={e => setPassword(e.target.value)} className="p-3" placeholder="รหัสผ่าน"  />
                                         </div>
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex items-center">

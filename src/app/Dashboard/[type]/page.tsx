@@ -76,17 +76,45 @@ export default function Page({params}:any) {
 
 
     const paramsMap : any = {
-       air :  ['PM2', 'PM10', 'O3', 'CO', 'NO2', 'SO2', 'WS', 'WD', 'AQI'],
-       sound :  ['Leq','Leq90','Lmax','Lmin'],
-       water :  ['COD','FLOW',"pH"],
-       cems :  ['Flow','O2','NOx','SOx','CO','CO2','NH3','H2S','Dust',"Opacity"],
-    }
+        air: [
+          { key: 'PM2', label: 'PM2.5' },
+          { key: 'PM10', label: 'PM10' },
+          { key: 'O3', label: 'O3' },
+          { key: 'CO', label: 'CO' },
+          { key: 'NO2', label: 'NO2' },
+          { key: 'SO2', label: 'SO2' },
+        ],
+        sound: [
+          { key: 'Leq', label: 'Leq' },
+          { key: 'Leq90', label: 'Leq90' },
+          { key: 'Lmax', label: 'Lmax' },
+          { key: 'Lmin', label: 'Lmin' },
+        ],
+        water: [
+          { key: 'COD', label: 'COD' },
+          { key: 'FLOW', label: 'FLOW' },
+          { key: 'pH', label: 'pH' },
+        ],
+        cems: [
+          { key: 'Flow', label: 'Flow' },
+          { key: 'O2', label: 'O2' },
+          { key: 'NOx', label: 'NOx' },
+          { key: 'SOx', label: 'SOx' },
+          { key: 'CO', label: 'CO' },
+          { key: 'CO2', label: 'CO2' },
+          { key: 'NH3', label: 'NH3' },
+          { key: 'H2S', label: 'H2S' },
+          { key: 'Dust', label: 'Dust' },
+          { key: 'Opacity', label: 'Opacity' },
+        ]
+      }
 
 
-    const formattedPollutants = paramsMap[params.type].map((item:any) => ({
-        key: item,
-        label: item
-    }));
+    const formattedPollutants = paramsMap[params.type]
+    // .map((item:any) => ({
+    //     key: item,
+    //     label: item
+    // }));
 
     const onChange = (key: string) => {
         console.log(key);
@@ -102,7 +130,7 @@ export default function Page({params}:any) {
 
     return <>
 
-        <section id="header" className="px-16 py-4 bg-white">
+        <section id="header" className="px-16 py-4 bg-white container-x">
             <Breadcrumb
                 separator={<ChevronRight />}
 
@@ -145,11 +173,12 @@ export default function Page({params}:any) {
         </section>
 
 
-        <section className="px-16 py-10 bg-white flex justify-between">
+        <section className="px-16 py-10 container-x bg-white flex lg:flex-row flex-col gap-3 justify-between">
             <Select
                 // showSearch
                 onChange={(e) => setDisplay(e)}
-                style={{ width: 200 }}
+                // style={{ width: 200 }}
+                className="lg:w-[200px] w-full"
                 placeholder="Month"
                 optionFilterProp="label"
                 value={display}
@@ -158,7 +187,7 @@ export default function Page({params}:any) {
             <div className="search"> <Input onChange={e => handleSearch(e.target.value, 1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt", padding: "0px 5px" }} className="text-slate-500 noto-sans" prefix={<Search />} /></div>
         </section>
 
-        <section className="bg-white px-16">
+        <section className="bg-white px-16 container-x overflow-clip">
             <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
             <div className="text-xl py-2 font-bold">ข้อมูลตรวจวัด{typesLabel[curTab]}</div>
             <div className="p-10">

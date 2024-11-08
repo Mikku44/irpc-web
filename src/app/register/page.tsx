@@ -35,7 +35,7 @@ export default function Login() {
             }
             else {
                
-                error(result?.data?.message || 'มีปัญหาทางเทคนิค โปรดติดต่อผู้ดูแลระบบ')
+                error(result?.response?.data?.message || result?.data?.message ||result?.message|| 'มีปัญหาทางเทคนิค โปรดติดต่อผู้ดูแลระบบ')
                 return
             }
         }
@@ -88,10 +88,10 @@ export default function Login() {
                             <div className="mb-4">
                                 <label htmlFor="phone" className="block text-gray-700 mb-2">เบอร์โทรศัพท์</label>
                                 <div className="flex">
-                                    <Input required onChange={e => setTel(e.target.value)} placeholder="(0)841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="+66">
+                                    <Input required onChange={e => setTel(e.target.value)} placeholder="(0)841234567" type="tel" pattern="^0?[0-9]{9}$" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="+66">
                                         {opt}
                                     </Select>}
-                                        classNames={{ input: "w-full p-3 " }} maxLength={9} />
+                                        classNames={{ input: "w-full p-3 " }} maxLength={10} />
                                 </div>
                             </div>
                             <div className="mb-4">
@@ -100,7 +100,7 @@ export default function Login() {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                                <Input.Password onChange={e => setPassword(e.target.value)} className="p-3 w-full " placeholder="รหัสผ่าน" minLength={8} />
+                                <Input.Password required onChange={e => setPassword(e.target.value)} className="p-3 w-full " placeholder="รหัสผ่าน" minLength={8} />
                             </div>
                             <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
                         </form>
@@ -122,10 +122,11 @@ export default function Login() {
                             <label htmlFor="fullName" className="block text-gray-700 mb-2">ชื่อและนามสกุล</label>
                             <Input required onChange={e => setFullname(e.target.value)} className="p-3 w-full" placeholder="กรอกชื่อและนามสกุล" />
                         </div>
-                        <div className="mb-4">
+                        <div className="m
+                        b-4">
                             <label htmlFor="phone" className="block text-gray-700 mb-2">เบอร์โทรศัพท์</label>
                             <div className="flex">
-                                <Input required onChange={e => setTel(e.target.value)} placeholder="(0)841234567" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="+66">
+                                <Input required onChange={e => setTel(e.target.value)} placeholder="(0)841234567" type="tel" pattern="^0?[0-9]{9}$" addonBefore={<Select onChange={e => { setCodecountry(e) }} defaultValue="+66">
                                     {opt}
                                 </Select>} classNames={{ input: "w-full p-3 " }} />
                             </div>
@@ -136,7 +137,7 @@ export default function Login() {
                         </div>
                         <div className="mb-4">
                             <label htmlFor="password" className="block text-gray-700 mb-2">รหัสผ่าน</label>
-                            <Input.Password onChange={e => setPassword(e.target.value)} className="p-3 w-full " placeholder="รหัสผ่าน" />
+                            <Input.Password required onChange={e => setPassword(e.target.value)} className="p-3 w-full " placeholder="รหัสผ่าน" />
                         </div>
                         <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">ลงทะเบียน</button>
                     </form>

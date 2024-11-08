@@ -154,7 +154,7 @@ export default function Navbar() {
         // alert("Please login before")
         await warning();
         // await delay(1000);
-        // router.push("/login")
+        router.push("/login")
       }
     }
   }
@@ -324,7 +324,7 @@ export default function Navbar() {
             //     <ChevronDown className="size-5"></ChevronDown>
             //   </Button>
             // </Dropdown>
-            <a className="flex gap-2 px-2 cursor-pointer opacity-80 text-[15px] " color="danger" rel="noopener noreferrer" onClick={() => {
+            <Button className="flex gap-2 justify-center bg-[--error] px-2 cursor-pointer opacity-80 text-[15px] " color="danger"  onClick={() => {
 
               localStorage.removeItem("token")
               localStorage.removeItem("user_data")
@@ -333,8 +333,8 @@ export default function Navbar() {
             }
             }>
 
-              ออกจากระบบ
-            </a>
+              <div className="text-center text-[--error]">ออกจากระบบ</div>
+            </Button>
           }
         </div>
       </Drawer>
