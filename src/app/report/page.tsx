@@ -30,19 +30,15 @@ const beforeUpload = (file: FileType) => {
   return isJpgOrPng && isLt2M;
 };
 
-
-
-
-
-
-
 export default function Page() {
 
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState<string>('0');
+  const [type, setType] = useState<string>('1');
 
-  const [imageUrl, setImageUrl] = useState<string>();
-  const [images, setImages] = useState<any>();
+
+  const [currentImage, setCurrentImage] = useState(0)
+  const [imageUrl, setImageUrl] = useState<Array<string>>();
+  const [images, setImages] = useState<Array<File>>([]);
   const [Info, setInfo] = useState("");
   const [Comment, setComment] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
@@ -57,10 +53,19 @@ export default function Page() {
       // Get this url from response in real world.
       getBase64(info.file.originFileObj as FileType, (url) => {
         setLoading(false);
-        setImageUrl(url);
+        setImageUrl((prev:any) => {
+          const newImageUrls = [...prev];
+          newImageUrls[currentImage] = url;
+          return newImageUrls;
+        });
       });
 
-      setImages(info.file.originFileObj as File)
+      setImages((prev :any) => {
+        const newImages = [...prev];
+        newImages[currentImage] = info.file.originFileObj as File;
+        console.log(newImages);
+        return newImages;
+      })
     }
   };
   const uploadButton = (
@@ -73,16 +78,16 @@ export default function Page() {
 
   const onSubmit = async () => {
     const userData = getArrayFromLocalStorage('user_data')
-    const location : any = await getLocation();
+    const location: any = await getLocation();
 
     const data: any = {
-      userUUID: userData?.user_id || "",
-      userName: userData?.fullname || "",
-      userTel: userData?.tel || "",
-      userAddress: userData?.address || "",
-      userLatLng: location?.LatLng || "",
-      complainType: parseInt(type),
-      complainTopic: Info,
+      uuid: userData?.user_id || "",
+      name: userData?.fullname || "",
+      tel: userData?.tel || "",
+      location: userData?.address || "",
+      latlng: location?.LatLng || "",
+      type: parseInt(type),
+      topic: Info,
       complainDetail: Comment,
       image: images || null
     }
@@ -93,30 +98,37 @@ export default function Page() {
 
     const formData = new FormData();
 
-    for (var key in data) {
-      formData.append(key, data[key]);
+    for (const key in data) {
+      if (key === "image") {
+        data[key].forEach((file :File, index:number) => {
+          formData.append(`image_${index}`, file); 
+        });
+      } else {
+        formData.append(key, data[key]);
+      }
     }
+    
 
-    console.log("________ Form Data ________")
+    // console.log("________ Form Data ________")
 
-    const entries : any = formData.entries();
-    for (let entry of entries) {
-      const key = entry[0];
-      const val = entry[1];
-      console.log(key," : ", val);
-    }
-    console.log("__________ END ____________")
+    // const entries: any = formData.entries();
+    // for (let entry of entries) {
+    //   const key = entry[0];
+    //   const val = entry[1];
+    //   console.log(key, " : ", val);
+    // }
+    // console.log("__________ END ____________")
 
 
     await createData(formData);
   }
 
-  const createData = async (formData:FormData) => {
-    const result = await postData('/forWeb/postComplain.php',formData,true);
+  const createData = async (formData: FormData) => {
+    const result = await postData('/forWeb/postComplain.php', formData, true);
     console.log(result);
-    if(result?.status == "error"){
-      error(result?.message); 
-    }else{
+    if (result?.status == "error") {
+      error(result?.message);
+    } else {
       success();
     }
   }
@@ -124,17 +136,17 @@ export default function Page() {
 
   const error = (msg?: any) => {
     messageApi.open({
-        type: 'error',
-        content: msg || 'เกิดปัญหาบางอย่าง โปรดลองใหม่ภายหลังหรือติดต่อเจ้าหน้าที่ช่องทางอื่น',
+      type: 'error',
+      content: msg || 'เกิดปัญหาบางอย่าง โปรดลองใหม่ภายหลังหรือติดต่อเจ้าหน้าที่ช่องทางอื่น',
     });
-};
+  };
 
-const success = (msg?: any) => {
+  const success = (msg?: any) => {
     messageApi.open({
-        type: 'success',
-        content: msg || 'ส่งข้อมูลให้เจ้าหน้าที่เรียบร้อยแล้ว',
+      type: 'success',
+      content: msg || 'ส่งข้อมูลให้เจ้าหน้าที่เรียบร้อยแล้ว',
     });
-};
+  };
 
 
 
@@ -184,11 +196,11 @@ const success = (msg?: any) => {
                   setType(e);
                   setInfo('');
                   setComment('');
-                  setImageUrl('');
+                  setImageUrl([]);
                 }} className="w-full h-11" placeholder="เลือกประเภท">
-                  <Select.Option value="0">แนะนำ,ติชม</Select.Option>
-                  <Select.Option value="1">ร้องเรียน</Select.Option>
-                  <Select.Option value="2">
+                  <Select.Option value="1">แนะนำ,ติชม</Select.Option>
+                  <Select.Option value="2">ร้องเรียน</Select.Option>
+                  <Select.Option value="3">
                     เจ้าหน้าที่ติดต่อกลับ
                   </Select.Option>
                 </Select>
@@ -198,12 +210,13 @@ const success = (msg?: any) => {
                   ข้อมูลเพิ่มเติม
                 </label>
                 <textarea
+                  required
                   onChange={e => setInfo(e.target.value)}
                   placeholder="กรอกข้อมูล"
                   className="p-1 border-2 rounded-lg textarea textarea-bordered textarea-xl w-full h-[80px]  "
                 ></textarea>
               </div>
-              {type == "0" &&
+              {type == "1" &&
                 <div className="mb-4">
                   <label htmlFor="phone" className="block text-gray-700 mb-2">
                     ความคิดเห็น
@@ -215,19 +228,23 @@ const success = (msg?: any) => {
                   ></textarea>
                 </div>
               }
-              {type == "1" && <div className="flex mb-4">
+              {type == "2" && <div className="flex mb-4">
                 <Upload
                   name="avatar"
                   listType="picture-card"
                   className="avatar-uploader w-full"
                   showUploadList={false}
                   beforeUpload={beforeUpload}
-                  onChange={handleChange}
+                  onChange={e => {
+                    setCurrentImage(0)
+                    handleChange(e)
+                  }}
                 >
-                  {imageUrl ? (
+                  {imageUrl?.[0] ? (
                     <img
-                      src={imageUrl}
+                      src={imageUrl?.[0]}
                       alt="avatar"
+                      className="overflow-hidden"
                       style={{ width: "100%" }}
                     />
                   ) : (
@@ -240,12 +257,17 @@ const success = (msg?: any) => {
                   className="avatar-uploader w-full"
                   showUploadList={false}
                   beforeUpload={beforeUpload}
-                  onChange={handleChange}
+                  onChange={e => {
+                    setCurrentImage(1)
+                    handleChange(e)
+                  }
+                  }
                 >
-                  {imageUrl ? (
+                  {imageUrl?.[1] ? (
                     <img
-                      src={imageUrl}
+                      src={imageUrl?.[1]}
                       alt="avatar"
+                      className="overflow-hidden"
                       style={{ width: "100%" }}
                     />
                   ) : (
@@ -258,12 +280,16 @@ const success = (msg?: any) => {
                   className="avatar-uploader w-full"
                   showUploadList={false}
                   beforeUpload={beforeUpload}
-                  onChange={handleChange}
+                  onChange={e => {
+                    setCurrentImage(2)
+                    handleChange(e)
+                  }}
                 >
-                  {imageUrl ? (
+                  {imageUrl?.[2] ? (
                     <img
-                      src={imageUrl}
+                      src={imageUrl?.[2]}
                       alt="avatar"
+                      className="overflow-hidden"
                       style={{ width: "100%" }}
                     />
                   ) : (
