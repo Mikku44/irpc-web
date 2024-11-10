@@ -7,7 +7,7 @@ import { Flex, message } from "antd";
 import type { GetProp, UploadProps } from "antd";
 import Link from "next/link";
 import { getArrayFromLocalStorage } from "../ultilities/localStorageManager";
-import { getLocation } from "../ultilities/Geolocation";
+import { getLocation, getPlaceName } from "../ultilities/Geolocation";
 import { postData } from "../ultilities/api";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -79,12 +79,14 @@ export default function Page() {
   const onSubmit = async () => {
     const userData = getArrayFromLocalStorage('user_data')
     const location: any = await getLocation();
+    const latlng = await location?.LatLng
+    const address = await getPlaceName(latlng[0],latlng[1])
 
     const data: any = {
       uuid: userData?.user_id || "",
       name: userData?.fullname || "",
       tel: userData?.tel || "",
-      location: userData?.address || "",
+      location: address || userData?.address || "",
       latlng: location?.LatLng || "",
       type: parseInt(type),
       topic: Info,
@@ -93,7 +95,7 @@ export default function Page() {
     }
 
 
-    console.log(data);
+    // console.log(data);
 
 
     const formData = new FormData();
