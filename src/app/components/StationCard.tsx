@@ -1,10 +1,9 @@
+'use client'
 import { Badge, Checkbox, Image } from "antd";
+import { useState } from "react";
 
-export default function StationCard({ className, data }: any) {
-
-    const colorMap = {
-        "green": "success"
-    }
+export default function StationCard({ className, data ,checked}: any) {
+    const [Checked, setChecked] = useState(checked || true);
 
     return (
         <>
@@ -15,13 +14,16 @@ export default function StationCard({ className, data }: any) {
                         <div className="text-[14px] md:text-[16px]">{data?.EqmsType}</div>
                         <div className="font-bold text-[18px] md:text-[20px]">{data?.StationNameEn}</div>
                     </div>
-                    <Checkbox onClick={e => e.preventDefault()} />
+                    <Checkbox checked={Checked} onClick={e => {
+                        e.preventDefault();
+                        setChecked((prev:boolean) =>!prev);
+                        }} />
                 </div>
 
                 {/* Image Section */}
-                <div className="rounded-lg w-full bg-slate-300 h-[250px] overflow-hidden">
+                <div className="rounded-lg w-full bg-slate-300 flex justify-center items-center h-[250px] overflow-hidden">
                     <img
-                        src={data?.EqmsImage || "/images/ssdd.png"}
+                        src={data?.EqmsImage || "https://irpc-air.com/TagoSaku/eqms/images/default.jpg"}
                         className="rounded-lg w-full h-full object-cover"
                         alt="Station"
                     />

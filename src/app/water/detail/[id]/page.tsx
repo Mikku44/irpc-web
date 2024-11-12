@@ -213,24 +213,28 @@ export default function Detail({ params }: { params: any }) {
                                         title: <div className="text-[#475467]">เวลาอัพเดต</div>,
                                         dataIndex: 'DATETIMEDATA',
                                         key: 'DATETIMEDATA',
+                                        width:200,
                                         render: (text: string, record: any) => `${DateFormator(new Date(record?.DATETIMEDATA.split(" ").join("T")))}` || 'N/A',
                                     },
                                     {
                                         title: <div className="text-[#475467]">COD (mg/l)</div>,
                                         dataIndex: 'COD',
                                         key: 'COD',
+                                        width:150,
                                         render: (text: string, record: any) => record?.COD == "N/A" ? "-" : record?.COD 
                                     },
                                     {
                                         title: <div className="text-[#475467]">Flow (m³)</div>,
                                         dataIndex: 'Flow',
                                         key: 'Flow',
+                                        width:150,
                                         render: (text: string, record: any) => record?.Flow == "N/A" ? "-" : record?.Flow 
                                     },
                                     {
                                         title: <div className="text-[#475467]">pH</div>,
                                         dataIndex: 'pH',
                                         key: 'pH',
+                                        width:150,
                                         render: (text: string, record: any) => record?.pH == "N/A" ? "-" : record?.pH 
                                     },
                                 ]}

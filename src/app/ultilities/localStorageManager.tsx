@@ -1,3 +1,5 @@
+import { decryptHashData } from "./encypt";
+
 
 export const saveArrayToLocalStorage = (key: string, myObjectArray: any) => {
   if (typeof window !== 'undefined') {
@@ -6,6 +8,15 @@ export const saveArrayToLocalStorage = (key: string, myObjectArray: any) => {
 };
 
 export const getArrayFromLocalStorage = (key: string): any => {
+  if (key == "user_data") {
+    if (typeof window !== 'undefined') {
+
+
+      const token = localStorage.getItem(key) || "";
+      const storedArray = decryptHashData(token);
+      return storedArray ? JSON.parse(storedArray) : null;
+    }
+  }
   if (typeof window !== 'undefined') {
     const storedArray = localStorage.getItem(key);
     return storedArray ? JSON.parse(storedArray) : null;
@@ -23,7 +34,7 @@ export const isObjectEqual = (obj1: object, obj2: object): boolean => {
 };
 
 
-export async function favouriteAction(data:any,type:'air'| 'sound' | 'flare' | 'water' | 'env' | 'flare' | 'eqms') {
+export async function favouriteAction(data: any, type: 'air' | 'sound' | 'flare' | 'water' | 'env' | 'flare' | 'eqms') {
   const tempData = await getArrayFromLocalStorage("favData")
   if (isObjectInArray(tempData || [], data)) {
     // Remove 'data' if it already exists in 'tempData'

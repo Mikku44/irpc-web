@@ -207,7 +207,7 @@ export default function Detail({ params }: { params: any }) {
                                 />
                             </div>
                         </div>
-                        <div className=" overflow-hidden flex justify-center">
+                        <div className=" overflow-hidden flex justify-center lg:w-[60vw] w-[80vw]">
                             {display == "ALL" && cemsDetail && <MultiLineGraph data={
                                 [
                                     ...convertPropertyToNumber(namedArray(cemsDetail.Last24H?.O2, "O2"), 'value'),
@@ -290,7 +290,7 @@ export default function Detail({ params }: { params: any }) {
 
                         </div>
 
-                        <div className=" overflow-hidden flex justify-center">
+                        <div className=" overflow-hidden flex lg:w-[60vw] md:w-[80vw] w-[80vw] justify-center">
                             <Table
                                 data={
                                     //     [
@@ -319,9 +319,10 @@ export default function Detail({ params }: { params: any }) {
                                     // },
                                     {
                                         title: <div className="text-[#475467]">เวลาอัพเดต</div>,
-                                        
+
                                         dataIndex: 'updated',
                                         key: 'updated',
+                                        width:200,
                                         render: (text: string, record: any) => `${DateFormator(new Date(record?.DATETIMEDATA.split(" ").join("T")))}` || 'N/A',
 
                                     },
@@ -329,61 +330,62 @@ export default function Detail({ params }: { params: any }) {
                                         title: <div className="text-[#475467]">O<sub>2</sub></div>,
                                         
                                         dataIndex: 'O2',
+                                        width:150,
                                         render: (text: string, record: any) => (record?.O2) == 'N/A' ? '-' : record?.O2 || 'N/A',
 
                                     },
                                     {
                                         title: <div className="text-[#475467]">NOx (ppm)</div>,
-                                        
+                                        width:150,
                                         dataIndex: 'NOx',
                                         render: (text: string, record: any) => (record?.NOx) == 'N/A' ? '-' : record?.NOx || 'N/A',
 
                                     },
                                     {
                                         title: <div className="text-[#475467]">SOx (ppm)</div>,
-                                        
+                                        width:150,
                                         dataIndex: 'SOx',
                                         render: (text: string, record: any) => (record?.SOx) == 'N/A' ? '-' : record?.SOx || 'N/A',
 
                                     },
                                     {
                                         title: <div className="text-[#475467]">CO (ppm)</div>,
-                                        
+                                        width:150,
                                         dataIndex: 'CO',
                                         render: (text: string, record: any) => (record?.CO) == 'N/A' ? '-' : record?.CO || 'N/A',
 
                                     },
                                     {
                                         title: <div className="text-[#475467]">CO<sub>2</sub> (ppm)</div>,
-                                        
+                                        width:150,
                                         dataIndex: 'CO2',
                                         render: (text: string, record: any) => (record?.CO2) == 'N/A' ? '-' : record?.CO2 || 'N/A',
 
                                     },
                                     {
                                         title: <div className="text-[#475467]">NH<sub>3</sub></div>,
-                                        
+                                        width:150,
                                         dataIndex: 'NH3',
                                         render: (text: string, record: any) => (record?.NH3) == 'N/A' ? '-' : record?.NH3 || 'N/A',
 
                                     },
                                     {
                                         title: <div className="text-[#475467]">H<sub>2</sub>S (ppm)</div>,
-                                        
+                                        width:150,
                                         dataIndex: 'H2S',
                                         render: (text: string, record: any) => (record?.H2S) == 'N/A' ? '-' : record?.H2S || 'N/A',
 
                                     },
                                     {
                                         title: <div className="text-[#475467]">Dust (µg/m3)</div>,
-                                        
+                                        width:150,
                                         dataIndex: 'Dust',
                                         render: (text: string, record: any) => (record?.Dust) == 'N/A' ? '-' : record?.Dust || 'N/A',
 
                                     },
                                     {
                                         title: <div className="text-[#475467]">Opacity</div>,
-                                        
+                                        width:150,
                                         dataIndex: 'Opacity',
                                         render: (text: string, record: any) => (record?.Opacity) == 'N/A' ? '-' : record?.Opacity || 'N/A',
 

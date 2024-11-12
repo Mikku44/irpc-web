@@ -1,8 +1,8 @@
 'use client'
 
-import { getData } from '@/app/ultilities/api';
+import { getData, postData } from '@/app/ultilities/api';
 import { FullDateFormator } from '@/app/ultilities/DateFormater';
-import { Breadcrumb, Button, Checkbox, Input, Table, Tag } from 'antd';
+import { Breadcrumb, Button, Checkbox, Input, message, Table, Tag } from 'antd';
 import { ChevronRight, House, MapPin, CirclePlay, CloudDownload, Trash2, } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react';
 export default function Detail({ params }: any) {
     const [EQMs, setEQMs] = useState<any>();
     const [hasChange, sethasChange] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
+
     const fetchData = async () => {
         const result = await getData('/forWeb/getEqmsList.php')
         setEQMs(result?.find((item: any) => item?.EqmsID == params.id) || {})
@@ -40,6 +42,45 @@ export default function Detail({ params }: any) {
         });
     };
 
+    const saveChange = async () => {
+        const {
+            EqmsID,
+            StatusParam,
+            Remark
+        } = EQMs;
+        const payload = {
+            EqmsID,
+            StatusParam,
+            remark : Remark
+        }
+        console.log("UPDATED data : ",payload);
+        const result = await postData('/forWeb/updateEqms.php',payload);
+        // console.log(result);
+
+        if(result?.status === 'ok'){
+            sethasChange(false)
+            return success(result?.message);
+            
+        }else{
+            return error(result?.message);
+        }
+    } 
+
+    
+  const error = (msg?: any) => {
+    messageApi.open({
+      type: 'error',
+      content: msg || 'เกิดปัญหาบางอย่าง โปรดลองใหม่ภายหลังหรือติดต่อเจ้าหน้าที่ช่องทางอื่น',
+    });
+  };
+
+  const success = (msg?: any) => {
+    messageApi.open({
+      type: 'success',
+      content: msg || 'บันทึกข้อมูลสำเร็จ',
+    });
+  };
+
     const color: any = {
         'green': 'bg-[--succes-50] border-[--success] text-[--success]',
         'red': 'bg-[--effected] border-[--error-50] text-[--error-50]',
@@ -52,7 +93,7 @@ export default function Detail({ params }: any) {
     const { TextArea } = Input;
 
     return <>
-
+        {contextHolder}
         <div className="container-x bg-white py-10">
             <Breadcrumb
                 separator={<ChevronRight />}
@@ -84,7 +125,7 @@ export default function Detail({ params }: any) {
 
                 </div>
 
-                {hasChange && <Button className='bg-[--primary] text-white'>Save Change</Button>}
+                {hasChange && <Button onClick={() => saveChange()} className='bg-[--primary] text-white'>Save Change</Button>}
             </section>
 
 
@@ -104,7 +145,7 @@ export default function Detail({ params }: any) {
 
                     <div className="grid p-3 border-r ">
                         {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
-                            <td key={item?.param} className="">{item?.param}</td>
+                            <div key={item?.param} className="">{item?.param}</div>
                         ))}
                     </div>
 
@@ -112,31 +153,31 @@ export default function Detail({ params }: any) {
 
                     <div className="grid p-3 border-r">
                         {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
-                            <td key={item?.param} className="">{item?.param}</td>
+                            <div key={item?.param} className="">{item?.param}</div>
                         ))}
                     </div>
 
                     <div className="grid p-3 border-r">
                         {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
-                            <td key={item?.param} className=" text-center">
+                            <div key={item?.param} className=" text-center">
                                 {item?.value || "-"}
-                            </td>
+                            </div>
                         ))}
                     </div>
 
                     <div className="grid p-3 border-r">
                         {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
-                            <td key={item?.param} className="line-clamp-1 text-ellipsis">
+                            <div key={item?.param} className="line-clamp-1 text-ellipsis">
                                 <div className={`rounded-full  w-fit flex gap-1 items-center  border px-4 py-1 ${color[item?.color || 'other']}`}>
                                     <div className={`size-2 rounded-full ${item?.status == 1 ? "bg-[--success]" : "bg-[--error-50]"}`}></div>
                                     {item?.status == 1 ? "ปกติ" : "มีผลกระทบ"}</div>
-                            </td>
+                            </div>
                         ))}
                     </div>
 
                     <div className="p-3 border-r overflow-x-auto hide-scroll grid">
                         {EQMs && EQMs?.StatusParam?.map((item: any, index: number) => (
-                            <td key={item?.param} className="p-3  flex gap-2">
+                            <div key={item?.param} className="p-3  flex gap-2">
                                 <Checkbox onClick={e => {
                                     updateField(['StatusParam', index, 'status'], 1);
                                     updateField(['StatusParam', index, 'color'], 'green');
@@ -147,12 +188,14 @@ export default function Detail({ params }: any) {
                                     updateField(['StatusParam', index, 'color'], 'red');
 
                                 }} checked={item?.status == 2 ? true : false}>Malfunction</Checkbox>
-                            </td>
+                            </div>
                         ))}
 
                     </div>
 
-                    <div className="p-3 border-r"><TextArea value={EQMs?.remark} placeholder="หมายเหตุ" className="h-full" /></div>
+                    <div className="p-3 border-r">{EQMs && <TextArea value={EQMs?.Remark} onChange={e => {
+                        updateField(["Remark"], e.target.value);
+                        }} placeholder="หมายเหตุ" className="h-full" />}</div>
 
                 </div>
 
@@ -161,7 +204,7 @@ export default function Detail({ params }: any) {
 
             <div className="lg:hidden gap-3 grid">
                 {EQMs && EQMs?.StatusParam.map((item: any, index: number) =>
-                    <div className="rounded-2xl border-2   border-[#EAECF0] p-5 relative">
+                    <div key={index} className="rounded-2xl border-2   border-[#EAECF0] p-5 relative">
                         <div className="pb-2">
                             <div className="font-bold">ชื่อสถานี</div>
                             <div className="text-[#475467]">{EQMs?.StationNameEn || "-"}</div>

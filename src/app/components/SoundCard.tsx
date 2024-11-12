@@ -47,7 +47,7 @@ export default function SoundCard({ className, data,isFav,showFav}: any) {
                     <div className="bg-black/20 backdrop-blur-md border-t-[1px] border-white/30 absolute flex w-full justify-between bottom-0 px-4 py-6 items-center z-1">
 
                         <div className=" text-white ">
-                            <span className="text-4xl font-bold">{data?.LastUpdate5min?.Leq || "N/A"}</span>
+                            <span className="text-4xl font-bold">{data?.LastUpdate5min?.noise || "N/A"}</span>
                             <span className="text-lg pl-2">dBA / เสียงรบกวน</span>
                         </div>
                         {/* <div className=" text-white">
