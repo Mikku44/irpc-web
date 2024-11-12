@@ -100,8 +100,8 @@ export default function Detail({ params }: { params: any }) {
                 </div>
                 <div className="flex flex-col items-end">
                     {/* <Badge status={airsDetail?.LastUpdate?.effect}></Badge> */}
-                    {airsDetail?.LastUpdate?.Flow != "N/A" && <Badge status={airsDetail?.LastUpdate?.effect}></Badge> }
-                    {airsDetail?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}></Badge> }
+                    {airsDetail?.LastUpdate?.Flow != "N/A" && <Badge status={airsDetail?.LastUpdate?.effect}></Badge>}
+                    {airsDetail?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}></Badge>}
                     <div className="text-[36px] font-bold">{airsDetail?.LastUpdate.AQI || "N/A"} <span className="text-[20px] font-normal">AQI</span></div>
                 </div>
             </section>
@@ -110,13 +110,17 @@ export default function Detail({ params }: { params: any }) {
             <section className="flex lg:flex-nowrap flex-wrap">
                 <div className="lg:basis-1/3 py-5 space-y-5">
                     {/* Location */}
-                    <div className="flex items-center mb-4">
-                        <MapPin></MapPin>
-                        <span className="text-[14px]">{airsDetail?.areaTH}</span>
+                    <div className="">
+                        <span className="text-[14px] mb-1 text-gray-500">ตำเเหน่งที่ตั้ง</span>
+                        <div className="flex items-center mb-4">
+                            <MapPin></MapPin>
+                            <span className="text-[14px]">{airsDetail?.areaTH}</span>
+                        </div>
                     </div>
 
                     {/* Station Name */}
                     <div className="mb-2">
+
                         <span className="text-[14px] text-gray-500">ชื่อสถานี</span>
                         <p className="text-[16px] font-semibold text-gray-900">{airsDetail?.nameTH}</p>
                     </div>
@@ -135,7 +139,7 @@ export default function Detail({ params }: { params: any }) {
                         </p>
                     </div>
 
-                    
+
                 </div>
                 <div className="lg:basis-2/3">
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">

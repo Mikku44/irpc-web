@@ -176,7 +176,7 @@ export default function Login() {
         <>
             {contextHolder}
        
-            <Image src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26vw] lg:block md:block hidden"></Image>
+            <img src="/images/Contentbackground.svg" alt={""} width={758} height={758} className="absolute lg:left-[26vw] lg:block md:block hidden"></img>
             <div className="flex flex-col items-center justify-center h-[80vh] pt-10 md:pt-20 relative z-[1]">
                 <div className="text-center mb-6">
                     <h2 className="text-[30px] font-bold mb-2">ยินดีต้อนรับ!</h2>
