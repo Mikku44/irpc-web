@@ -43,6 +43,8 @@ const items: MenuProps['items'] = [
       </a>
     ),
   },
+  ...isAdmin()
+
 
 ];
 
@@ -120,6 +122,41 @@ const loginedDropdown: MenuProps['items'] = [
 
 
 
+
+ 
+
+
+function isAdmin() {
+  const adminLinks = 
+  [{
+    key: '5',
+    label: (
+      <a target="_self" rel="noopener noreferrer" href="/flare">
+        แฟลร์
+      </a>
+    ),
+  },
+  {
+    key: '6',
+    label: (
+      <a target="_self" rel="noopener noreferrer" href="/EQMs">
+        EQMs
+      </a>
+    ),
+  },
+  {
+    key: '7',
+    label: (
+      <a target="_self" rel="noopener noreferrer" href="/Dashboard">
+        Dashboard
+      </a>
+    ),
+  }]
+  if (getArrayFromLocalStorage("user_data")?.role == "admin") { return adminLinks } else { return [] }
+}
+
+
+
 export default function Navbar() {
 
   const [open, setOpen] = useState(false);
@@ -145,11 +182,11 @@ export default function Navbar() {
 
   async function isLogined() {
     const tempUser = getArrayFromLocalStorage("user_data")
-    
+
     setUserData(tempUser)
     const privatePaths = ['flare', 'report'];
     const pathname = window.location.href.split('/').pop() || ''
-    if(privatePaths.includes(pathname)){
+    if (privatePaths.includes(pathname)) {
       if (!tempUser) {
         // alert("Please login before")
         await warning();
@@ -292,6 +329,22 @@ export default function Navbar() {
             </Button>
           </Link>
 
+          {userData?.role == "admin" && <Link href="/flare">
+            <Button type="text" className="flex items-center justify-start gap-2 w-full text-start cursor-pointer">
+              แฟลร์
+            </Button>
+          </Link>}
+          {userData?.role == "admin" && <Link href="/EQMs">
+            <Button type="text" className="flex items-center justify-start gap-2 w-full text-start cursor-pointer">
+              EQMs
+            </Button>
+          </Link>}
+          {userData?.role == "admin" && <Link href="/Dashboard">
+            <Button type="text" className="flex items-center justify-start gap-2 w-full text-start cursor-pointer">
+              Dashboard
+            </Button>
+          </Link>}
+
           <Link href="/favourite">
             <Button type="text" className="w-full flex items-center justify-start">รายการโปรด</Button>
           </Link>
@@ -324,7 +377,7 @@ export default function Navbar() {
             //     <ChevronDown className="size-5"></ChevronDown>
             //   </Button>
             // </Dropdown>
-            <Button className="flex gap-2 justify-center bg-[--error] px-2 cursor-pointer opacity-80 text-[15px] " color="danger"  onClick={() => {
+            <Button className="flex gap-2 justify-center bg-[--error] px-2 cursor-pointer opacity-80 text-[15px] " color="danger" onClick={() => {
 
               localStorage.removeItem("token")
               localStorage.removeItem("user_data")

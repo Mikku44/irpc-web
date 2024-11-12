@@ -65,7 +65,7 @@ export default function SegmentMenu() {
     useEffect(() => {
         // const segment = window.location.href.split('/').pop()
         // if (role) {
-        //     if (role != 'ADMIN') {
+        //     if (role != 'admin') {
         //         segment && privatePath.includes(segment) && window.location.replace('/')
         //     }
         // }
@@ -87,12 +87,12 @@ export default function SegmentMenu() {
                 placeholder="Search to Select"
                 optionFilterProp="label"
                 value={segmentValue}
-                options={role == "ADMIN" ? SegmentList : SegmentUserList}
+                options={role == "admin" ? SegmentList : SegmentUserList}
                 onChange={setSegmentValue}
             />
         </div>
         <div className="lg:block md:hidden hidden w-full py-5 ">
-            <Segmented options={role == "ADMIN" ? SegmentList : SegmentUserList} size='large' style={{ padding: "8px" }} className='w-full py-2 px-2' value={segmentValue} onChange={e => {
+            <Segmented options={role == "admin" ? SegmentList : SegmentUserList} size='large' style={{ padding: "8px" }} className='w-full py-2 px-2' value={segmentValue} onChange={e => {
                 setSegmentValue(e);
                 router.push(`/${e}`)
             }} block />

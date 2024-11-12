@@ -64,7 +64,7 @@ export default function Sound() {
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
           <Badges name="sound" />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
-            <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search />} /></div>
+            <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value,0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search className='text-slate-500 ml-2'/>} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
               <Radio.Group
                 value={display}
@@ -137,7 +137,7 @@ export default function Sound() {
       <section id="table" className="px-10 py-10">
         <div className="flex flex-wrap gap-2 justify-between">
           <div className="text-[20px] font-bold">ตารางตรวจวัดระดับเสียง</div>
-          <div className="search"> <Input onChange={e => handleSearch(e.target.value,1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}} className="text-slate-500 noto-sans" prefix={<Search />} /></div>
+          <div className="search"> <Input onChange={e => handleSearch(e.target.value,1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}} className="text-slate-500 noto-sans" prefix={<Search className='text-slate-500 ml-2'/>} /></div>
         </div>
 
         <div className='py-5 '>

@@ -49,7 +49,7 @@ export default function Home() {
   const [DashBoard, setDashBoard] = useState<any>();
 
   const [allData, setallData] = useState<any>();
-
+  const [showMap, setShowMap] = useState(true);
   const [visible, setVisible] = useState(false);
 
   const fetchData = async () => {
@@ -95,6 +95,12 @@ export default function Home() {
 
   useEffect(() => {
     fetchMeasuringData();
+    // alert(segmentValue)
+    if (segmentValue.includes("EQMs") || segmentValue.includes("Dashboard")) {
+      setShowMap(false);
+    } else {
+      setShowMap(true);
+    }
   }, [segmentValue])
 
   useEffect(() => {
@@ -235,12 +241,12 @@ export default function Home() {
               <div className="w-[80%] h-[2px] bg-slate-200 ml-7"></div>
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
-                  <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.Flow || "-"}</p>
+                  <p className="text-2xl font-extrabold">{allData?.cems?.LastUpdate?.Flow == "N/A" ? "-" : allData?.cems?.LastUpdate?.Flow || "-"}</p>
                   <p className="mt-2 text-[#475467]">m<sup>3</sup>/s / Flow</p>
                 </div>
                 {/* <Badge status={allData?.cems?.LastUpdate?.effect} name="cems"></Badge> */}
-                {allData?.cems?.LastUpdate?.Flow != "N/A" && <Badge status={allData?.cems?.LastUpdate?.effect}  name="other"></Badge> }
-                {allData?.cems?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}  name="other"></Badge> }
+                {allData?.cems?.LastUpdate?.Flow != "N/A" && <Badge status={allData?.cems?.LastUpdate?.effect} name="other"></Badge>}
+                {allData?.cems?.LastUpdate?.Flow == "N/A" && <Badge status={'0'} name="other"></Badge>}
               </div>
               <div className="m-4">
                 <p className="font-bold">{allData?.cems?.nameTH}</p>
@@ -276,18 +282,18 @@ export default function Home() {
             placeholder="Search to Select"
             optionFilterProp="label"
             value={segmentValue}
-            options={SegmentUserList}
+            options={getArrayFromLocalStorage('user_data')?.role !== "admin" ? SegmentUserList : SegmentList}
             onChange={setSegmentValue}
           />
         </div>
         <div className="lg:block md:hidden hidden w-full py-5 ">
-          <Segmented options={SegmentUserList} size='large' style={{ padding: "8px", color: "black" }} className='w-full py-2 px-2' value={segmentValue} onChange={e => {
+          <Segmented options={getArrayFromLocalStorage('user_data')?.role !== "admin" ? SegmentUserList : SegmentList} size='large' style={{ padding: "8px", color: "black" }} className='w-full py-2 px-2' value={segmentValue} onChange={e => {
             setSegmentValue(e);
           }} block />
         </div>
 
-        <Badges name={['air', 'sound'].includes(segmentValue) ? segmentValue as any : 'other'}></Badges>
-        {<div className="flex lg:flex-row flex-col py-10  gap-5 ">
+        {showMap && <Badges name={['air', 'sound'].includes(segmentValue) ? segmentValue as any : 'other'}></Badges>}
+        {showMap && <div className="flex lg:flex-row flex-col py-10  gap-5 ">
           <div className="lg:basis-2/5 basis-full flex justify-center">
             {segmentValue === "air" && <Link href={`/air/detail/${selectedPlace?.stationID!}`}>
               <Card data={selectedPlace} showFav={false}></Card>
@@ -304,15 +310,76 @@ export default function Home() {
             {segmentValue === "flare" && <Link href={`/flare/detail/${selectedPlace?.stationID!}`}>
               <Flarecard item={selectedPlace}></Flarecard>
             </Link>}
-            {segmentValue === "EQMs" && <Link href={`/EQMs/`}>
-              <StationCard data={selectedPlace} showFav={false} className="w-[400px]"> </StationCard>
-            </Link>}
+
           </div>
-          <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
+          {showMap && <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
 
             {MeasuringData && <MapPick name={segmentValue} data={MeasuringData} setState={setSelectedPlace} unit={MeasuringUnitMap[segmentValue]} />}
-          </div>
+          </div>}
         </div>}
+        {!showMap && segmentValue == "EQMs" && <div className="grid grid-flow-col gap-2 h-fit py-2 w-full snap-x overflow-x-auto">
+          {/* <StationCard data={selectedPlace} showFav={false} className="w-[400px]"> </StationCard> */}
+          {MeasuringData.map((item: any, index: number) => {
+            return <Link href={`/Eqms/detail/${item?.EqmsID}`} key={index} className="snap-center">
+              <StationCard data={item} showFav={false} className="w-[400px]"> </StationCard>
+            </Link>
+          })}
+        </div>}
+
+        {!showMap && segmentValue == "Dashboard" &&
+
+          <div className="">
+            <div className="bg-white grid lg:grid-cols-2 md:grid-cols-2  gap-5 px-10 py-10 rounded-xl">
+              <Link href="/Dashboard/air" className=" rounded-xl p-5 border-2">
+                <div className="flex gap-2 items-center pb-5">
+                  <Image src="/images/sulu3.svg" alt="" width={300} height={300} className="w-10 " >
+                  </Image><div className="text-xl font-bold text-[--primary]">คุณภาพอากาศ</div>
+                </div>
+                <div className="grid">
+                  <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
+                  <div className="text-[36px] font-bold">316</div>
+                </div>
+              </Link>
+
+
+              <Link href="/Dashboard/sound" className=" rounded-xl p-5 border-2">
+                <div className="flex gap-2 items-center pb-5">
+                  <Image src="/images/speakericon.svg" alt="" width={300} height={300} className="w-10 " >
+                  </Image><div className="text-xl font-bold text-[--primary]">ระดับเสียง</div>
+                </div>
+                <div className="grid">
+                  <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
+                  <div className="text-[36px] font-bold">316</div>
+                </div>
+              </Link>
+
+
+              <Link href="/Dashboard/water" className=" rounded-xl p-5 border-2">
+                <div className="flex gap-2 items-center pb-5">
+                  <Image src="/images/watericon.svg" alt="" width={300} height={300} className="w-10 " >
+                  </Image><div className="text-xl font-bold text-[--primary]">คุณภาพน้ำ</div>
+                </div>
+                <div className="grid">
+                  <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
+                  <div className="text-[36px] font-bold">316</div>
+                </div>
+              </Link>
+
+
+              <Link href="/Dashboard/cems" className=" rounded-xl p-5 border-2">
+                <div className="flex gap-2 items-center pb-5">
+                  <Image src="/images/waveicon.svg" alt="" width={300} height={300} className="w-10 " >
+                  </Image><div className="text-xl font-bold text-[--primary]">Cems</div>
+                </div>
+                <div className="grid">
+                  <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
+                  <div className="text-[36px] font-bold">316</div>
+                </div>
+              </Link>
+
+            </div>
+          </div>
+        }
       </section>
 
       <section className="max-w-[90vw] py-10 mx-auto">
@@ -374,7 +441,7 @@ export default function Home() {
         {/* Left Section */}
         <div className="flex flex-col sm:basis-1/2">
           <h2 className="text-xl font-extrabold text-black mb-2">รายงานประจำวัน</h2>
-          <p className="text-gray-600">ข้อมูลเชิงลึกและผลการดำเนินงานในแต่ละวัน</p>
+          <div className="text-gray-600">ข้อมูลเชิงลึกและผลการดำเนินงานในแต่ละวัน</div>
           <div className="text-[--primary] mt-2">
             <Link href="/report/all" className="flex gap-2  "><Button>ดูทั้งหมด</Button></Link>
           </div>

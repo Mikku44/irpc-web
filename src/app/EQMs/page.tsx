@@ -21,7 +21,7 @@ import { getData, postData } from '../ultilities/api';
 
 export default function EQMs() {
 
-   
+
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
   const [EQMs, setEQMs] = useState<any>();
   const [currentPage, setCurrentPage] = useState<any>(0);
@@ -34,11 +34,18 @@ export default function EQMs() {
     setEQMs(result || [])
 
 
-}
+  }
 
-useEffect(() => {
+  const downloadImage = async () => {
+    const result = await postData('/UpdateV2/eqms/createImage.php', {
+      "station": ["s001", "s002"]
+    });
+    console.log("result :",result)
+  }
+
+  useEffect(() => {
     fetchData();
-}, [])
+  }, [])
   return (
     <>
 
@@ -50,35 +57,35 @@ useEffect(() => {
           <div className="text-[36px] font-bold">สถานีทั้งหมด</div>
           <div className="text-[16px] font-bold flex gap-2">
             <Button onClick={e => window?.location.reload()}><RefreshCw className='size-[14px]' /> อัปเดต</Button>
-            <form action="https://irpc-air.com/UpdateV2/eqms/createImage.php" ><Button  type='primary' htmlType="submit" ><Download className='size-[14px]' />ดาวน์โหลด</Button></form>
+            <form action={'https://irpc-air.com/UpdateV2/eqms/createImage.php'} ><Button type='primary' htmlType="submit" ><Download className='size-[14px]' />ดาวน์โหลด</Button></form>
           </div>
         </div>
 
-      
+
 
       </section>
 
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
-          {EQMs?.map((item:any) => <Link  key={item?.EqmsID} href={`/EQMs/detail/${item?.EqmsID}`}>
+          {EQMs?.map((item: any) => <Link key={item?.EqmsID} href={`/EQMs/detail/${item?.EqmsID}`}>
             <StationCard data={item}></StationCard>
           </Link>)}
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
-          {[EQMs?.[currentPage]].map(item => <Link key={item?.EqmsID}  href={`/EQMs/detail/${item?.EqmsID}`}>
+          {[EQMs?.[currentPage]].map(item => <Link key={item?.EqmsID} href={`/EQMs/detail/${item?.EqmsID}`}>
             <StationCard data={item} className=""></StationCard>
           </Link>)}
           <Pagination current={currentPage} onChange={setCurrentPage} pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={EQMs?.length} className="lg:hidden md:hidden flex justify-center py-3" />
         </div>}
 
 
-       
 
-       
+
+
       </section>
 
-      
+
 
 
     </>

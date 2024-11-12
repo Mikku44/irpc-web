@@ -11,8 +11,8 @@ export default function Footer() {
               <img src="/images/irpc-logo.svg" alt="IRPC Logo" className="h-8 mb-4" />
               <p className="text-gray-600 text-[16px] max-w-[21rem]">ไออาร์พีซี เป็นผู้ประกอบการอุตสาหกรรมปิโตรเคมี &quot;ครบวงจรแห่งแรก&quot; ของภูมิภาคเอเชียตะวันออกเฉียงใต้</p>
               <div className="lg:flex md:grid grid flex-wrap justify-start lg:space-x-7 gap-4 mt-4">
-                <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Overview</a>
-                <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Features</a>
+                <a href="/" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Overview</a>
+                <a href="/air" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Features</a>
                 {/* <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Pricing</a>
                 <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Careers</a>
                 <a href="#" className="font-bold text-gray-700 hover:text-blue-500 text-sm">Help</a> */}
@@ -37,13 +37,13 @@ export default function Footer() {
             <div className="w-full flex flex-col md:flex-row justify-between items-center text-gray-600">
               <p className="text-sm ">&copy; 2024 IRPC, Inc. All rights reserved.</p>
               <div className="flex space-x-6 lg:pt-0 md:pt-0 pt-3">
-                <a href="https://x.com/IRPCofficial" className="hover:text-blue-500">
+                <a target="_blank" href="https://x.com/IRPCofficial" className="hover:text-blue-500">
                   <img src="/images/x.svg" alt="X" className="h-5" />
                 </a>
-                <a href="https://www.facebook.com/IRPCofficial/" className="hover:text-blue-500">
+                <a target="_blank" href="https://www.facebook.com/IRPCofficial/" className="hover:text-blue-500">
                   <img src="/images/linkedin.svg" alt="LinkedIn" className="h-5" />
                 </a>
-                <a href="https://www.instagram.com/irpcofficial/" className="hover:text-blue-500">
+                <a target="_blank" href="https://www.instagram.com/irpcofficial/" className="hover:text-blue-500">
                   <img src="/images/facebook.svg" alt="Facebook" className="h-5" />
                 </a>
               </div>
