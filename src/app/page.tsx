@@ -69,6 +69,11 @@ export default function Home() {
       "cems": cems?.stations?.[0],
       "sound": sound?.stations?.[0],
     })
+
+    air?.stations && localStorage.setItem("air",air?.stations?.length)
+    water?.stations && localStorage.setItem("water",water?.stations?.length)
+    cems?.stations && localStorage.setItem("environment",cems?.stations?.length)
+    sound?.stations && localStorage.setItem("sound",sound?.stations?.length)
   }
 
   const fetchMeasuringData = async () => {

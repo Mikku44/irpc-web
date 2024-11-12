@@ -184,7 +184,7 @@ export default function Navbar() {
     const tempUser = getArrayFromLocalStorage("user_data")
 
     setUserData(tempUser)
-    const privatePaths = ['flare', 'report'];
+    const privatePaths = ['flare', 'report','eqms','dashboard'];
     const pathname = window.location.href.split('/').pop() || ''
     if (privatePaths.includes(pathname)) {
       if (!tempUser) {

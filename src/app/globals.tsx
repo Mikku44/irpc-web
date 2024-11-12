@@ -35,12 +35,12 @@ export const parameterUnit = {
     return total
   }
 
-const total = {
+export const total = {
     "air" :getTotal(5,'air'),
     "sound" :getTotal(4,'sound'),
     "water" :getTotal(3,'water'),
     "environment" :getTotal(19,'environment'),
-    "flare" :getTotal(0,'flare'),
+    "flare" :getTotal(2,'flare'),
     "EQMs" : getTotal(31,'EQMs'),
 }
 
