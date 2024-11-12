@@ -99,10 +99,10 @@ const SegmentUserList = [
         label: <div className='flex gap-2 items-center justify-center text-black'>CEMs  <Badge count={<div className='bg-[#F9FAFB] border-[#EAECF0] border-[1px] text-[#344054] p-1 px-2 rounded-full'>{total['environment']}</div>} ></Badge></div>,
         value: 'environment'
     },
-    {
-        label: <div className='flex gap-2 items-center justify-center text-black'>Dashboard </div>,
-        value: 'Dashboard'
-    },
+    // {
+    //     label: <div className='flex gap-2 items-center justify-center text-black'>Dashboard </div>,
+    //     value: 'Dashboard'
+    // },
 ];
 
 export { SegmentList ,SegmentUserList,privatePath};

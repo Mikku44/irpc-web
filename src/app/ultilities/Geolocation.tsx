@@ -26,3 +26,24 @@ export async function getLocation(): Promise<{ status: string; msg: string; LatL
         );
     });
 }
+
+
+export async function getPlaceName(lat:number, lng:number) {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`;
+    
+    try {
+      const response = await fetch(url, {
+        headers: { "User-Agent": navigator.userAgent } // Required
+      });
+      const data = await response.json();
+      
+      const placeName = data.display_name;
+      return placeName || "Place name not found";
+    } catch (error) {
+      console.error("Error fetching geocode:", error);
+      return "Error fetching data";
+    }
+  }
+  
+//   getPlaceName(40.73061, -73.935242).then(placeName => console.log(placeName));
+  

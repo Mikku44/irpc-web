@@ -115,7 +115,9 @@ body {
 .ant-card{
   border-radius: 1.5rem !important;
 }
-
+.ant-upload{
+  overflow: hidden;
+}
 .item-drag {
   align-items: center;
   display: flex;

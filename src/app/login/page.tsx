@@ -155,7 +155,7 @@ export default function Login() {
                                             <div className="flex items-center">
                                                 <Checkbox onChange={e => console.log('add')}>จดจำรหัสผ่าน</Checkbox>
                                             </div>
-                                            <a href="#" className="text-blue-500">ลืมรหัสผ่าน?</a>
+                                            {/* <a href="#" className="text-blue-500">ลืมรหัสผ่าน?</a> */}
                                         </div>
                                         <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">เข้าสู่ระบบ</button>
                                     </form>

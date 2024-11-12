@@ -276,7 +276,7 @@ export default function Navbar() {
 
           <Link href="/sound">
             <Button type="text" className="flex items-center justify-start gap-2 w-full text-start cursor-pointer">
-              คุณภาพเสียง
+              ระดับเสียง
             </Button>
           </Link>
 
@@ -288,7 +288,7 @@ export default function Navbar() {
 
           <Link href="/environment">
             <Button type="text" className="flex items-center justify-start gap-2 w-full text-start cursor-pointer">
-              คุณภาพCEMs
+              CEMs
             </Button>
           </Link>
 
