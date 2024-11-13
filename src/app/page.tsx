@@ -1,10 +1,9 @@
 'use client'
-import { ArrowRight, ArrowUpRight, ChevronRight, FlagOff, Fullscreen } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronRight, } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Card from "./components/Card";
 import SoundCard from "./components/SoundCard";
-import SegmentMenu from "./components/SegmentMenu";
 import { FullDateFormator, ShortDateFormator } from "./ultilities/DateFormater";
 import Badges from "./components/Badges";
 import { Button, Segmented, Select, Image as ImageAnt } from "antd";
@@ -69,11 +68,6 @@ export default function Home() {
       "cems": cems?.stations?.[0],
       "sound": sound?.stations?.[0],
     })
-
-    air?.stations && localStorage.setItem("air",air?.stations?.length)
-    water?.stations && localStorage.setItem("water",water?.stations?.length)
-    cems?.stations && localStorage.setItem("environment",cems?.stations?.length)
-    sound?.stations && localStorage.setItem("sound",sound?.stations?.length)
   }
 
   const fetchMeasuringData = async () => {
@@ -119,7 +113,6 @@ export default function Home() {
 
   return (
     <>
-
 
       <div className="relative ">
         <div className="h-[300px] justify-center overflow-hidden lg:flex md:hidden hidden">
@@ -184,7 +177,7 @@ export default function Home() {
               <div className="w-[80%] h-[2px] bg-slate-200 ml-7"></div>
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
-                  <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate5min?.noise}</p>
+                  <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate?.Leq}</p>
                   <p className="mt-2 text-[#475467]">dBA / เสียงรบกวน</p>
                 </div>
                 <Badge status={allData?.sound?.LastUpdate?.effect} name="sound"></Badge>
@@ -276,171 +269,173 @@ export default function Home() {
 
       <Favourite></Favourite>
 
-
-      <section className="max-w-[90vw] py-10 mx-auto">
-        <div className="text-[18px] text-[--primary] font-bold">สถานีของ IRPC</div>
-        <div className="text-[36px] font-bold">ข้อมูลแสดงสถานีติดตั้งเครื่องตรวจวัด</div>
-        <div className="lg:hidden md:block block w-full py-5 ">
-          <Select
-            style={{ height: "45px", color: "black" }}
-            className="w-full "
-            placeholder="Search to Select"
-            optionFilterProp="label"
-            value={segmentValue}
-            options={getArrayFromLocalStorage('user_data')?.role !== "admin" ? SegmentUserList : SegmentList}
-            onChange={setSegmentValue}
-          />
-        </div>
-        <div className="lg:block md:hidden hidden w-full py-5 ">
-          <Segmented options={getArrayFromLocalStorage('user_data')?.role !== "admin" ? SegmentUserList : SegmentList} size='large' style={{ padding: "8px", color: "black" }} className='w-full py-2 px-2' value={segmentValue} onChange={e => {
-            setSegmentValue(e);
-          }} block />
-        </div>
-
-        {showMap && <Badges name={['air', 'sound'].includes(segmentValue) ? segmentValue as any : 'other'}></Badges>}
-        {showMap && <div className="flex lg:flex-row flex-col py-10  gap-5 ">
-          <div className="lg:basis-2/5 basis-full flex justify-center">
-            {segmentValue === "air" && <Link href={`/air/detail/${selectedPlace?.stationID!}`}>
-              <Card data={selectedPlace} showFav={false}></Card>
-            </Link>}
-            {segmentValue === "sound" && <Link href={`/sound/detail/${selectedPlace?.stationID!}`}>
-              <SoundCard data={selectedPlace} showFav={false}></SoundCard>
-            </Link>}
-            {segmentValue === "water" && <Link href={`/water/detail/${selectedPlace?.stationID!}`}>
-              <WaterCard data={selectedPlace} showFav={false}></WaterCard>
-            </Link>}
-            {segmentValue === "environment" && <Link href={`/environment/detail/${selectedPlace?.stationID!}`}>
-              <EnvironmentCard data={selectedPlace} showFav={false}></EnvironmentCard>
-            </Link>}
-            {segmentValue === "flare" && <Link href={`/flare/detail/${selectedPlace?.stationID!}`}>
-              <Flarecard item={selectedPlace}></Flarecard>
-            </Link>}
-
+      <div className="bg-white">
+        <section className="max-w-[90vw] py-10 mx-auto">
+          <div className="text-[18px] text-[--primary] font-bold">สถานีของ IRPC</div>
+          <div className="text-[36px] font-bold">ข้อมูลแสดงสถานีติดตั้งเครื่องตรวจวัด</div>
+          <div className="lg:hidden md:block block w-full py-5 ">
+            <Select
+              style={{ height: "45px", color: "black" }}
+              className="w-full "
+              placeholder="Search to Select"
+              optionFilterProp="label"
+              value={segmentValue}
+              options={getArrayFromLocalStorage('user_data')?.role !== "admin" ? SegmentUserList : SegmentList}
+              onChange={setSegmentValue}
+            />
           </div>
-          {showMap && <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
+          <div className="lg:block md:hidden hidden w-full py-5 ">
+            <Segmented options={getArrayFromLocalStorage('user_data')?.role !== "admin" ? SegmentUserList : SegmentList} size='large' style={{ padding: "8px", color: "black" }} className='w-full py-2 px-2' value={segmentValue} onChange={e => {
+              setSegmentValue(e);
+            }} block />
+          </div>
 
-            {MeasuringData && <MapPick name={segmentValue} data={MeasuringData} setState={setSelectedPlace} unit={MeasuringUnitMap[segmentValue]} />}
-          </div>}
-        </div>}
-        {!showMap && segmentValue == "EQMs" && <div className="grid grid-flow-col gap-2 h-fit py-2 w-full snap-x overflow-x-auto">
-          {/* <StationCard data={selectedPlace} showFav={false} className="w-[400px]"> </StationCard> */}
-          {MeasuringData.map((item: any, index: number) => {
-            return <Link href={`/Eqms/detail/${item?.EqmsID}`} key={index} className="snap-center">
-              <StationCard data={item} showFav={false} className="w-[400px]"> </StationCard>
-            </Link>
-          })}
-        </div>}
-
-        {!showMap && segmentValue == "Dashboard" &&
-
-          <div className="">
-            <div className="bg-white grid lg:grid-cols-2 md:grid-cols-2  gap-5 px-10 py-10 rounded-xl">
-              <Link href="/Dashboard/air" className=" rounded-xl p-5 border-2">
-                <div className="flex gap-2 items-center pb-5">
-                  <Image src="/images/sulu3.svg" alt="" width={300} height={300} className="w-10 " >
-                  </Image><div className="text-xl font-bold text-[--primary]">คุณภาพอากาศ</div>
-                </div>
-                <div className="grid">
-                  <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                  <div className="text-[36px] font-bold">316</div>
-                </div>
-              </Link>
-
-
-              <Link href="/Dashboard/sound" className=" rounded-xl p-5 border-2">
-                <div className="flex gap-2 items-center pb-5">
-                  <Image src="/images/speakericon.svg" alt="" width={300} height={300} className="w-10 " >
-                  </Image><div className="text-xl font-bold text-[--primary]">ระดับเสียง</div>
-                </div>
-                <div className="grid">
-                  <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                  <div className="text-[36px] font-bold">316</div>
-                </div>
-              </Link>
-
-
-              <Link href="/Dashboard/water" className=" rounded-xl p-5 border-2">
-                <div className="flex gap-2 items-center pb-5">
-                  <Image src="/images/watericon.svg" alt="" width={300} height={300} className="w-10 " >
-                  </Image><div className="text-xl font-bold text-[--primary]">คุณภาพน้ำ</div>
-                </div>
-                <div className="grid">
-                  <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                  <div className="text-[36px] font-bold">316</div>
-                </div>
-              </Link>
-
-
-              <Link href="/Dashboard/cems" className=" rounded-xl p-5 border-2">
-                <div className="flex gap-2 items-center pb-5">
-                  <Image src="/images/waveicon.svg" alt="" width={300} height={300} className="w-10 " >
-                  </Image><div className="text-xl font-bold text-[--primary]">Cems</div>
-                </div>
-                <div className="grid">
-                  <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                  <div className="text-[36px] font-bold">316</div>
-                </div>
-              </Link>
+          {showMap && <Badges name={['air', 'sound'].includes(segmentValue) ? segmentValue as any : 'other'}></Badges>}
+          {showMap && <div className="flex lg:flex-row flex-col py-10  gap-5 ">
+            <div className="lg:basis-2/5 basis-full flex justify-center">
+              {segmentValue === "air" && <Link href={`/air/detail/${selectedPlace?.stationID!}`}>
+                <Card data={selectedPlace} showFav={false}></Card>
+              </Link>}
+              {segmentValue === "sound" && <Link href={`/sound/detail/${selectedPlace?.stationID!}`}>
+                <SoundCard data={selectedPlace} showFav={false}></SoundCard>
+              </Link>}
+              {segmentValue === "water" && <Link href={`/water/detail/${selectedPlace?.stationID!}`}>
+                <WaterCard data={selectedPlace} showFav={false}></WaterCard>
+              </Link>}
+              {segmentValue === "environment" && <Link href={`/environment/detail/${selectedPlace?.stationID!}`}>
+                <EnvironmentCard data={selectedPlace} showFav={false}></EnvironmentCard>
+              </Link>}
+              {segmentValue === "flare" && <Link href={`/flare/detail/${selectedPlace?.stationID!}`}>
+                <Flarecard item={selectedPlace}></Flarecard>
+              </Link>}
 
             </div>
-          </div>
-        }
-      </section>
+            {showMap && <div className={`w-full lg:h-auto md:h-[50vh] h-[50vh]`}>
 
-      <section className="max-w-[90vw] py-10 mx-auto">
-        <div className="flex justify-between py-10">
-          <div className="text-2xl font-bold">ข่าวสาร ประชาสัมพันธ์</div>
-          <Link href="/news"><Button className="text-[--primary]" style={{ color: "var(--primary)" }}>ดูทั้งหมด</Button></Link>
-        </div>
+              {MeasuringData && <MapPick name={segmentValue} data={MeasuringData} setState={setSelectedPlace} unit={MeasuringUnitMap[segmentValue]} />}
+            </div>}
+          </div>}
+          {!showMap && segmentValue == "EQMs" && <div className="grid grid-flow-col gap-2 h-fit py-2 w-full snap-x overflow-x-auto">
+            {/* <StationCard data={selectedPlace} showFav={false} className="w-[400px]"> </StationCard> */}
+            {MeasuringData.map((item: any, index: number) => {
+              return <Link href={`/Eqms/detail/${item?.EqmsID}`} key={index} className="snap-center">
+                <StationCard data={item} showFav={false} className="w-[400px]"> </StationCard>
+              </Link>
+            })}
+          </div>}
 
+          {!showMap && segmentValue == "Dashboard" &&
 
-        <div className="flex flex-wrap gap-10  justify-center">
-
-          {DashBoard?.news?.[0] &&
-            <Link href={`/news/${DashBoard?.news?.[0]?.newsID}`}>
-              <div className="rounded-xl border border-[#EAECF0] bg-white shadow-md lg:max-w-[500px] md:w-[500px] w-[80vw] h- overflow-hidden">
-                <div className="h-[250px] overflow-hidden">
-                  <Image src={DashBoard?.news?.[0]?.newsPicPath} alt="" width={625} height={308} className="h-[250px] w-full"></Image>
-                </div>
-                <div className="flex flex-col p-4 gap-4 pt-8">
-                  <div className="flex flex-col">
-                    <div className="text-[--primary] text-[14px] font-bold">{DashBoard?.news?.[0]?.newsDateModified && FullDateFormator(new Date(DashBoard?.news?.[0]?.newsDateModified.split(" ").join("T")))}</div>
-                    <div className="flex justify-between">
-                      <div className="text-black text-[24px] font-extrabold">{DashBoard?.news?.[0]?.newsHeader}</div>
-                      <ArrowUpRight className="size-7" />
-                    </div>
+            <div className="">
+              <div className="bg-white grid lg:grid-cols-2 md:grid-cols-2  gap-5 px-10 py-10 rounded-xl">
+                <Link href="/Dashboard/air" className=" rounded-xl p-5 border-2">
+                  <div className="flex gap-2 items-center pb-5">
+                    <Image src="/images/sulu3.svg" alt="" width={300} height={300} className="w-10 " >
+                    </Image><div className="text-xl font-bold text-[--primary]">คุณภาพอากาศ</div>
                   </div>
-                  <div className="text-[#475467]  text-ellipsis line-clamp-2 ">{DashBoard?.news?.[0]?.newsDescription}</div>
-                </div>
+                  <div className="grid">
+                    <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
+                    <div className="text-[36px] font-bold">316</div>
+                  </div>
+                </Link>
+
+
+                <Link href="/Dashboard/sound" className=" rounded-xl p-5 border-2">
+                  <div className="flex gap-2 items-center pb-5">
+                    <Image src="/images/speakericon.svg" alt="" width={300} height={300} className="w-10 " >
+                    </Image><div className="text-xl font-bold text-[--primary]">ระดับเสียง</div>
+                  </div>
+                  <div className="grid">
+                    <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
+                    <div className="text-[36px] font-bold">316</div>
+                  </div>
+                </Link>
+
+
+                <Link href="/Dashboard/water" className=" rounded-xl p-5 border-2">
+                  <div className="flex gap-2 items-center pb-5">
+                    <Image src="/images/watericon.svg" alt="" width={300} height={300} className="w-10 " >
+                    </Image><div className="text-xl font-bold text-[--primary]">คุณภาพน้ำ</div>
+                  </div>
+                  <div className="grid">
+                    <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
+                    <div className="text-[36px] font-bold">316</div>
+                  </div>
+                </Link>
+
+
+                <Link href="/Dashboard/cems" className=" rounded-xl p-5 border-2">
+                  <div className="flex gap-2 items-center pb-5">
+                    <Image src="/images/waveicon.svg" alt="" width={300} height={300} className="w-10 " >
+                    </Image><div className="text-xl font-bold text-[--primary]">Cems</div>
+                  </div>
+                  <div className="grid">
+                    <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
+                    <div className="text-[36px] font-bold">316</div>
+                  </div>
+                </Link>
+
               </div>
-            </Link>
+            </div>
           }
+        </section>
+      </div>
+
+      <div className="bg-white">
+        <section className="max-w-[90vw] py-10 mx-auto">
+          <div className="flex justify-between py-10">
+            <div className="text-2xl font-bold">ข่าวสาร ประชาสัมพันธ์</div>
+            <Link href="/news"><Button className="text-[--primary]" style={{ color: "var(--primary)" }}>ดูทั้งหมด</Button></Link>
+          </div>
 
 
-          <div className="lg:grid md:hidden hidden gap-5 lg:max-w-[800px]">
-            {DashBoard?.news?.slice(1, 3).map((item: any, index: number) =>
-              <Link href={`/news/${item?.newsID}`}>
-                <div className="rounded-xl border w-[50vw] border-[#EAECF0] flex bg-white shadow-md h-[200px] overflow-hidden">
-                  <div className="w-[150px] h-[200px] bg-black overflow-hidden">
-                    <Image src={item?.newsPicPath} alt="" width={625} height={308} className="w-full h-full object-cover"></Image>
+          <div className="flex flex-wrap gap-10  justify-center">
+
+            {DashBoard?.news?.[0] &&
+              <Link href={`/news/${DashBoard?.news?.[0]?.newsID}`}>
+                <div className="rounded-xl border border-[#EAECF0] bg-white shadow-md lg:max-w-[500px] md:w-[500px] w-[80vw] h- overflow-hidden">
+                  <div className="h-[250px] overflow-hidden">
+                    <Image src={DashBoard?.news?.[0]?.newsPicPath} alt="" width={625} height={308} className="h-[250px] w-full"></Image>
                   </div>
                   <div className="flex flex-col p-4 gap-4 pt-8">
                     <div className="flex flex-col">
-                      <div className="text-[--primary] text-[14px] font-bold">{item?.newsDateModified && FullDateFormator(new Date(item?.newsDateModified.split(" ").join("T")))}</div>
+                      <div className="text-[--primary] text-[14px] font-bold">{DashBoard?.news?.[0]?.newsDateModified && FullDateFormator(new Date(DashBoard?.news?.[0]?.newsDateModified.split(" ").join("T")))}</div>
                       <div className="flex justify-between">
-                        <div className="text-black text-[24px] font-extrabold">{item?.newsHeader}</div>
+                        <div className="text-black text-[24px] font-extrabold">{DashBoard?.news?.[0]?.newsHeader}</div>
+                        <ArrowUpRight className="size-7" />
                       </div>
                     </div>
-                    <div className="text-[#475467]  text-ellipsis line-clamp-2 ">{item?.newsDescription}</div>
+                    <div className="text-[#475467]  text-ellipsis line-clamp-2 ">{DashBoard?.news?.[0]?.newsDescription}</div>
                   </div>
                 </div>
-              </Link>)
+              </Link>
             }
 
-          </div>
-        </div>
-      </section>
 
+            <div className="lg:grid md:hidden hidden gap-5 lg:max-w-[800px]">
+              {DashBoard?.news?.slice(1, 3).map((item: any, index: number) =>
+                <Link href={`/news/${item?.newsID}`}>
+                  <div className="rounded-xl border w-[50vw] border-[#EAECF0] flex bg-white shadow-md h-[200px] overflow-hidden">
+                    <div className="w-[150px] h-[200px] bg-black overflow-hidden">
+                      <Image src={item?.newsPicPath} alt="" width={625} height={308} className="w-full h-full object-cover"></Image>
+                    </div>
+                    <div className="flex flex-col p-4 gap-4 pt-8">
+                      <div className="flex flex-col">
+                        <div className="text-[--primary] text-[14px] font-bold">{item?.newsDateModified && FullDateFormator(new Date(item?.newsDateModified.split(" ").join("T")))}</div>
+                        <div className="flex justify-between">
+                          <div className="text-black text-[24px] font-extrabold">{item?.newsHeader}</div>
+                        </div>
+                      </div>
+                      <div className="text-[#475467]  text-ellipsis line-clamp-2 ">{item?.newsDescription}</div>
+                    </div>
+                  </div>
+                </Link>)
+              }
+
+            </div>
+          </div>
+        </section>
+      </div>
 
       <section className="bg-gray-50 p-6 max-w-[90vw] flex-wrap mx-auto rounded-lg flex items-center justify-between">
         {/* Left Section */}

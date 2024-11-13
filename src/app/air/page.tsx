@@ -1,10 +1,9 @@
 'use client'
 
-import { Input, Radio, Segmented } from 'antd';
-import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
+import { Input, Radio } from 'antd';
+import { Grid2X2, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Card from '../components/Card';
-import Badge from '../components/Badge';
 import Table from '../components/Table';
 import MapPick from '../components/MapPick';
 import DateFormator, { FullDateFormator } from '../ultilities/DateFormater';
@@ -16,7 +15,6 @@ import Badges from '../components/Badges';
 
 import Pagination from '../components/Pagination';
 import { getData } from '../ultilities/api';
-import { saveArrayToLocalStorage } from '../ultilities/localStorageManager';
 
 
 
@@ -24,11 +22,11 @@ export default function Air() {
 
   const [display, setDisplay] = useState<'List' | 'Map'>('List');
   const [airs, setAirs] = useState<any>([]);
-  
+
 
   const [selectedPlace, setSelectedPlace] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(0);
-const [airsFiltered, setAirsFiltered] = useState<any>({
+  const [airsFiltered, setAirsFiltered] = useState<any>({
     0: "",
     1: ""
   });
@@ -42,9 +40,8 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
   const fetchData = async () => {
     const result = await getData('/forWeb/getAirLast.php')
     setAirs(result.stations || [])
-    result.station && console.log("TOTAL AIR : ",result.station.length)
+    result.station && console.log("TOTAL AIR : ", result.station.length)
   }
-
 
   useEffect(() => {
     fetchData();
@@ -54,24 +51,21 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
     if (airs) setSelectedPlace(airs[0])
   }, [airs])
 
-
   const today = FullDateFormator(new Date())
   const pageSize = 1;
-
 
   return (
     <>
 
       <section id="header" className="px-10 py-4 bg-white">
-
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
         <div className="text-[36px] font-bold">รายงานคุณภาพอากาศ</div>
 
         <div className="flex justify-between pt-10 items-center lg:flex-nowrap  md:flex-wrap-reverse flex-wrap-reverse ">
-          <Badges name="air"/>
+          <Badges name="air" />
           <div className="badges flex flex-wrap items-center gap-2 lg:w-auto md:w-full w-full">
-            <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value, 0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search className='text-slate-500 ml-2'/>} /></div>
+            <div className="search lg:w-auto md:w-full w-full"> <Input onChange={e => handleSearch(e.target.value, 0)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt", padding: "0px 5px" }} className="text-slate-500 noto-sans shadow-sm py-2  rounded-lg" prefix={<Search className='text-slate-500 ml-2' />} /></div>
             <div className="tabs py-4 lg:w-auto md:w-full w-full  ">
               <Radio.Group
                 value={display}
@@ -106,18 +100,16 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
             }).map((item: any) => <Link href={`/air/detail/${item.stationID}`} key={item.stationID}>
               <Card className="lg:min-w-full" data={item}></Card>
             </Link>)
-
           }
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
           <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={airs?.length} className="lg:hidden md:hidden flex justify-center py-3" >
-            {[airs[currentPage]].map((item: any,index:number) => <Link key={index} href={`/air/detail/${item?.stationID}`}>
+            {[airs[currentPage]].map((item: any, index: number) => <Link key={index} href={`/air/detail/${item?.stationID}`}>
               <Card className="lg:min-w-full" data={item}></Card>
             </Link>)}
           </Pagination>
         </div>}
-
 
         {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">
           {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
@@ -135,7 +127,7 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
       <section id="table" className="px-10 py-10">
         <div className="flex flex-wrap gap-2 justify-between">
           <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพอากาศ</div>
-          <div className="search"> <Input onChange={e => handleSearch(e.target.value, 1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans" prefix={<Search className='text-slate-500 ml-2'/>} /></div>
+          <div className="search"> <Input onChange={e => handleSearch(e.target.value, 1)} size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt", padding: "0px 5px" }} className="text-slate-500 noto-sans" prefix={<Search className='text-slate-500 ml-2' />} /></div>
         </div>
 
         <div className='py-5'>
@@ -152,9 +144,9 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
             //   updated: DateFormator(new Date())
             // },]
 
-            airs.filter((item: any,index:number) => {
-              if (!airsFiltered[1]) return {key:index.toString(),...item}
-              return {key:index.toString(),...item?.nameTH?.toLowerCase().includes(airsFiltered[1].toLowerCase())}
+            airs.filter((item: any, index: number) => {
+              if (!airsFiltered[1]) return { key: index.toString(), ...item }
+              return item?.nameTH?.toLowerCase().includes(airsFiltered[1].toLowerCase())
             })
           }
 
@@ -211,8 +203,6 @@ const [airsFiltered, setAirsFiltered] = useState<any>({
           />
         </div>
       </section>
-
-
     </>
   );
 }
