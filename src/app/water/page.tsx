@@ -121,22 +121,13 @@ export default function Page() {
       <section id="table" className="px-10 py-10">
         <div className="flex flex-wrap gap-2 justify-between">
           <div className="text-[20px] font-bold">ตารางตรวจวัดคุณภาพน้ำ</div>
-          <div className="search"> <Input size="middle" placeholder="ค้นหา" style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans" prefix={<Search className='text-slate-500 ml-2'/>} /></div>
+          <div className="search"> <Input size="middle" placeholder="ค้นหา" onChange={e => handleSearch(e.target.value,1)} style={{ fontFamily: "prompt" ,padding:"0px 5px"}}  className="text-slate-500 noto-sans" prefix={<Search className='text-slate-500 ml-2'/>} /></div>
         </div>
 
         <div className='py-5'>
           <Table
             data={
-              //   [
-              //   {
-              //     key: '1',
-              //     station: 'แขวงการทางสมุทรสาคร',
-              //     COD: 51.3,
-              //     Flow: 63.6,
-              //     PH: 66.2,
-              //     updated: DateFormator(new Date()),
-              //   },
-              // ]
+
               waters.filter((item: any) => {
                 if(!waterFiltered[1]) return item
                 return item?.nameTH?.toLowerCase().includes(waterFiltered[1].toLowerCase())

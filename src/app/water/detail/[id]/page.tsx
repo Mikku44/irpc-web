@@ -5,14 +5,13 @@ import ColumnGraph from '@/app/components/ColumnGraph';
 import MultiColumnGraph from '@/app/components/MultiColumnGraph';
 import MultiLineGraph from '@/app/components/MultiLineGraph';
 import Table from '@/app/components/Table';
-import { Water } from '@/app/models/models';
+
 import { getData } from '@/app/ultilities/api';
 import DateFormator, { FullDateFormator } from '@/app/ultilities/DateFormater';
 import { Breadcrumb, Radio } from 'antd';
-import { ChevronRight, House, MapPin, Waves } from 'lucide-react';
+import { ChevronRight, House, MapPin } from 'lucide-react';
 import Image from 'next/image';
-import { Image as AntImage } from 'antd';
-import Link from 'next/link';
+
 import { useEffect, useState } from 'react';
 import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
 import rearrangeData from '@/app/ultilities/parseFromDate';
@@ -99,19 +98,19 @@ export default function Detail({ params }: { params: any }) {
                         <span className="text-[14px]">{watersDetail?.areaTH}</span>
                     </div>
 
-                    {/* Station Name */}
+             
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">ประเภทข้อมูล</span>
                         <p className="text-[16px] font-semibold text-gray-900">{watersDetail?.stationType}</p>
                     </div>
 
-                    {/* Station Code */}
+     
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">รหัสสถานี</span>
                         <p className="text-[16px] font-semibold text-gray-900">{watersDetail?.stationID}</p>
                     </div>
 
-                    {/* Latest Data */}
+         
                     <div>
                         <span className="text-[14px] text-gray-500">ประเภทพื้นที่</span>
                         <p className="text-[16px] font-semibold text-gray-900">
@@ -196,15 +195,7 @@ export default function Detail({ params }: { params: any }) {
                             <Table
                                 className="w-full"
                                 data={
-                                    //     [
-                                    //     {
-                                    //         key: '1',
-                                    //         updated: '11 มิ.ย. 66 เวลา 09:00 น.',
-                                    //         COD: 51.3,
-                                    //         flow: 63.6,
-                                    //         PH: 66.2,
-                                    //     },
-                                    // ]
+            
                                     rearrangeData(watersDetail?.Last24H)
                                 }
 

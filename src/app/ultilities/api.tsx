@@ -6,7 +6,7 @@ export async function getData(extPath: string, config: any = {}) {
     try {
         // Build full URL
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`;
-        console.log(url);
+        // console.log(url);
 
         // Default headers if none are provided in config
         const defaultConfig = {
@@ -18,7 +18,7 @@ export async function getData(extPath: string, config: any = {}) {
 
         // Make GET request
         const response = await axios.get(url, defaultConfig);
-        console.log(response.data);
+        // console.log(response.data);
 
         return response.data;
     } catch (error) {
@@ -32,7 +32,7 @@ export async function getData(extPath: string, config: any = {}) {
 
 
 export async function postData(extPath: string, formData: any,isMultipart?: boolean) {
-    console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`);
+    // console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`);
     try {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`, formData, {
             headers: {
@@ -42,7 +42,7 @@ export async function postData(extPath: string, formData: any,isMultipart?: bool
 
         return response?.data; 
     } catch (error:any) {
-        console.log(error)
+        // console.log(error)
         return error?.response?.data || error; // Returns the response in case of an error
     }
 }

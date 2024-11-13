@@ -3,10 +3,10 @@ import { Badge, Checkbox, Image } from "antd";
 import { useEffect, useState } from "react";
 
 export default function StationCard({ className, data, checked,isCheck }: any) {
-    const [Checked, setChecked] = useState(isCheck.includes(data?.StationID) || true);
+    const [Checked, setChecked] = useState(isCheck ? isCheck?.includes(data?.StationID) : true);
 
     useEffect(() => {
-        setChecked(isCheck.includes(data?.StationID));
+        setChecked(isCheck ? isCheck?.includes(data?.StationID) : true);
     }, [isCheck]);
     return (
         <>

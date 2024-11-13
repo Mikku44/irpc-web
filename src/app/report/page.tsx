@@ -1,9 +1,9 @@
 "use client";
-import Image from "next/image";
-import { Input, Select, Upload } from "antd";
-import React, { useEffect, useState } from "react";
+
+import {  Select, Upload } from "antd";
+import React, {  useState } from "react";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Flex, message } from "antd";
+import { message } from "antd";
 import type { GetProp, UploadProps } from "antd";
 import Link from "next/link";
 import { getArrayFromLocalStorage } from "../ultilities/localStorageManager";
@@ -50,7 +50,7 @@ export default function Page() {
       return;
     }
     if (info.file.status === "done") {
-      // Get this url from response in real world.
+     
       getBase64(info.file.originFileObj as FileType, (url) => {
         setLoading(false);
         setImageUrl((prev:any) => {
@@ -161,13 +161,7 @@ export default function Page() {
     <>
       {contextHolder}
       <div className="">
-        {/* <Image
-          src="/images/Contentbackground.svg"
-          alt={""}
-          width={758}
-          height={758}
-          className="absolute left-[26%] w-full max-w-[758px] h-auto "
-        ></Image> */}
+
         <div className="flex flex-col items-center justify-center relative z-[1] pt-5 pb-5 ">
           <div className="text-center mb-6">
             <h2 className="text-[30px] font-bold mb-2"> การแนะนำติชม</h2>
@@ -175,26 +169,7 @@ export default function Page() {
           </div>
           <div className="p-8 rounded-lg w-full max-w-md">
             <form action={onSubmit}>
-              {/* <div className="mb-4">
-                <label htmlFor="fullName" className="block text-gray-700 mb-2">
-                  ชื่อและนามสกุล
-                </label>
-                <Input
-                  className="p-3 w-full"
-                  placeholder="กรอกชื่อและนามสกุล"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="phone" className="block text-gray-700 mb-2">
-                  เบอร์โทรศัพท์
-                </label>
-                <div className="flex">
-                  <Input
-                    addonBefore={selectBefore}
-                    classNames={{ input: "w-full p-3 " }}
-                  />
-                </div>
-              </div> */}
+            
               <div className="mb-4">
                 <label htmlFor="phone" className="block text-gray-700 mb-2">
                   ประเทภการร้องเรียน
