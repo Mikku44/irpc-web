@@ -145,7 +145,8 @@ export default function Detail({ params }: { params: any }) {
                     <div className="overflow-x-auto pt-14 ">
                         {FlareDetail && <Table className="w-full" data={
 
-                            (FlareDetail?.data)
+                           
+                            FlareDetail?.data.map((item:any, index:number) => ({ key: index + 1, ...item }))
                         }
 
                             columns={
@@ -155,7 +156,7 @@ export default function Detail({ params }: { params: any }) {
                                         dataIndex: 'key',
                                         width: 100,
                                         ellipsis: true,
-                                        render: (text: string, record: any, index: number) => `${index + 1}`,
+                                        // render: (text: string, record: any,page:number) => `${page}`,
                                     },
                                     {
                                         title: <div className="text-[#475467]">เวลาอัพเดต</div>,
