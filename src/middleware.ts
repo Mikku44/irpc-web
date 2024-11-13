@@ -12,3 +12,9 @@ export function middleware(request:any) {
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: [
+    '/((?!public|static).*)', // Exclude `/public` and `/static` paths
+  ],
+};

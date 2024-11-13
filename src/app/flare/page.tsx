@@ -21,6 +21,7 @@ export default function flare() {
   const fetchData = async () => {
     const result = await getData('/forWeb/getFlareLast.php')
     setFlare(result.stations || [])
+    
   }
 
   useEffect(() => {
@@ -30,6 +31,7 @@ export default function flare() {
   useEffect(() => {
     if (flare) {
       setSelectedPlace(flare[0])
+      flare && localStorage.setItem('flare', flare?.length)
     }
   }, [flare])
 

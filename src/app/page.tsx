@@ -69,6 +69,11 @@ export default function Home() {
       "cems": cems?.stations?.[0],
       "sound": sound?.stations?.[0],
     })
+
+    air?.stations && localStorage.setItem("air",air?.stations?.length)
+    water?.stations && localStorage.setItem("water",water?.stations?.length)
+    cems?.stations && localStorage.setItem("environment",cems?.stations?.length)
+    sound?.stations && localStorage.setItem("sound",sound?.stations?.length)
   }
 
   const fetchMeasuringData = async () => {
@@ -179,7 +184,7 @@ export default function Home() {
               <div className="w-[80%] h-[2px] bg-slate-200 ml-7"></div>
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
-                  <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate?.Leq}</p>
+                  <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate5min?.noise}</p>
                   <p className="mt-2 text-[#475467]">dBA / เสียงรบกวน</p>
                 </div>
                 <Badge status={allData?.sound?.LastUpdate?.effect} name="sound"></Badge>

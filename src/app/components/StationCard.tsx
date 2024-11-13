@@ -1,23 +1,33 @@
 'use client'
 import { Badge, Checkbox, Image } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function StationCard({ className, data ,checked}: any) {
-    const [Checked, setChecked] = useState(checked || true);
+export default function StationCard({ className, data, checked,isCheck }: any) {
+    const [Checked, setChecked] = useState(isCheck.includes(data?.StationID) || true);
 
+    useEffect(() => {
+        setChecked(isCheck.includes(data?.StationID));
+    }, [isCheck]);
     return (
         <>
+        {data && 
             <div className={`rounded-xl border-2 border-[#84ADFF] h-[500px] grid gap-5 p-5 shadow-md ${className}`}>
                 {/* Top Section with Title and Checkbox */}
                 <div className="flex justify-between items-start">
                     <div className="grid gap-1">
                         <div className="text-[14px] md:text-[16px]">{data?.EqmsType}</div>
-                        <div className="font-bold text-[18px] md:text-[20px]">{data?.StationNameEn}</div>
+                        <div className="font-bold text-[18px] md:text-[20px] line-clamp-1">{data?.StationNameEn}</div>
                     </div>
                     <Checkbox checked={Checked} onClick={e => {
                         e.preventDefault();
-                        setChecked((prev:boolean) =>!prev);
-                        }} />
+
+                        setChecked((prev: boolean) => {
+
+                            const result = !prev
+                            checked(data?.StationID, result);
+                            return result
+                        });
+                    }} />
                 </div>
 
                 {/* Image Section */}
@@ -41,7 +51,7 @@ export default function StationCard({ className, data ,checked}: any) {
                         />
                     ))}
                 </div>
-            </div>
+            </div>}
         </>
 
 

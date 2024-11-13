@@ -3,8 +3,8 @@ import { Badge } from "antd";
 import { getArrayFromLocalStorage } from "./ultilities/localStorageManager";
 export const parameterUnit = {
     // --- Air
-    "PM25" : "µg./m3",
-    "PM10" : "µg./m3",
+    "PM25" : <>µg/m<sup>3</sup></>,
+    "PM10" : <>µg/m<sup>3</sup></>,
     "O3" : "ppb",
     "CO" : "ppm",
     "NO2" : "ppb",
@@ -12,7 +12,7 @@ export const parameterUnit = {
     // --- Water
     "COD" : "ppm",
     "pH" : "",
-    "Flow" : "m3/s",
+    "Flow" : <>m<sup>3</sup>/s</>,
     // --- Cems,
     "O2" : "ppm",
     "NOx" : "ppm",
@@ -20,7 +20,7 @@ export const parameterUnit = {
     "CO2" : "ppm",
     "NH3" : "",
     "H2S" : "ppm",
-    "Dust" : "µg./m3",
+    "Dust" : <>µg/m<sup>3</sup></>,
     "Opacity" : "",
     "" : "",
     // --- Sound,
@@ -35,12 +35,12 @@ export const parameterUnit = {
     return total
   }
 
-const total = {
+export const total = {
     "air" :getTotal(5,'air'),
     "sound" :getTotal(4,'sound'),
     "water" :getTotal(3,'water'),
     "environment" :getTotal(19,'environment'),
-    "flare" :getTotal(0,'flare'),
+    "flare" :getTotal(2,'flare'),
     "EQMs" : getTotal(31,'EQMs'),
 }
 
@@ -75,11 +75,11 @@ const SegmentList = [
     },
     {
         label: <div className='flex gap-2 items-center justify-center text-black'>EQMs  <Badge count={<div className='bg-[#F9FAFB] border-[#EAECF0] border-[1px] text-[#344054] p-1 px-2 rounded-full'>{total['EQMs']}</div>} ></Badge></div>,
-        value: 'EQMs'
+        value: 'eqms'
     },
     {
         label: <div className='flex gap-2 items-center justify-center text-black'>Dashboard </div>,
-        value: 'Dashboard'
+        value: 'dashboard'
     },
 ];
 const SegmentUserList = [

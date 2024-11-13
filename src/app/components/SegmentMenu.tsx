@@ -6,7 +6,6 @@ import { useRouter } from "next/dist/client/components/navigation";
 import { useEffect, useState } from "react";
 import { setCookie, getCookie } from "../ultilities/setCookie";
 import { Select } from "antd";
-import { getData } from "../ultilities/api";
 import { getArrayFromLocalStorage } from "../ultilities/localStorageManager";
 
 
@@ -17,39 +16,21 @@ export default function SegmentMenu() {
         "sound",
         "environment",
         "flare",
-        "EQMs",
-        "Dashboard"
+        "eqms",
+        "dashboard"
     ]
 
     async function fetchData() {
 
         const role = getArrayFromLocalStorage("user_data")?.role
         setRole(role || 'client')
-        // try {
-        //     const token = localStorage.getItem('token');
-        //     setRole(role || 'client')
-
-        //     // Make request with Authorization header
-        //     const result = await getData('/forWeb/authInfo.php', {
-        //         headers: {
-        //             'Authorization': `Bearer ${token}`,
-        //         },
-        //     });
-
-
-        //     if (result?.status == "ok") {
-        //         setRole(result?.user_data?.role)
-        //     }
-        // } catch (error) {
-        //     console.error('Error fetching data:', error);
-         
-        // }
+        
     }
 
     useEffect(() => {
         const segment = window.location.href.split('/').pop()
         setSegmentValue(segment!)
-        setCookie("currenSegment", `${segment}`, 30)
+        localStorage.setItem("currenSegment", `${segment}`)
         fetchData()
 
     }, [])
@@ -58,24 +39,19 @@ export default function SegmentMenu() {
 
     const [role, setRole] = useState('');
 
-    const [segmentValue, setSegmentValue] = useState<string>(getCookie("currenSegment")!);
+    const [segmentValue, setSegmentValue] = useState<string>();
 
     const router = useRouter();
 
-    useEffect(() => {
-        // const segment = window.location.href.split('/').pop()
-        // if (role) {
-        //     if (role != 'admin') {
-        //         segment && privatePath.includes(segment) && window.location.replace('/')
-        //     }
-        // }
-    }, [role])
-
 
     useEffect(() => {
+        if(!segmentValue){
+            setSegmentValue(localStorage.getItem("currenSegment")!)
+        }
         if (segmentValue && allCategories.includes(segmentValue)) {
             router.push(`/${segmentValue}`)
         }
+
     }, [segmentValue])
 
 

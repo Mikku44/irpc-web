@@ -53,7 +53,7 @@ export default function Page() {
                         </div>
                     ))
                 ) : (
-                    <p className="text-center text-gray-500">ไม่มีข้อมูลประวัติการใช้งาน</p> 
+                    <p className="text-center text-gray-500 min-h-screen ">ไม่มีข้อมูลประวัติการใช้งาน</p> 
                 )}
             </section>
         </>

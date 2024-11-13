@@ -8,15 +8,20 @@ import Link from 'next/link';
 export default function Flarecard({ item, className, isFav, showFav, }: any) {
 
   const [Fav, setFav] = useState(isFav);
+  async function getFav(data: any) {
+    const tempData = await getArrayFromLocalStorage('favData');
+    const result = tempData.find((item: any) => data?.stationID === item.stationID) ? true : false;
+    return result;
+}
 
-  async function check() {
-    const FavData: any = await getArrayFromLocalStorage('favData')
-    const isFav = FavData.find((item: any) => item?.stationID == item?.stationID)
-    setFav(isFav ? true : false)
-  }
-  useEffect(() => {
-    check()
-  }, [Fav]);
+useEffect(() => {
+    async function checkFav() {
+        const fav = await getFav(item); 
+        setFav(fav)
+    }
+
+    checkFav();
+}, [item]);
 
   return (
     <div>
@@ -31,7 +36,7 @@ export default function Flarecard({ item, className, isFav, showFav, }: any) {
             />}
             {showFav !== false && <button className='' onClick={e => {
               e.preventDefault()
-              favouriteAction(item, "flare");
+              favouriteAction(item,'flare',Fav);
             }}>
               <div onClick={e => setFav((prev: Boolean) => !prev)} className=" absolute top-4 right-4 p-2 duration-150 shadow-sm hover:border-[--primary] hover:bg-[--primary] bg-white/20 glass border-[1px] border-white/80  rounded-full">
                 <Bookmark className={`text-white size-4 text-lg ${Fav && "fill-white"}`} />

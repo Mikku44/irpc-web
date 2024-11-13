@@ -15,6 +15,7 @@ import DateFormator, { FullDateFormator } from '@/app/ultilities/DateFormater';
 import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
 import MultiColumnGraph from '@/app/components/MultiColumnGraph';
 import MultiLineGraph from '@/app/components/MultiLineGraph';
+import { parameterUnit } from '@/app/globals';
 
 export default function Detail({ params }: { params: any }) {
 
@@ -140,43 +141,43 @@ export default function Detail({ params }: { params: any }) {
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
                         <div>
                             <div className='text-[#475467]'>O2</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.O2}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.O2 !== "N/A" ? cemsDetail?.LastUpdate?.O2 : "-"} {parameterUnit['O2']}</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>NOx</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.NOx}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.NOx !== "N/A" ? cemsDetail?.LastUpdate?.NOx : "-"} {parameterUnit['NOx']}</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>SOx</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.SOx}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.SOx !== "N/A" ? cemsDetail?.LastUpdate?.SOx : "-"} {parameterUnit['SOx']}</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>CO</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.CO}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.CO !== "N/A" ? cemsDetail?.LastUpdate?.CO : "-"} {parameterUnit['CO']}</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>CO<sub>2</sub></div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.CO2}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.CO2 !== "N/A" ? cemsDetail?.LastUpdate?.CO2 : "-"} {parameterUnit['CO2']}</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>NH<sub>3</sub></div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.NH3}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.NH3 !== "N/A" ? cemsDetail?.LastUpdate?.NH3 : "-"} {parameterUnit['NH3']}</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>H<sub>2</sub>S</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.H2S}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.H2S !== "N/A" ? cemsDetail?.LastUpdate?.H2S : "-"} {parameterUnit['H2S']}</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>Dust</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Dust}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Dust !== "N/A" ? cemsDetail?.LastUpdate?.Dust : "-"} {parameterUnit['Dust']}</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>Opacity</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Opacity}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Opacity !== "N/A" ? cemsDetail?.LastUpdate?.Opacity : "-"} {parameterUnit['Opacity']}</span></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>Flow</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Flow}</span></div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'><span>{cemsDetail?.LastUpdate?.Flow !== "N/A" ? cemsDetail?.LastUpdate?.Flow : "-"} {parameterUnit['Flow']}</span></div>
                         </div>
                        
                     </div>

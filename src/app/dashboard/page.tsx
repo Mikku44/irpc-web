@@ -6,8 +6,26 @@ import { CloudDownload, RefreshCw } from "lucide-react";
 import Image from "next/image";
 import Footer from "../components/Footer";
 import Link from "next/link";
+import { getData } from "../ultilities/api";
+import { useEffect } from "react";
+import { total } from "../globals";
 
 export default function Page() {
+
+    const fetchAll = async () => {
+        const air = await getData('/forWeb/getAirLast.php')
+        const water = await getData('/forWeb/getWaterLast.php')
+        const cems = await getData('/forWeb/getCemsLast.php')
+        const sound = await getData('/forWeb/getSoundLast.php')
+    
+    
+        air?.stations && localStorage.setItem("air",air?.stations?.length)
+        water?.stations && localStorage.setItem("water",water?.stations?.length)
+        cems?.stations && localStorage.setItem("environment",cems?.stations?.length)
+        sound?.stations && localStorage.setItem("sound",sound?.stations?.length)
+      }
+    
+
     return <>
 
         <section id="header" className="px-10 py-4 bg-white">
@@ -19,7 +37,10 @@ export default function Page() {
                     <div className="text-[36px] font-bold">Dashboard</div>
                 </div>
                 <div className="text-[16px] font-bold flex gap-2">
-                    <Button className=" w-[150px]"><RefreshCw className='size-[14px]' /> อัปเดต</Button>
+                    <Button onClick={()=>{
+                        fetchAll();
+                        window.location.reload();
+                    }} className=" w-[150px]"><RefreshCw className='size-[14px]' /> อัปเดต</Button>
                 </div>
             </div>
 
@@ -34,7 +55,7 @@ export default function Page() {
                 </div>
                 <div className="grid">
                     <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                    <div className="text-[36px] font-bold">316</div>
+                    <div className="text-[36px] font-bold">{total['air']}</div>
                 </div>
             </Link>
 
@@ -46,7 +67,7 @@ export default function Page() {
                 </div>
                 <div className="grid">
                     <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                    <div className="text-[36px] font-bold">316</div>
+                    <div className="text-[36px] font-bold">{total['sound']}</div>
                 </div>
             </Link>
 
@@ -58,7 +79,7 @@ export default function Page() {
                 </div>
                 <div className="grid">
                     <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                    <div className="text-[36px] font-bold">316</div>
+                    <div className="text-[36px] font-bold">{total['water']}</div>
                 </div>
             </Link>
 
@@ -70,7 +91,7 @@ export default function Page() {
                 </div>
                 <div className="grid">
                     <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                    <div className="text-[36px] font-bold">316</div>
+                    <div className="text-[36px] font-bold">{total['environment']}</div>
                 </div>
             </Link>
 

@@ -8,19 +8,24 @@ import Badge from './Badge';
 import { ShortDateFormator } from '../ultilities/DateFormater';
 import { isOnline } from './OnlineDot';
 
-export default function SoundCard({ className, data,isFav,showFav}: any) {
+export default function SoundCard({ className, data, isFav, showFav }: any) {
     const [Fav, setFav] = useState(isFav);
-
-
-    async function check(){
-        const FavData : any = await getArrayFromLocalStorage('favData')
-        const isFav = FavData.find((item:any) => item?.stationID == data?.stationID)
-        setFav(isFav ? true : false)
+    async function getFav(data: any) {
+        const tempData = await getArrayFromLocalStorage('favData');
+        const result = tempData.find((item: any) => data?.stationID === item.stationID) ? true : false;
+        return result;
     }
+
     useEffect(() => {
-        check()
-      
-    }, [Fav]);
+        async function checkFav() {
+            const fav = await getFav(data); 
+            setFav(fav)
+        }
+
+        checkFav();
+    }, [data]);
+
+
     return <>
         <AntCard
             className={`lg:min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px] ${className}`}
@@ -34,8 +39,7 @@ export default function SoundCard({ className, data,isFav,showFav}: any) {
                     />
                     {showFav !== false && <button className='' onClick={e => {
                         e.preventDefault()
-                        favouriteAction(data, "sound");
-
+                        favouriteAction(data, 'sound', Fav);
 
                     }}>
 
@@ -48,7 +52,7 @@ export default function SoundCard({ className, data,isFav,showFav}: any) {
 
                         <div className=" text-white ">
                             <span className="text-4xl font-bold">{data?.LastUpdate5min?.noise || "N/A"}</span>
-                            <span className="text-lg pl-2">dBA / เสียงรบกวน</span>
+                            <span className="text-lg pl-2">dBA / เสียงรบกวน 5 นาที</span>
                         </div>
                         {/* <div className=" text-white">
                             <p className="text-sm">ความเร็วลม</p>
@@ -64,9 +68,9 @@ export default function SoundCard({ className, data,isFav,showFav}: any) {
                     <h3 className="text-[24px] font-semibold">{data?.nameTH || "Unnamed"}</h3>
                     {/* <span className="text-red-500 bg-red-100 px-2 py-1 rounded-full">มีผลกระทบ</span> */}
 
-                   
-                    {data?.LastUpdate5min?.Leq != "N/A" && <Badge status={data?.LastUpdate?.effect}  name="sound"></Badge> }
-                    {data?.LastUpdate5min?.Leq == "N/A" && <Badge status={'0'}  name="sound"></Badge> }
+
+                    {data?.LastUpdate5min?.Leq != "N/A" && <Badge status={data?.LastUpdate?.effect} name="sound"></Badge>}
+                    {data?.LastUpdate5min?.Leq == "N/A" && <Badge status={'0'} name="sound"></Badge>}
                 </div>
                 <div className="flex justify-between py-1 items-center text-[16px] text-[#475467]">
                     <p>Leq 24 ชม.</p>

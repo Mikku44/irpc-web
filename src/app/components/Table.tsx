@@ -18,6 +18,8 @@ export default function Table({ columns, data, className }: any) {
     const startIndex = (currentPage - 1) * itemsPerPage; 
     const endIndex = startIndex + itemsPerPage; 
     setPageItems(data.slice(startIndex, endIndex)); 
+    if(currentPage > totalPages)
+    setCurrentPage(1);
   }, [currentPage, data]); 
 
   return (

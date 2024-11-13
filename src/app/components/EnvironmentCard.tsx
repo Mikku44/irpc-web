@@ -11,17 +11,21 @@ import { isOnline } from './OnlineDot';
 export default function EnvironmentCard({ data, className,isFav,showFav}: any) {
 
     const [Fav, setFav] = useState(isFav);
-
-    async function check(){
-        const FavData : any = await getArrayFromLocalStorage('favData')
-        const favor = FavData.find((item:any) => item?.stationID == data?.stationID)
-
-        setFav(favor ? true : false)
+    async function getFav(data: any) {
+        const tempData = await getArrayFromLocalStorage('favData');
+        const result = tempData.find((item: any) => data?.stationID === item.stationID) ? true : false;
+        return result;
     }
+
     useEffect(() => {
-        check()
-      
-    }, [Fav]);
+        async function checkFav() {
+            const fav = await getFav(data); 
+            setFav(fav)
+        }
+
+        checkFav();
+    }, [data]);
+
 
     return <>
         <AntCard
@@ -36,8 +40,7 @@ export default function EnvironmentCard({ data, className,isFav,showFav}: any) {
                     />
                   {showFav !== false && <button className='' onClick={e => {
                         e.preventDefault()
-                        favouriteAction(data, "env");
-
+                        favouriteAction(data,'env',Fav);
 
                     }}>
 

@@ -1,35 +1,27 @@
 'use client';
 
 import { useState } from "react";
-import { PaginationProps } from "antd";
-import { Pagination } from "antd";
+import { Button } from "antd";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-const itemRender: PaginationProps['itemRender'] = (_, type, originalElement) => {
-    if (type === 'prev') {
-        return <a className="flex gap-2 items-center"><ArrowLeft /> Previous</a>;
-    }
-    if (type === 'next') {
-        return <a className="flex gap-2 items-center">Next <ArrowRight /></a>;
-    }
-    return originalElement;
-};
+
 
 interface PaginationsProps {
     className?: string;
     classNames?: {
         items?: string;
     },
-    emptyTxt?:string | React.ReactNode;
+    emptyTxt?: string | React.ReactNode;
     items: any[];
     pageSize?: number;
     renderItem: (item: any) => React.ReactNode;
 }
 
-export default function Paginations({ className, classNames, items,emptyTxt, pageSize = 10, renderItem }: PaginationsProps) {
+export default function Paginations({ className, classNames, items, emptyTxt, pageSize = 10, renderItem }: PaginationsProps) {
     const [currentPage, setCurrentPage] = useState(1);
 
-
+    const pages = Math.ceil(items.length / pageSize)
+    const totalPage = Array.from({ length: pages })
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     const paginatedItems = items.slice(startIndex, endIndex);
@@ -50,15 +42,45 @@ export default function Paginations({ className, classNames, items,emptyTxt, pag
                 }
             </div>
 
-           {items?.length > 0 && <Pagination
-                align="center"
-                itemRender={itemRender}
-                current={currentPage}
-                total={items.length}
-                pageSize={pageSize}
-                onChange={onPageChange}
-                className={className}
-            />}
+
+
+            <div className="flex justify-between">
+                <Button onClick={e => onPageChange(currentPage > 1 ? currentPage - 1 : currentPage)} color="default" variant="text"><ArrowLeft /> <div className="lg:block hidden">Previous</div></Button>
+                <div className="flex gap-2">
+                    {totalPage.map((_, index) => {
+                        const isCurrentPage = index + 1 === currentPage;
+                        const isFirstOrLastPage = index === currentPage - 1 || index === pages - 1 || index === currentPage || index === pages - 2;
+                        const mid = Math.ceil(pages / 2)
+
+
+
+                        if (isFirstOrLastPage) {
+                            return (
+                                <Button
+                                    key={index}
+                                    style={{
+                                        color: isCurrentPage ? "var(--primary)" : "black",
+                                        borderColor: isCurrentPage ? "var(--primary)" : ""
+                                    }}
+                                    onClick={() => onPageChange(index + 1)}
+                                >
+                                    {index + 1}
+                                </Button>
+                            );
+                        } else if (index === mid) {
+
+                            return <Button onClick={e => onPageChange(index + 1)} color="default" variant="text" key={index}>...</Button>;
+                        } else {
+                            if ( index == mid-2 && currentPage <= mid+1) {
+
+                                return <Button onClick={e => onPageChange(index + 1)} color="default" variant="text" key={index}>...</Button>;
+                            } else return null;
+                        }
+                    })}
+
+                </div>
+                <Button onClick={e => onPageChange(currentPage < pages ? currentPage + 1 : currentPage)} color="default" variant="text"><div className="hidden lg:block">Next</div> <ArrowRight /></Button>
+            </div>
         </div>
     );
 }
