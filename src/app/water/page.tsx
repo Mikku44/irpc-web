@@ -1,22 +1,17 @@
 'use client'
 
-import { Input, Radio, Segmented } from 'antd';
-import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
+import { Input, Radio } from 'antd';
+import { Grid2X2,  Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import WaterCard from '../components/WaterCard';
-import Badge from '../components/Badge';
 import Table from '../components/Table';
 import MapPick from '../components/MapPick';
 import DateFormator, { FullDateFormator } from '../ultilities/DateFormater';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-
-import { SegmentList } from '../globals';
 import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
 import Badges from '../components/Badges';
 import Pagination from '../components/Pagination';
-
 import { Water } from '../models/models';
 import { getData } from '../ultilities/api';
 
@@ -31,12 +26,12 @@ export default function Page() {
   const [currentPage,setCurrentPage] = useState(0);
   const today = FullDateFormator(new Date())
   const pageSize = 1;
-  const [airsFiltered, setAirsFiltered] = useState<any>({
+  const [waterFiltered, setWaterFiltered] = useState<any>({
     0: "",
     1: ""
   });
   const handleSearch = async (keyword: string, index: number) => {
-    setAirsFiltered((prev: any) => ({
+    setWaterFiltered((prev: any) => ({
       ...prev,
       [index]: keyword,
     }));
@@ -58,12 +53,9 @@ export default function Page() {
     fetchData();
   }, [])
 
-
   return (
     <>
-
       <section id="header" className="px-10 py-4 bg-white">
-
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
         <div className="text-[36px] font-bold">รายงานคุณภาพน้ำ</div>
@@ -94,28 +86,25 @@ export default function Page() {
             </div>
           </div>
         </div>
-
       </section>
 
       <section id="lists" className='px-10 bg-white py-5'>
         {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
           {waters.filter((item: any) => {
-              if(!airsFiltered[0]) return item
-              return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
+              if(!waterFiltered[0]) return item
+              return item?.nameTH?.toLowerCase().includes(waterFiltered[0].toLowerCase())
             }).map((item: Water) => <Link key={item.stationID} href={`water/detail/${item.stationID}`}>
             <WaterCard className="lg:min-w-full" key={item.stationID} data={item}></WaterCard>
           </Link>)}
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
-
           <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={waters.length} className="lg:hidden md:hidden flex justify-center py-3" >
             {[waters[currentPage]].map((item: Water) => <Link key={item?.stationID} href={`water/detail/${item?.stationID}`}>
               <WaterCard className="lg:min-w-full" key={item?.stationID} data={item}></WaterCard>
             </Link>)}
           </Pagination>
         </div>}
-
 
         {display == "Map" && <div className="flex lg:flex-row flex-col  gap-5 ">
           <div className="lg:basis-2/5 basis-full flex justify-center">
@@ -127,8 +116,6 @@ export default function Page() {
             <MapPick data={waters} setState={setSelectedPlace} unit="mg/L" key="COD"/>
           </div>
         </div>}
-
-
       </section>
 
       <section id="table" className="px-10 py-10">
@@ -151,8 +138,8 @@ export default function Page() {
               //   },
               // ]
               waters.filter((item: any) => {
-                if(!airsFiltered[1]) return item
-                return item?.nameTH?.toLowerCase().includes(airsFiltered[1].toLowerCase())
+                if(!waterFiltered[1]) return item
+                return item?.nameTH?.toLowerCase().includes(waterFiltered[1].toLowerCase())
               })
             }
 
@@ -195,11 +182,8 @@ export default function Page() {
               },
             ]}
           />
-
         </div>
       </section>
-
-
     </>
   );
 }

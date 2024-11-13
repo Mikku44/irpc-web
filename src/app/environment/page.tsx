@@ -1,17 +1,14 @@
 'use client'
 
-import { Input, Radio, Segmented } from 'antd';
-import { Grid, Grid2X2, Magnet, Map, Search } from 'lucide-react';
+import { Input, Radio, } from 'antd';
+import { Grid2X2,Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import Badge from '../components/Badge';
 import Table from '../components/Table';
 import MapPick from '../components/MapPick';
 import DateFormator, { FullDateFormator } from '../ultilities/DateFormater';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
-import { SegmentList } from '../globals';
 import SegmentMenu from '../components/SegmentMenu';
 import Image from 'next/image';
 import EnvironmentCard from '../components/EnvironmentCard';
@@ -29,12 +26,12 @@ export default function Environment() {
 
     const today = FullDateFormator(new Date())
     const pageSize = 1;
-    const [airsFiltered, setAirsFiltered] = useState<any>({
+    const [environmentFiltered, setEnvironmentFiltered] = useState<any>({
         0: "",
         1: ""
     });
     const handleSearch = async (keyword: string, index: number) => {
-        setAirsFiltered((prev: any) => ({
+        setEnvironmentFiltered((prev: any) => ({
             ...prev,
             [index]: keyword,
         }));
@@ -56,8 +53,6 @@ export default function Environment() {
         if (cems)
             setSelectedPlace(cems[0])
     }, [cems])
-
-
 
     return (
         <>
@@ -101,8 +96,8 @@ export default function Environment() {
             <section id="lists" className='px-10 bg-white py-5'>
                 {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
                     {cems.filter((item: any) => {
-                        if (!airsFiltered[0]) return item
-                        return item?.nameTH?.toLowerCase().includes(airsFiltered[0].toLowerCase())
+                        if (!environmentFiltered[0]) return item
+                        return item?.nameTH?.toLowerCase().includes(environmentFiltered[0].toLowerCase())
                     }).map((item: any) => <Link href={`environment/detail/${item.stationID}`} key={item.stationID}>
                         <EnvironmentCard className="lg:min-w-full" data={item}></EnvironmentCard>
                     </Link>)}
@@ -115,7 +110,6 @@ export default function Environment() {
                         </Link>)}
                     </Pagination>
                 </div>}
-
 
                 {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">
                     {selectedPlace && <div className="basis-2/5 lg:block flex justify-center">
@@ -151,8 +145,8 @@ export default function Environment() {
                             //     },
                             // ]
                             cems.filter((item: any) => {
-                                if(!airsFiltered[1]) return item
-                                return item?.nameTH?.toLowerCase().includes(airsFiltered[1].toLowerCase())
+                                if(!environmentFiltered[1]) return item
+                                return item?.nameTH?.toLowerCase().includes(environmentFiltered[1].toLowerCase())
                               })
                         }
 
