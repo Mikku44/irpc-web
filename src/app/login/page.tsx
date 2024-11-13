@@ -5,10 +5,15 @@ import { Checkbox, Input, message, Spin, Tabs } from 'antd';
 import { postData } from "../ultilities/api";
 import { useEffect, useState } from "react";
 
-import {  saveArrayToLocalStorage } from "../ultilities/localStorageManager";
+import {  getArrayFromLocalStorage, saveArrayToLocalStorage } from "../ultilities/localStorageManager";
 import { hashUserData } from "../ultilities/encypt";
-
+import { useRouter } from "next/navigation";
 export default function Login() {
+    const router = useRouter();
+    async function isLogined() {
+        const tempUser = getArrayFromLocalStorage("user_data")
+        tempUser && router.replace("/")
+      }
 
     const [type, setType] = useState<string>();
     useEffect(() => {
@@ -129,6 +134,7 @@ export default function Login() {
 
         setEmail(email || "");
         setPassword(password || "");
+        isLogined() 
     }, [])
 
 
