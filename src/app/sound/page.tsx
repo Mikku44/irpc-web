@@ -213,6 +213,15 @@ export default function Sound() {
                 render: (text: string, record: any) => record.LastUpdate?.L90 || '-',
               },
               {
+                title: <div className="text-[#475467]">Noise <span className="font-normal">(dBA)</span></div>,
+                dataIndex: 'dBA5',
+                // sorter: {
+                //   compare: (a: { dBA5: number; }, b: { dBA5: number; }) => (a.dBA5) - (b.dBA5),
+                //   multiple: 3,
+                // },
+                render: (text: string, record: any) => record.LastUpdate5min?.noise || '-',
+              },
+              {
                 title: <div className="text-[#475467]">เวลาอัพเดต</div>,
                 dataIndex: 'updated',
                 render: (text: string, record: any) => `${DateFormator(new Date(record.LastUpdate?.date + "T" + record.LastUpdate?.time))}` || '-',

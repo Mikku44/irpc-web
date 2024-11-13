@@ -9,10 +9,10 @@ export function GET(req:any){
 
 export async function POST(req:any){
     const body = await req.json();
-    console.log("BODY : ",body);
+    // console.log("BODY : ",body.query);
     const url = `https://irpc-air.com/UpdateV2/eqms/createImage.php`
     try {
-        const response = await axios.post(`${url}`, body, {
+        const response = await axios.post(`${url}`, body.query, {
             responseType: 'arraybuffer',
             headers: {
                 'Content-Type':  'application/json',

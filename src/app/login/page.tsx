@@ -1,25 +1,14 @@
 "use client"
-import Image from "next/image"
+
 import Link from "next/link";
 import { Checkbox, Input, message, Spin, Tabs } from 'antd';
 import { postData } from "../ultilities/api";
 import { useEffect, useState } from "react";
 
-import { getArrayFromLocalStorage, saveArrayToLocalStorage } from "../ultilities/localStorageManager";
+import {  saveArrayToLocalStorage } from "../ultilities/localStorageManager";
 import { hashUserData } from "../ultilities/encypt";
 
-
-
-const secretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY
-
 export default function Login() {
-
-    const options = {
-        expiresIn: '1h',
-    };
-
-
-
 
     const [type, setType] = useState<string>();
     useEffect(() => {
@@ -39,20 +28,11 @@ export default function Login() {
                 if (!result) {
                     return error("เกิดปัญหาทางเทคนิค โปรดแจ้งผู้ดูแลระบบ")
                 }
-                // console.log(result);
+               
                 if (result?.status === "ok") {
                     success();
                     const userData = result.user_data
-                    // saveArrayToLocalStorage("user_data", {
-                    //     fullname: userData.fullname,
-                    //     role: userData.role,
-                    //     user_id: userData.user_id,
-                    //     email: userData.email,
-                    //     tel: userData.tel
-                    // }
-                    // )
-                    // saveArrayToLocalStorage("token", result.token)
-
+            
                     const payload = {
                         fullname: userData.fullname,
                         role: userData.role,
@@ -60,19 +40,9 @@ export default function Login() {
                         email: userData.email,
                         tel: userData.tel
                     }
-                    // saveArrayToLocalStorage("user_data", {
-                    //     fullname: userData.fullname,
-                    //     role: userData.role,
-                    //     user_id: userData.user_id,
-                    //     email: userData.email,
-                    //     tel:userData.tel
-                    // }
-                    // )
-    
-                    // saveArrayToLocalStorage("token", result.token)
-    
+                 
                     const token = await hashUserData(payload)
-                    // console.log("TOKEN : ",token)
+
                  
                     saveArrayToLocalStorage("user_data", token)
     
@@ -106,19 +76,10 @@ export default function Login() {
                     email: userData.email,
                     tel: userData.tel
                 }
-                // saveArrayToLocalStorage("user_data", {
-                //     fullname: userData.fullname,
-                //     role: userData.role,
-                //     user_id: userData.user_id,
-                //     email: userData.email,
-                //     tel:userData.tel
-                // }
-                // )
 
-                // saveArrayToLocalStorage("token", result.token)
 
                 const token = await hashUserData(payload)
-                // console.log("TOKEN : ",token)
+
              
                 saveArrayToLocalStorage("user_data", token)
 

@@ -132,6 +132,11 @@ export default function Page() {
       error(result?.message);
     } else {
       success();
+
+      setComment("");
+      setInfo("");
+      setImages([]);
+      setImageUrl([]);
     }
   }
 
@@ -214,9 +219,12 @@ export default function Page() {
                 <textarea
                   required
                   onChange={e => setInfo(e.target.value)}
+                  value={Info}
                   placeholder="กรอกข้อมูล"
                   className="p-1 border-2 rounded-lg textarea textarea-bordered textarea-xl w-full h-[80px]  "
-                ></textarea>
+                >
+                  
+                </textarea>
               </div>
               {type == "1" &&
                 <div className="mb-4">
@@ -224,6 +232,7 @@ export default function Page() {
                     ความคิดเห็น
                   </label>
                   <textarea
+                  value={Comment}
                     onChange={e => setComment(e.target.value)}
                     placeholder="ความคิดเห็น"
                     className="p-1 border-2 rounded-lg textarea textarea-bordered textarea-xl w-full h-[80px]  "

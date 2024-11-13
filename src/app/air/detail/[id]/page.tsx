@@ -146,11 +146,11 @@ export default function Detail({ params }: { params: any }) {
 
                         <div>
                             <div className='text-[#475467]'>PM<sub>2.5</sub> </div>
-                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM25} µg./m<sup>3</sup></div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM25} µg/m<sup>3</sup></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>PM<sub>10</sub> </div>
-                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM10} µg./m<sup>3</sup></div>
+                            <div className=' gap-2 font-extrabold'>{airsDetail?.LastUpdate.PM10} µg/m<sup>3</sup></div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>O<sub>3</sub> </div>

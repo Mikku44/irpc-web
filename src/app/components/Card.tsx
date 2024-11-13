@@ -1,25 +1,31 @@
 'use client'
-import {  Card as AntCard } from 'antd';
-import {Bookmark } from 'lucide-react';
+import { Card as AntCard } from 'antd';
+import { Bookmark } from 'lucide-react';
 import Image from 'next/image';
 import Badge from './Badge';
-import { favouriteAction, getArrayFromLocalStorage} from '../ultilities/localStorageManager';
+import { favouriteAction, getArrayFromLocalStorage } from '../ultilities/localStorageManager';
 import { useEffect, useState } from 'react';
 import { ShortDateFormator } from '../ultilities/DateFormater';
 import { isOnline } from './OnlineDot';
 
-export default function Card({ data, className,isFav,showFav}: any) {
+export default function Card({ data, className, isFav, showFav }: any) {
     const [Fav, setFav] = useState(isFav);
 
-    async function check(){
-        const FavData  :any = await getArrayFromLocalStorage('favData')
-        const isFav = FavData.find((item:any) => item?.stationID == data?.stationID)
-        setFav(isFav ? true : false)
+    async function getFav(data: any) {
+        const tempData = await getArrayFromLocalStorage('favData');
+        const result = tempData.find((item: any) => data?.stationID === item.stationID) ? true : false;
+        return result;
     }
+
     useEffect(() => {
-        check()
-      
-    }, [Fav]);
+        async function checkFav() {
+            const fav = await getFav(data); 
+            setFav(fav)
+        }
+
+        checkFav();
+    }, [data]);
+
     return <>
         <AntCard
             className={`lg:min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px] ${className}`}
@@ -30,10 +36,10 @@ export default function Card({ data, className,isFav,showFav}: any) {
                         src={`${data && data?.image_url || "/images/irpc-logo.png"}`} // Replace with your image source
                         className="brightness-90 object-cover w-full h-full relative z-0"
                     />}
-                   {showFav !== false && <button className='' onClick={e => {
+                    {showFav !== false && <button className='' onClick={async (e) => {
                         e.preventDefault()
-                        favouriteAction(data, "air");
 
+                        favouriteAction(data, 'air', Fav);
 
                     }}>
 

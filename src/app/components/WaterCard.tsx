@@ -11,16 +11,21 @@ import { isOnline } from './OnlineDot';
 
 export default function WaterCard({ data, className,isFav,showFav}: any) {
     const [Fav, setFav] = useState(isFav);
-
-    async function check(){
-        const FavData : any = await getArrayFromLocalStorage('favData')
-        const isFav = FavData.find((item:any) => item?.stationID == data?.stationID)
-        setFav(isFav ? true : false)
+    async function getFav(data: any) {
+        const tempData = await getArrayFromLocalStorage('favData');
+        const result = tempData.find((item: any) => data?.stationID === item.stationID) ? true : false;
+        return result;
     }
+
     useEffect(() => {
-        check()
-      
-    }, [Fav]);
+        async function checkFav() {
+            const fav = await getFav(data); 
+            setFav(fav)
+        }
+
+        checkFav();
+    }, [data]);
+
     return <>
         <AntCard
             className={`lg:min-w-[400px] rounded-3xl overflow-hidden shadow-md  h-fit  max-w-[410.5px] ${className}`}
@@ -34,8 +39,7 @@ export default function WaterCard({ data, className,isFav,showFav}: any) {
                     />
                    {showFav !== false && <button className='' onClick={e => {
                         e.preventDefault()
-                        favouriteAction(data, "water");
-
+                        favouriteAction(data,'water',Fav);
 
                     }}>
 

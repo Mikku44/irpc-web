@@ -20,7 +20,7 @@ export default function ReportsPage() {
     }, [])
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container-x mx-auto p-6">
             <h2 className="text-3xl font-bold mb-6">รายงานประจำวันทั้งหมด</h2>
 
             <Paginations

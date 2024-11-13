@@ -184,7 +184,7 @@ export default function Home() {
               <div className="w-[80%] h-[2px] bg-slate-200 ml-7"></div>
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
-                  <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate?.Leq}</p>
+                  <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate5min?.noise}</p>
                   <p className="mt-2 text-[#475467]">dBA / เสียงรบกวน</p>
                 </div>
                 <Badge status={allData?.sound?.LastUpdate?.effect} name="sound"></Badge>

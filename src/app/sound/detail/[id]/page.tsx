@@ -122,7 +122,7 @@ export default function Detail({ params }: { params: any }) {
                     <div className="w-full  bg-[#F9FAFB] border-2 gap-5 border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-5 grid-cols-2 justify-center items-center">
                         <div>
                             <div className='text-[#475467]'>Leq 1 ชม.</div>
-                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.Leq}</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.Leq} dBA</div>
                         </div>
                         {/* <div>
                             <div className='text-[#475467]'>Leq 15 นาที</div>
@@ -130,23 +130,23 @@ export default function Detail({ params }: { params: any }) {
                         </div> */}
                         <div>
                             <div className='text-[#475467]'>Leq 5 นาที</div>
-                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.L5}</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.L5} dBA</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>Leq 90 นาที</div>
-                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.L90}</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.L90} dBA</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>Lmax</div>
-                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.Lmax}</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.Lmax} dBA</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>Lmin</div>
-                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.Lmin}</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.Lmin} dBA</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>Noise</div>
-                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.noise}</div>
+                            <div className='inline-flex gap-2 font-extrabold'>{soundsDetail?.LastUpdate?.noise} dBA</div>
                         </div>
                     </div>
 
@@ -264,14 +264,7 @@ export default function Detail({ params }: { params: any }) {
 
                         <div className=" overflow-hidden flex justify-center">
                             <Table className="w-full" data={
-                                //     [
-                                //     {
-                                //         updated: DateFormator(new Date()),
-                                //         Leq: 51.3,
-                                //         Lmin: 63.6,
-                                //         Lmax: 66.2
-                                //     }
-                                // ]
+                             
                                 rearrangeData(soundsDetail?.Last7D)
                             }
 

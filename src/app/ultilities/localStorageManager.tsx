@@ -34,13 +34,16 @@ export const isObjectEqual = (obj1: object, obj2: object): boolean => {
 };
 
 
-export async function favouriteAction(data: any, type: 'air' | 'sound' | 'flare' | 'water' | 'env' | 'flare' | 'eqms') {
-  const tempData = await getArrayFromLocalStorage("favData")
-  if (isObjectInArray(tempData || [], data)) {
-    // Remove 'data' if it already exists in 'tempData'
-    saveArrayToLocalStorage("favData", tempData ? tempData.filter((item: any) => !isObjectEqual(item, data)) : []);
+export async function favouriteAction(data: any, type: 'air' | 'sound' | 'flare' | 'water' | 'env' | 'eqms', isChecked: any) {
+  const tempData = await getArrayFromLocalStorage("favData");
+  const newData = [...tempData, { ...data, type }];
+
+  if (!isChecked) {
+    console.log("add");
+    saveArrayToLocalStorage("favData", newData);
   } else {
-    // Add 'data' if it does not exist in 'tempData'
-    saveArrayToLocalStorage("favData", [...(tempData || []), { ...data, type: type }]);
+    console.log("REMOVE", data.stationID);
+    saveArrayToLocalStorage("favData", tempData.filter((item: any) => item.stationID !== data.stationID));
   }
 }
+

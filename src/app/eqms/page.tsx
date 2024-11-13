@@ -1,34 +1,24 @@
 'use client'
 
-import { Button, Input, Radio, Segmented } from 'antd';
-import { Download, Grid, Grid2X2, Magnet, Map, RefreshCw, Search } from 'lucide-react';
+import { Button, Checkbox} from 'antd';
+import { Download, RefreshCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import Card from '../components/Card';
-import Badge from '../components/Badge';
-import Table from '../components/Table';
-import MapPick from '../components/MapPick';
-import DateFormator, { FullDateFormator } from '../ultilities/DateFormater';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
-import { SegmentList } from '../globals';
+import { FullDateFormator } from '../ultilities/DateFormater';
+import Link from 'next/link';
 import SegmentMenu from '../components/SegmentMenu';
-import Image from 'next/image';
 import StationCard from '../components/StationCard';
-import Badges from '../components/Badges';
 import Pagination from '../components/Pagination';
-import { getData, postData } from '../ultilities/api';
+import { getData } from '../ultilities/api';
 
 export default function EQMs() {
 
-
-  const [display, setDisplay] = useState<'List' | 'Map'>('List');
   const [EQMs, setEQMs] = useState<any>();
   const [currentPage, setCurrentPage] = useState<any>(0);
-
+  const [exportIDs, setExportIDs] = useState<Array<string>>([]);
+  const [isCheck, setIsCheck] = useState(true);
   const today = FullDateFormator(new Date())
   const pageSize = 1;
-
   const fetchData = async () => {
     const result = await getData('/forWeb/getEqmsList.php')
     setEQMs(result || [])
@@ -37,7 +27,7 @@ export default function EQMs() {
 
   const downloadImage = async () => {
     const query = {
-      "station":["s001", "s002"]
+      "station":exportIDs
     }
     const result = await fetch("/api/eqms", {
       method: 'POST',
@@ -47,21 +37,15 @@ export default function EQMs() {
       body: JSON.stringify({ query }),
     })
 
-    // console.log(result);
+    
     if (result?.ok) {
-      // Assuming the response contains the image data (e.g., as a Blob)
-      const blob = await result.blob(); // You can also use result.arrayBuffer() for binary data
-  
-      // Create an object URL for the Blob (image)
+      const blob = await result.blob(); 
       const imageUrl = URL.createObjectURL(blob);
-  
-      // Create an anchor tag and trigger download
       const a = document.createElement('a');
       a.href = imageUrl;
-      a.download = `EQMS-${new Date().toISOString().split("T")[0]}.png`; // Set the desired download filename here
+      a.download = `EQMS-${new Date().toISOString().split("T")[0]}.png`;
       a.click();
-  
-      // Clean up the object URL after download
+
       URL.revokeObjectURL(imageUrl);
     } else {
       console.error('Failed to fetch the image');
@@ -74,8 +58,36 @@ export default function EQMs() {
 
   useEffect(() => {
     EQMs && localStorage.setItem('EQMs', EQMs?.length)
-
+    if(EQMs)
+    setExportIDs(EQMs.map((item:any) => item?.StationID))
   }, [EQMs]);
+
+
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    
+      setRefreshKey((prevKey) => prevKey + 1);
+  }, [exportIDs]);
+
+  const handleCheck = (id:string,isCheck:boolean) => {
+    if(isCheck) {
+      return setExportIDs((prev:any) => [...prev,id]);
+    }
+
+    return setExportIDs((prev:any) => {
+      const newData = prev.filter((item:string) => item != id)
+      return newData
+    })
+  }
+
+  const handleCheckAll = () => {
+    if(!isCheck) {
+     return setExportIDs(EQMs.map((item:any) => item?.StationID))
+    }
+    return setExportIDs([])
+ 
+  }
   return (
     <>
 
@@ -83,9 +95,17 @@ export default function EQMs() {
 
         <SegmentMenu />
         <div className="text-[18px] text-[--primary] font-bold">ประจำ{today}</div>
-        <div className="flex justify-between">
+        <div className="flex justify-between lg:flex-row flex-col gap-5">
           <div className="text-[36px] font-bold">สถานีทั้งหมด</div>
-          <div className="text-[16px] font-bold flex gap-2">
+          <div className="text-[16px] font-bold items-center  flex gap-3">
+           
+            <div className="flex font-normal items-center">
+              <Checkbox id='checkall' checked={isCheck} onClick={e =>{
+                 handleCheckAll();
+                 setIsCheck(prev => !prev)
+                 }}> </Checkbox>
+                  <label htmlFor='checkall'>เลือกทั้งหมด</label>
+            </div>
             <Button onClick={e => window?.location.reload()}><RefreshCw className='size-[14px]' /> อัปเดต</Button>
             <form action={downloadImage} ><Button type='primary' htmlType="submit" ><Download className='size-[14px]' />ดาวน์โหลด</Button></form>
           </div>
@@ -95,16 +115,16 @@ export default function EQMs() {
 
       </section>
 
-      <section id="lists" className='px-10 bg-white py-5 min-h-screen'>
-        {display == "List" && <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
+      <section id="lists" key={refreshKey} className='px-10 bg-white py-5 min-h-screen'>
+        { <div className="lg:grid md:grid lg:grid-cols-3 md:grid-cols-2 hidden gap-5 justify-center">
           {EQMs?.map((item: any,index:number) => <Link key={index} href={`/EQMs/detail/${item?.EqmsID}`}>
-            <StationCard data={item}></StationCard>
+            <StationCard data={item} isCheck={exportIDs} checked={handleCheck}></StationCard>
           </Link>)}
         </div>}
 
-        {display == "List" && EQMs?.length > 0 && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
+        { EQMs?.length > 0 && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
           {[EQMs?.[currentPage]].map((item:any,index:number) => <Link key={index} href={`/EQMs/detail/${item?.EqmsID}`}>
-            <StationCard data={item} className=""></StationCard>
+            <StationCard data={item}  isCheck={exportIDs} checked={handleCheck} className=""></StationCard>
           </Link>)}
           <Pagination current={currentPage} onChange={setCurrentPage} pageSize={pageSize} simple={{ readOnly: true }} defaultCurrent={0} total={EQMs?.length} className="lg:hidden md:hidden flex justify-center py-3" />
         </div>}

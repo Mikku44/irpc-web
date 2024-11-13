@@ -1,3 +1,4 @@
+import { Instagram } from "lucide-react";
 import Link from "next/link";
 
 
@@ -41,10 +42,10 @@ export default function Footer() {
                   <img src="/images/x.svg" alt="X" className="h-5" />
                 </a>
                 <a target="_blank" href="https://www.facebook.com/IRPCofficial/" className="hover:text-blue-500">
-                  <img src="/images/linkedin.svg" alt="LinkedIn" className="h-5" />
+                  <img src="/images/facebook.svg" alt="facebook" className="h-[22px]" />
                 </a>
                 <a target="_blank" href="https://www.instagram.com/irpcofficial/" className="hover:text-blue-500">
-                  <img src="/images/facebook.svg" alt="Facebook" className="h-5" />
+                <Instagram className="h-[24px] text-gray-400" />
                 </a>
               </div>
             </div>
