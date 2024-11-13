@@ -10,6 +10,7 @@ import MultiColumnGraph from "@/app/components/MultiColumnGraph";
 import { convertPropertyToNumber } from "@/app/ultilities/PropsToNumber";
 import { namedArray } from "@/app/ultilities/ExtractKeys";
 import StackedColumnChart from "@/app/components/stackGraph";
+import dayjs from "dayjs";
 
 const monthsInThai = [
     { value: '1', label: 'มกราคม' },
@@ -28,8 +29,8 @@ const monthsInThai = [
 
 
 export default function Page({ params }: any) {
-
-    const [display, setDisplay] = useState<number>();
+    const currentMonth = `${dayjs().month() + 1}`;
+    const [display, setDisplay] = useState(currentMonth);
     const [airsFiltered, setAirsFiltered] = useState<any>("");
 
     const [curTab, setCurTab] = useState<string>("");
@@ -71,7 +72,6 @@ export default function Page({ params }: any) {
     }, [display])
 
     useEffect(() => {
-        setDisplay(new Date().getMonth() + 1)
         setCurTab(paramsMap[params.type]?.[0].key || "")
     }, [])
 
@@ -179,14 +179,11 @@ export default function Page({ params }: any) {
 
         <section className="px-16 py-10 container-x bg-white flex lg:flex-row flex-col gap-3 justify-between">
             <Select
-                // showSearch
                 onChange={(e) => setDisplay(e)}
-                // style={{ width: 200 }}
                 className="lg:w-[200px] w-full"
                 placeholder="Month"
                 optionFilterProp="children"
                 optionLabelProp="label"
-
                 value={display}
                 options={monthsInThai}
             />
@@ -236,7 +233,7 @@ const Graph = ({ curTab, Data, filter }: { curTab: string; Data: any[], filter: 
                 <div key={index}>
                     <div className="font-bold pb-8 pt-12">{item?.NameTh}</div>
                     <MultiColumnGraph
-                    color={() => `l(90) 0:rgba(82, 139, 255, 1) 1:rgba(0, 78, 235, 1)`}
+                        color={() => `l(90) 0:rgba(82, 139, 255, 1) 1:rgba(0, 78, 235, 1)`}
                         data={[
                             ...convertPropertyToNumber(namedArray(item?.[curTab], curTab || ""), 'value'),
                         ]}
