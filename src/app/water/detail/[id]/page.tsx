@@ -82,8 +82,8 @@ export default function Detail({ params }: { params: any }) {
                 </div>
                 <div className="flex flex-col items-end">
                     {/* <Badge status={watersDetail?.LastUpdate?.effect} name="water"></Badge> */}
-                    {watersDetail?.LastUpdate?.Flow != "N/A" && <Badge status={watersDetail?.LastUpdate?.effect}  name="water"></Badge> }
-                    {watersDetail?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}  name="water"></Badge> }
+                    {watersDetail?.LastUpdate?.COD != "N/A" && <Badge status={watersDetail?.LastUpdate?.effect}  name="water"></Badge> }
+                    {watersDetail?.LastUpdate?.COD == "N/A" && <Badge status={'0'}  name="water"></Badge> }
                     <div className="text-[36px] font-bold">{watersDetail?.LastUpdate.COD}<span className="text-[20px] font-normal">COD/mgI</span></div>
                 </div>
             </section>
