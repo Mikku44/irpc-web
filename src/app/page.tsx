@@ -11,7 +11,7 @@ import WaterCard from "./components/WaterCard";
 import MapPick from "./components/MapPick";
 import { useEffect, useState } from "react";
 import Footer from "./components/Footer";
-import { SegmentList, SegmentUserList } from "./globals";
+import { SegmentList, SegmentUserList, total } from "./globals";
 import EnvironmentCard from "./components/EnvironmentCard";
 import Flarecard from "./components/Flarecard";
 import StationCard from "./components/StationCard";
@@ -27,7 +27,7 @@ const MeasuringMap: any = {
   "sound": "/forWeb/getSoundLast.php",
   "water": "/forWeb/getWaterLast.php",
   "environment": "/forWeb/getCemsLast.php",
-  "flare": "/forWeb/getCemsLast.php",
+  "flare": "/forWeb/getFlareLast.php",
   "EQMs": "/forWeb/getEqmsList.php",
 }
 
@@ -95,7 +95,7 @@ export default function Home() {
   useEffect(() => {
     fetchMeasuringData();
     // alert(segmentValue)
-    if (segmentValue.includes("EQMs") || segmentValue.includes("Dashboard")) {
+    if (segmentValue.includes("eqms") || segmentValue.includes("dashboard")) {
       setShowMap(false);
     } else {
       setShowMap(true);
@@ -103,7 +103,7 @@ export default function Home() {
   }, [segmentValue])
 
   useEffect(() => {
-    // console.log("Current Data : ",MeasuringData);
+ 
     if (MeasuringData)
       setSelectedPlace(MeasuringData[0])
   }, [MeasuringData]);
@@ -177,7 +177,7 @@ export default function Home() {
               <div className="w-[80%] h-[2px] bg-slate-200 ml-7"></div>
               <div className="flex justify-between m-4">
                 <div className="flex gap-2">
-                  <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate?.Leq}</p>
+                  <p className="text-2xl font-extrabold">{allData?.sound?.LastUpdate?.noise}</p>
                   <p className="mt-2 text-[#475467]">dBA / เสียงรบกวน</p>
                 </div>
                 <Badge status={allData?.sound?.LastUpdate?.effect} name="sound"></Badge>
@@ -315,16 +315,21 @@ export default function Home() {
               {MeasuringData && <MapPick name={segmentValue} data={MeasuringData} setState={setSelectedPlace} unit={MeasuringUnitMap[segmentValue]} />}
             </div>}
           </div>}
-          {!showMap && segmentValue == "EQMs" && <div className="grid grid-flow-col gap-2 h-fit py-2 w-full snap-x overflow-x-auto">
+          {!showMap && segmentValue == "eqms" && <div className="grid grid-flow-col gap-2 h-fit py-2 w-full snap-x overflow-x-auto">
             {/* <StationCard data={selectedPlace} showFav={false} className="w-[400px]"> </StationCard> */}
-            {MeasuringData.map((item: any, index: number) => {
+            {MeasuringData?.[0]?.EqmsID ? MeasuringData.map((item: any, index: number) => {
+             
               return <Link href={`/Eqms/detail/${item?.EqmsID}`} key={index} className="snap-center">
-                <StationCard data={item} showFav={false} className="w-[400px]"> </StationCard>
+                <StationCard data={item}  showFav={false} className="w-[400px]"> </StationCard>
               </Link>
-            })}
+            })
+            : <div className="flex justify-center items-center min-h-[200px]">
+              No data available.
+            </div>
+            }
           </div>}
 
-          {!showMap && segmentValue == "Dashboard" &&
+          {!showMap && segmentValue == "dashboard" &&
 
             <div className="">
               <div className="bg-white grid lg:grid-cols-2 md:grid-cols-2  gap-5 px-10 py-10 rounded-xl">
@@ -335,7 +340,7 @@ export default function Home() {
                   </div>
                   <div className="grid">
                     <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                    <div className="text-[36px] font-bold">316</div>
+                    <div className="text-[36px] font-bold">{total['air']}</div>
                   </div>
                 </Link>
 
@@ -347,7 +352,7 @@ export default function Home() {
                   </div>
                   <div className="grid">
                     <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                    <div className="text-[36px] font-bold">316</div>
+                    <div className="text-[36px] font-bold">{total['sound']}</div>
                   </div>
                 </Link>
 
@@ -359,7 +364,7 @@ export default function Home() {
                   </div>
                   <div className="grid">
                     <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                    <div className="text-[36px] font-bold">316</div>
+                    <div className="text-[36px] font-bold">{total['water']}</div>
                   </div>
                 </Link>
 
@@ -371,7 +376,7 @@ export default function Home() {
                   </div>
                   <div className="grid">
                     <div className="text-sm text-gray-800">สถานีตรวจวัดทั้งหมด</div>
-                    <div className="text-[36px] font-bold">316</div>
+                    <div className="text-[36px] font-bold">{total['environment']}</div>
                   </div>
                 </Link>
 

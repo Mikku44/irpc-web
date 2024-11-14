@@ -5,14 +5,13 @@ import ColumnGraph from '@/app/components/ColumnGraph';
 import MultiColumnGraph from '@/app/components/MultiColumnGraph';
 import MultiLineGraph from '@/app/components/MultiLineGraph';
 import Table from '@/app/components/Table';
-import { Water } from '@/app/models/models';
+
 import { getData } from '@/app/ultilities/api';
 import DateFormator, { FullDateFormator } from '@/app/ultilities/DateFormater';
 import { Breadcrumb, Radio } from 'antd';
-import { ChevronRight, House, MapPin, Waves } from 'lucide-react';
+import { ChevronRight, House, MapPin } from 'lucide-react';
 import Image from 'next/image';
-import { Image as AntImage } from 'antd';
-import Link from 'next/link';
+
 import { useEffect, useState } from 'react';
 import { convertPropertyToNumber } from '@/app/ultilities/PropsToNumber';
 import rearrangeData from '@/app/ultilities/parseFromDate';
@@ -83,8 +82,8 @@ export default function Detail({ params }: { params: any }) {
                 </div>
                 <div className="flex flex-col items-end">
                     {/* <Badge status={watersDetail?.LastUpdate?.effect} name="water"></Badge> */}
-                    {watersDetail?.LastUpdate?.Flow != "N/A" && <Badge status={watersDetail?.LastUpdate?.effect}  name="water"></Badge> }
-                    {watersDetail?.LastUpdate?.Flow == "N/A" && <Badge status={'0'}  name="water"></Badge> }
+                    {watersDetail?.LastUpdate?.COD != "N/A" && <Badge status={watersDetail?.LastUpdate?.effect}  name="water"></Badge> }
+                    {watersDetail?.LastUpdate?.COD == "N/A" && <Badge status={'0'}  name="water"></Badge> }
                     <div className="text-[36px] font-bold">{watersDetail?.LastUpdate.COD}<span className="text-[20px] font-normal">COD/mgI</span></div>
                 </div>
             </section>
@@ -99,19 +98,19 @@ export default function Detail({ params }: { params: any }) {
                         <span className="text-[14px]">{watersDetail?.areaTH}</span>
                     </div>
 
-                    {/* Station Name */}
+             
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">ประเภทข้อมูล</span>
                         <p className="text-[16px] font-semibold text-gray-900">{watersDetail?.stationType}</p>
                     </div>
 
-                    {/* Station Code */}
+     
                     <div className="mb-2">
                         <span className="text-[14px] text-gray-500">รหัสสถานี</span>
                         <p className="text-[16px] font-semibold text-gray-900">{watersDetail?.stationID}</p>
                     </div>
 
-                    {/* Latest Data */}
+         
                     <div>
                         <span className="text-[14px] text-gray-500">ประเภทพื้นที่</span>
                         <p className="text-[16px] font-semibold text-gray-900">
@@ -123,12 +122,16 @@ export default function Detail({ params }: { params: any }) {
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
 
                         <div>
+                            <div className='text-[#475467]'>COD</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.COD == "N/A" ? "-":watersDetail?.LastUpdate.COD} ppm</div>
+                        </div>
+                        <div>
                             <div className='text-[#475467]'>Flow</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow} m³/s</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow == "N/A" ? "-":watersDetail?.LastUpdate.Flow} m³/s</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>pH</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.pH} </div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.pH == "N/A" ? "-":watersDetail?.LastUpdate.pH} </div>
                         </div>
                     </div>
 
@@ -196,15 +199,7 @@ export default function Detail({ params }: { params: any }) {
                             <Table
                                 className="w-full"
                                 data={
-                                    //     [
-                                    //     {
-                                    //         key: '1',
-                                    //         updated: '11 มิ.ย. 66 เวลา 09:00 น.',
-                                    //         COD: 51.3,
-                                    //         flow: 63.6,
-                                    //         PH: 66.2,
-                                    //     },
-                                    // ]
+            
                                     rearrangeData(watersDetail?.Last24H)
                                 }
 

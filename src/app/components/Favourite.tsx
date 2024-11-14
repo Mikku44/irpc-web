@@ -32,12 +32,12 @@ export default function Favourite({ className }: any) {
         <div ref={ref} className={`flex gap-10 overflow-x-auto py-5 px-2 w-[90vw] ${className}`}>
             {Fav?.map((item: any) => {
                 return <>
-                    {item?.type == "air" && <Link key={item?.stationID} href={`/air/detail/${item.stationID}`}><Card data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[510px]"></Card></Link>}
-                    {item?.type == "water" && <Link key={item?.stationID} href={`/water/detail/${item.stationID}`}><WaterCard data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[510px]"></WaterCard></Link>}
-                    {item?.type == "sound" && <Link key={item?.stationID} href={`/sound/detail/${item.stationID}`}><SoundCard data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[510px]"></SoundCard></Link>}
-                    {item?.type == "flare" && <Link key={item?.stationID} href={`/flare/detail/${item.stationID}`}><Flarecard item={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[510px]"></Flarecard></Link>}
-                    {item?.type == "env" && <Link key={item?.stationID} href={`/environment/detail/${item.stationID}`}><EnvironmentCard data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[510px]"></EnvironmentCard></Link>}
-                    {item?.type == "eqms" && <Link key={item?.stationID} href={`/EQMs/detail/${item.stationID}`}><StationCard data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[510px]"></StationCard></Link>}
+                    {item?.type == "air" && <Link key={item?.stationID} href={`/air/detail/${item.stationID}`}><Card data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[500px]"></Card></Link>}
+                    {item?.type == "water" && <Link key={item?.stationID} href={`/water/detail/${item.stationID}`}><WaterCard data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[500px]"></WaterCard></Link>}
+                    {item?.type == "sound" && <Link key={item?.stationID} href={`/sound/detail/${item.stationID}`}><SoundCard data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[500px]"></SoundCard></Link>}
+                    {item?.type == "flare" && <Link key={item?.stationID} href={`/flare/detail/${item.stationID}`}><Flarecard item={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[500px]"></Flarecard></Link>}
+                    {item?.type == "env" && <Link key={item?.stationID} href={`/environment/detail/${item.stationID}`}><EnvironmentCard data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[500px]"></EnvironmentCard></Link>}
+                    {item?.type == "eqms" && <Link key={item?.stationID} href={`/EQMs/detail/${item.stationID}`}><StationCard data={item} isFav={true}  className=" lg:min-w-[400px] prevent-select min-w-[330px] min-h-[500px]"></StationCard></Link>}
                 </>
 
             })}

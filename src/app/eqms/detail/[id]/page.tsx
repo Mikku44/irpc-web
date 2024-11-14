@@ -167,7 +167,7 @@ export default function Detail({ params }: any) {
 
                     <div className="grid p-3 border-r">
                         {EQMs && EQMs?.StatusParam?.map((item?: any,) => (
-                            <div key={item?.param} className="line-clamp-1 text-ellipsis">
+                            <div key={item?.param} className="line-clamp-1 text-ellipsis m-[5px_5px]">
                                 <div className={`rounded-full  w-fit flex gap-1 items-center  border px-4 py-1 ${color[item?.color || 'other']}`}>
                                     <div className={`size-2 rounded-full ${item?.status == 1 ? "bg-[--success]" : "bg-[--error-50]"}`}></div>
                                     {item?.status == 1 ? "ปกติ" : "มีผลกระทบ"}</div>
@@ -175,15 +175,15 @@ export default function Detail({ params }: any) {
                         ))}
                     </div>
 
-                    <div className="p-3 border-r overflow-x-auto hide-scroll grid">
+                    <div className=" border-r overflow-x-auto hide-scroll grid">
                         {EQMs && EQMs?.StatusParam?.map((item: any, index: number) => (
-                            <div key={item?.param} className="p-3  flex gap-2">
-                                <Checkbox onClick={e => {
+                            <div key={item?.param} className="p-[5px_5px]  flex gap-2">
+                                <Checkbox style={{display:"flex" ,alignItems:"center",}} onClick={e => {
                                     updateField(['StatusParam', index, 'status'], 1);
                                     updateField(['StatusParam', index, 'color'], 'green');
 
                                 }} checked={item?.status == 1 ? true : false}>Normal</Checkbox>
-                                <Checkbox onClick={e => {
+                                <Checkbox  style={{display:"flex" ,alignItems:"center",}} onClick={e => {
                                     updateField(['StatusParam', index, 'status'], 2);
                                     updateField(['StatusParam', index, 'color'], 'red');
 
@@ -193,9 +193,9 @@ export default function Detail({ params }: any) {
 
                     </div>
 
-                    <div className="p-3 border-r">{EQMs && <TextArea value={EQMs?.Remark} onChange={e => {
+                    <div className="p-3 border-r h-full flex">{EQMs && <TextArea className="h-full" cols={80} value={EQMs?.Remark} onChange={e => {
                         updateField(["Remark"], e.target.value);
-                        }} placeholder="หมายเหตุ" className="h-full" />}</div>
+                        }} placeholder="หมายเหตุ"/>}</div>
 
                 </div>
 
@@ -223,12 +223,13 @@ export default function Detail({ params }: any) {
                         </div>
                         <div className="pb-2">
                             <div className="font-bold">ตรวจสอบสถานะล่าสุด</div>
-                            <div className="py-1 flex gap-2">
-                                <Checkbox onClick={e => {
-                                    updateField(['StatusParam', index, 'status'], 1);
-                                    updateField(['StatusParam', index, 'color'], 'green');
-
-                                }} checked={item?.status == 1 ? true : false}>Normal</Checkbox>
+                            <div className="py-1 items-center flex gap-2">
+                              
+                                    <Checkbox onClick={e => {
+                                        updateField(['StatusParam', index, 'status'], 1);
+                                        updateField(['StatusParam', index, 'color'], 'green');
+                                    }} checked={item?.status == 1 ? true : false}>Normal</Checkbox>
+                     
                                 <Checkbox onClick={e => {
                                     updateField(['StatusParam', index, 'status'], 2);
                                     updateField(['StatusParam', index, 'color'], 'red');
