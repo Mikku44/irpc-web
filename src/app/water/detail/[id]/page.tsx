@@ -122,12 +122,16 @@ export default function Detail({ params }: { params: any }) {
                     <div className="w-full  bg-[#F9FAFB] border-2  border-[#EAECF0] rounded-xl p-3 grid lg:grid-cols-3 grid-cols-2 justify-center items-center">
 
                         <div>
+                            <div className='text-[#475467]'>COD</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.COD == "N/A" ? "-":watersDetail?.LastUpdate.COD} ppm</div>
+                        </div>
+                        <div>
                             <div className='text-[#475467]'>Flow</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow} m³/s</div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.Flow == "N/A" ? "-":watersDetail?.LastUpdate.Flow} m³/s</div>
                         </div>
                         <div>
                             <div className='text-[#475467]'>pH</div>
-                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.pH} </div>
+                            <div className='inline-flex gap-2 font-extrabold text-[#344054]'>{watersDetail?.LastUpdate.pH == "N/A" ? "-":watersDetail?.LastUpdate.pH} </div>
                         </div>
                     </div>
 
