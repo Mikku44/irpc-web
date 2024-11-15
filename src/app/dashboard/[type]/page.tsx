@@ -55,15 +55,36 @@ export default function Page({ params }: any) {
 
 
     const typesLabel: any = {
-        'AQI': "ดัชนีคุณภาพอากาศ AQI ",
         'PM2': <>ฝุ่นละออง PM<sub>2.5</sub></>,
         'PM10': <>ฝุ่นละออง PM<sub>10</sub></>,
         'O3': <>ก๊าซโอโซน O<sub>3</sub></>,
         'CO': "ก๊าซคาร์บอนมอนอกไซด์ CO",
         'NO2': <>ก๊าซไนโตรเจนไดออกไซด์ NO<sub>2</sub></>,
         'SO2': <>ก๊าซซัลเฟอร์ไดออกไซด์ SO<sub>2</sub></>,
-
+    
+        // Sound labels
+        'Leq': "ระดับเสียง Leq",
+        'Leq90': "ระดับเสียง Leq90",
+        'Lmax': "ระดับเสียงสูงสุด Lmax",
+        'Lmin': "ระดับเสียงต่ำสุด Lmin",
+    
+        // Water labels
+        'COD': "ค่าความต้องการออกซิเจน COD",
+        'FLOW': "การไหล FLOW",
+        'pH': "ค่าพีเอช pH",
+    
+        // CEMS labels
+        'Flow': "การไหล Flow",
+        'O2': "ก๊าซออกซิเจน O2",
+        'NOx': "ก๊าซไนโตรเจนออกไซด์ NOx",
+        'SOx': "ก๊าซซัลเฟอร์ออกไซด์ SOx",
+        'CO2': "ก๊าซคาร์บอนไดออกไซด์ CO2",
+        'NH3': "แอมโมเนีย NH3",
+        'H2S': "ก๊าซไฮโดรเจนซัลไฟด์ H2S",
+        'Dust': "ฝุ่น Dust",
+        'Opacity': "ความทึบแสง Opacity",
     };
+    
 
     useEffect(() => {
         if (display) {

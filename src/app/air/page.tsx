@@ -104,11 +104,11 @@ export default function Air() {
         </div>}
 
         {display == "List" && <div className="lg:hidden md:hidden flex flex-col gap-5 justify-center">
-          <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={airs?.length} className="lg:hidden md:hidden flex justify-center py-3" >
+         {airs?.length > 0 && <Pagination pageSize={pageSize} simple={{ readOnly: true }} current={currentPage} onChange={setCurrentPage} total={airs?.length} className="lg:hidden md:hidden flex justify-center py-3" >
             {[airs[currentPage]].map((item: any, index: number) => <Link key={index} href={`/air/detail/${item?.stationID}`}>
               <Card className="lg:min-w-full" data={item}></Card>
             </Link>)}
-          </Pagination>
+          </Pagination>}
         </div>}
 
         {display == "Map" && <div className="flex lg:flex-row flex-col gap-5 ">

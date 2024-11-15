@@ -6,7 +6,7 @@ export async function getData(extPath: string, config: any = {}) {
     try {
         // Build full URL
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}${extPath}`;
-        // console.log(url);
+        console.log(url);
 
         // Default headers if none are provided in config
         const defaultConfig = {
