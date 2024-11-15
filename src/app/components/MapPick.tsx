@@ -44,6 +44,7 @@ export default function MapPick({ data, setState, key, unit, name }: any) {
 
                 // for (const marker of data || geojson.features) {
                 var setCentered = false;
+                if(data?.length > 0) 
                 for (const marker of data) {
                     if (marker?.lat && !setCentered) {
                         setCentered = true;
